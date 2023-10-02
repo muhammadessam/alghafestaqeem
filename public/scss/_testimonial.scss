@@ -1,0 +1,116 @@
+.xis-testimonial-section {
+	z-index: 1;
+	overflow: hidden;
+	padding-top: 50px;
+	.xis-testimonial-shape {
+		left: 0;
+		right: 0;
+		z-index: -1;
+		text-align: center;
+	}
+}
+.xis-testimonial-text {
+	padding-top: 120px;
+}
+.xis-testimonial-feature-wrapper {
+	margin-top: 35px;
+}
+.xis-testimonial-slider-wrapper {
+	max-height: 700px;
+	overflow: hidden;
+	padding: 0px 45px;
+}
+.xis-testimonial-feature-item {
+	width: 135px;
+	margin-right: 35px;
+	h3 {
+		color: #ff4800;
+		font-size: 40px;
+		font-weight: 700;
+		padding-bottom: 10px;
+	}
+	p {
+		font-size: 14px;
+	}
+	&:last-child {
+		margin-right: 0;
+	}
+}
+.slick-vertical .slick-slide {
+	border: none;
+}
+.xis-testimonial-slider {
+	max-width: 510px;
+	float: right;
+	.slick-list {
+		overflow: visible;
+	}
+	.slick-slide  {
+		opacity: 0;
+		-webkit-transition: 500ms all ease;
+		transition: 500ms all ease;
+	}
+	.slick-slide.slick-active {
+		opacity: 1;
+	}
+	.slick-center {
+		transform: translateX(-60px);
+		&.xis-testi-slide-item {
+			box-shadow: -1.396px 39.976px 38px 0px rgba(2, 29, 89, 0.16);
+			&:after {
+				width: 10px;
+			}
+			&:before {
+				color: rgb(216,0,255);
+			}
+		}
+	}
+}
+.xis-testi-slide-item {
+	padding: 35px;
+	border-radius: 8px;
+	margin-bottom: 40px;
+	position: relative;
+	background-color: #fff;
+	transition: 500ms all ease;
+	border-left: 10px solid #dedede  !important;
+	box-shadow: 3.629px 14.554px 32px 0px rgba(2, 29, 89, 0.05);
+	&:before {
+		top: 25px;
+		right: 30px;
+		color: #eae9f2;
+		font-size: 24px;
+		content: '\f10e';
+		position: absolute;
+		font-weight: 900;
+		font-family: 'Font Awesome 5 Pro';
+	}
+	&:after {
+		top: 0;
+		left: -10px;
+		width: 0px;
+		height: 100%;
+		content: '';
+		position: absolute;
+		transition: 500ms all ease;
+		border-top-left-radius: 8px;
+		border-bottom-left-radius: 8px;
+		background-image: linear-gradient( -77deg, rgb(19,74,254) 0%, rgb(216,0,255) 100%);
+	}
+	.xis-testi-img {
+		width: 100px;
+		height: 100px;
+		overflow: hidden;
+		margin-right: 25px;
+		border-radius: 100%;
+	}
+	.xis-testi-text {
+		max-width: 300px;
+		h3 {
+			color: $color-2;
+			font-size: 20px;
+			font-weight: 700;
+			padding-bottom: 15px;
+		}
+	}
+}
