@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title> {{ $setting ? $setting->title . ' | ' : '' }} @yield('tab_name')</title>
     @include('admin.layouts.css')
-    @yield('css')
+
     <link rel="shortcut icon" href="{{ $setting->imagePath('logo') ?? asset('/images/logo.png') }}">
     @if (app()->getLocale() == 'ar')
         <style>
@@ -21,6 +21,9 @@
 
         </style>
     @endif
+    @yield('css')
+    @livewireStyles
+
 </head>
 
 <body class="@if (app()->getLocale() == 'ar') rtl @endif">
@@ -73,6 +76,7 @@
     <!-- container-scroller -->
 
     @include('admin.layouts.js')
+    @livewireScripts
     @yield('js')
 
 </body>

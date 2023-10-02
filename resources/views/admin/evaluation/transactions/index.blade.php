@@ -8,6 +8,7 @@
 <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">
 @endsection
 @section('content')
+
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
@@ -28,21 +29,21 @@
                             <p>
                                 <span class="text-danger bold">عدد المعاملات : {{ $result['transaction'] ?? '0' }}</span>
                                  @if (!empty($result['previewer']))
-                            
+
                                 <span class="text-danger bold">عدد المعاينة = {{ $result['previewer'] ?? '0' }}</span>
-    
+
                                @endif
                                 <!--  -->
                                 @if (!empty($result['income']))
-                            
+
                                <span class="text-danger bold">عدد الإدخال = {{ ($result['income']*.5) ?? '0' }}</span>
 
                                @endif
                                <!--  -->
                                @if (!empty($result['review']))
-                            
+
                                 <span class="text-danger bold">عدد المرجعات = {{ ($result['review']*.5) ?? '0' }}</span>
-    
+
                                @endif
                              </p>
                         @endif
@@ -64,22 +65,22 @@
                             <h3 class="text-xs-center text-info">No data addes !</h3>
                         </div>
                     @endif
-                    
+
                       <div class="d-flex justify-content-center">
 </div>
-                    
-                   
+
+
 
 
                 </div>
-                
-               
-                
-                
+
+
+
+
 
             </div>
-            
-                
+
+
 
         </div>
     </div>
@@ -95,12 +96,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script> 
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
      <script>
          $(document).ready(function() {
              $('#example').DataTable( {
-                 
+
                     dom: 'Bfrtip',
                     //ordering: false,
 
@@ -108,11 +109,11 @@
                         'copy', 'csv', 'excel',  'print'
                     ]
                 });
-          
+
         });
          $(document).ready(function() {
              $('#evalution').DataTable( {
-                 
+
                     dom: 'Bfrtip',
                     //ordering: false,
 
@@ -120,7 +121,7 @@
                         'copy', 'csv', 'excel',  'print'
                     ]
                 });
-          
+
         });
      </script>
     <script>
@@ -137,7 +138,7 @@
             })
         });
     </script>
-    
-   
-  
+
+
+
 @endsection
