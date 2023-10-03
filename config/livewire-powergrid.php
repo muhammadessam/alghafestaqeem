@@ -29,11 +29,9 @@ return [
          */
         'flatpickr' => [
             'locales' => [
-                'pt_BR' => [
-                    'locale'     => 'ar',
-                    'dateFormat' => 'd/m/Y H:i',
-                    'enableTime' => true,
-                    'time_24hr'  => true,
+                'ar' => [
+                    'locale' => 'ar',
+                    'dateFormat' => 'd/m/Y',
                 ],
             ],
         ],
@@ -48,9 +46,10 @@ return [
             'tom' => [
                 'plugins' => [
                     'clear_button' => [
-                        'title' => 'Remove all selected options',
-                    ],
+                        'title' => 'Remove all selected options',]
                 ],
+                'persist' => false,
+                'create' => true,
             ],
 
             /*
@@ -77,7 +76,7 @@ return [
     |
     */
 
-    'filter' => 'inline',
+    'filter' => 'outside',
 
     /*
     |--------------------------------------------------------------------------
@@ -114,14 +113,14 @@ return [
     */
 
     'exportable' => [
-        'default'      => 'openspout_v4',
+        'default' => 'openspout_v4',
         'openspout_v4' => [
             'xlsx' => \PowerComponents\LivewirePowerGrid\Components\Exports\OpenSpout\v4\ExportToXLS::class,
-            'csv'  => \PowerComponents\LivewirePowerGrid\Components\Exports\OpenSpout\v4\ExportToCsv::class,
+            'csv' => \PowerComponents\LivewirePowerGrid\Components\Exports\OpenSpout\v4\ExportToCsv::class,
         ],
         'openspout_v3' => [
             'xlsx' => \PowerComponents\LivewirePowerGrid\Components\Exports\OpenSpout\v3\ExportToXLS::class,
-            'csv'  => \PowerComponents\LivewirePowerGrid\Components\Exports\OpenSpout\v3\ExportToCsv::class,
+            'csv' => \PowerComponents\LivewirePowerGrid\Components\Exports\OpenSpout\v3\ExportToCsv::class,
         ],
     ],
 ];

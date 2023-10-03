@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Evaluation\EvaluationCompany;
 use App\Models\Evaluation\EvaluationTransaction;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -33,37 +34,51 @@ final class EvaluationTransactionTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return EvaluationTransaction::query()->latest();
+        return EvaluationTransaction::query()->latest()->with(['company', 'employee', 'type', 'previewer', 'review']);
     }
 
     public function relationSearch(): array
     {
-        return ['company'];
+        return ['company' => [
+            'title',
+        ]];
     }
 
     public function addColumns(): PowerGridColumns
     {
         return PowerGrid::columns()
             ->addColumn('id')
-            ->addColumn('evaluation_company_id', fn(EvaluationTransaction $model) => $model->company->title ?? '')
-            ->addColumn('evaluation_employee_id')
             ->addColumn('instrument_number')
             ->addColumn('transaction_number')
-            ->addColumn('is_iterated')
-            ->addColumn('date_formatted', fn(EvaluationTransaction $model) => Carbon::parse($model->date)->format('d/m/Y'))
-            ->addColumn('owner_name')
-            ->addColumn('type_id')
-            ->addColumn('region')
-            ->addColumn('previewer_id')
-            ->addColumn('review_id')
-            ->addColumn('income_id')
-            ->addColumn('city_id')
-            ->addColumn('notes')
-            ->addColumn('status')
-            ->addColumn('review_fundoms')
-            ->addColumn('company_fundoms')
             ->addColumn('phone')
-            ->addColumn('created_at_formatted', fn(EvaluationTransaction $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('evaluation_company_id', fn(EvaluationTransaction $model) => $model->company->title ?? '')
+            ->addColumn('region')
+            ->addColumn('company_fundoms')
+            ->addColumn('evaluation_employee_id')
+            ->addColumn('review_fundoms')
+            ->addColumn('previewer_id', fn(EvaluationTransaction $model) => $model->previewer->title ?? '')
+            ->addColumn('is_iterated', fn(EvaluationTransaction $model) => $model->is_iterated ? 'نعم' : 'لا')
+            ->addColumn('status', function (EvaluationTransaction $model) {
+                if ($model->status == 0) {
+                    return "<span class='badge badge-pill alert-table badge-warning'>" . __('admin.NewTransaction') . "</span>";
+                } elseif ($model->status == 1) {
+                    return "<span class='badge badge-pill alert-table badge-info'>" . __('admin.InReviewRequest') . "</span>";
+                } elseif ($model->status == 2) {
+                    return "<span class='badge badge-pill alert-table badge-primary'>" . __('admin.ContactedRequest') . "</span>";
+                } elseif ($model->status == 3) {
+                    return "<span class='badge badge-pill alert-table badge-danger'>" . __('admin.ReviewedRequest') . "</span>";
+                } elseif ($model->status == 4) {
+                    return "<span class='badge badge-pill alert-table badge-success'>" . __('admin.FinishedRequest') . "</span>";
+                } elseif ($model->status == 5) {
+                    return "<span class='badge badge-pill alert-table badge-warning'>" . __('admin.PendingRequest') . "</span>";
+                } elseif ($model->status == 6) {
+                    return "<span class='badge badge-pill alert-table badge-warning'>" . __('admin.Cancelled') . "</span>";
+                } else {
+                    return '';
+                }
+            })
+            ->addColumn('notes')
+            ->addColumn('updated_at_formatted', fn(EvaluationTransaction $model) => Carbon::parse($model->updated_at)->format('d/m/Y'));
     }
 
     public function columns(): array
@@ -75,30 +90,13 @@ final class EvaluationTransactionTable extends PowerGridComponent
             Column::make(trans('admin.phone'), 'phone')->searchable(),
             Column::make(trans('admin.company'), 'evaluation_company_id')->searchable(),
             Column::make(trans('admin.region'), 'region')->searchable(),
-            Column::make('Evaluation employee id', 'evaluation_employee_id'),
-            Column::make('Is iterated', 'is_iterated')->toggleable(),
-            Column::make('Date', 'date_formatted', 'date')->sortable(),
-            Column::make('Owner name', 'owner_name')->sortable()->searchable(),
-
-            Column::make('Type id', 'type_id'),
-
-
-            Column::make('Previewer id', 'previewer_id'),
-            Column::make('Review id', 'review_id'),
-            Column::make('Income id', 'income_id'),
-            Column::make('City id', 'city_id'),
-            Column::make('Notes', 'notes')
-                ->sortable()
-                ->searchable(),
-
-            Column::make('Status', 'status'),
-            Column::make('Review fundoms', 'review_fundoms'),
-            Column::make('Company fundoms', 'company_fundoms'),
-
-
-            Column::make('Created at', 'created_at_formatted', 'created_at')
-                ->sortable(),
-
+            Column::make(trans('admin.company_fundoms'), 'company_fundoms'),
+            Column::make(trans('admin.review_fundoms'), 'review_fundoms'),
+            Column::make(trans('admin.previewer'), 'previewer_id'),
+            Column::make(trans('admin.is_iterated'), 'is_iterated'),
+            Column::make(trans('admin.Status'), 'status'),
+            Column::make(trans('admin.LastUpdate'), 'updated_at_formatted', 'updated_at')->sortable(),
+            Column::make(trans('admin.notes'), 'notes')->searchable(),
             Column::action('Action')
         ];
     }
@@ -108,8 +106,12 @@ final class EvaluationTransactionTable extends PowerGridComponent
         return [
             Filter::inputText('instrument_number')->operators(['contains']),
             Filter::inputText('transaction_number')->operators(['contains']),
-            Filter::boolean('is_iterated'),
-            Filter::datepicker('date'),
+            Filter::multiSelect('evaluation_company_id')
+                ->dataSource(EvaluationCompany::all())
+                ->optionValue('id')
+                ->optionLabel('title'),
+            Filter::boolean('is_iterated')->label('نعم', 'لا'),
+            Filter::datepicker('updated_at'),
             Filter::inputText('owner_name')->operators(['contains']),
             Filter::inputText('region')->operators(['contains']),
             Filter::inputText('phone')->operators(['contains']),

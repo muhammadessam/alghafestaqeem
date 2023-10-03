@@ -4,14 +4,13 @@ namespace App\Models\Evaluation;
 
 use App\Models\Model;
 use App\Models\Category;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Transaction_files;
 
 
 class EvaluationTransaction extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'evaluation_company_id',
         'evaluation_employee_id',
@@ -28,36 +27,45 @@ class EvaluationTransaction extends Model
         'city_id',
         'notes',
         'status',
-         'review_fundoms',
-          'company_fundoms',
-          'phone',
+        'review_fundoms',
+        'company_fundoms',
+        'phone',
     ];
 
+    protected static function booted(): void
+    {
+        static::created(function (EvaluationTransaction $evaluationTransaction) {
+            if (is_numeric($evaluationTransaction->instrument_number)) {
+                EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)->update([
+                    'is_iterated' => true,
+                ]);
+            }
+        });
+    }
 
     public function getStatusSpanAttribute()
     {
         if ($this->status == 0) {
-            return "<span class='badge badge-pill alert-table badge-warning'>".
-            __('admin.NewTransaction')."</span>";
+            return "<span class='badge badge-pill alert-table badge-warning'>" .
+                __('admin.NewTransaction') . "</span>";
         } elseif ($this->status == 1) {
-            return "<span class='badge badge-pill alert-table badge-info'>".
-            __('admin.InReviewRequest')."</span>";
+            return "<span class='badge badge-pill alert-table badge-info'>" .
+                __('admin.InReviewRequest') . "</span>";
         } elseif ($this->status == 2) {
-            return "<span class='badge badge-pill alert-table badge-primary'>".
-            __('admin.ContactedRequest')."</span>";
+            return "<span class='badge badge-pill alert-table badge-primary'>" .
+                __('admin.ContactedRequest') . "</span>";
         } elseif ($this->status == 3) {
-            return "<span class='badge badge-pill alert-table badge-danger'>".
-            __('admin.ReviewedRequest')."</span>";
-        }elseif ($this->status == 4) {
-            return "<span class='badge badge-pill alert-table badge-success'>".
-            __('admin.FinishedRequest')."</span>";
-        }elseif ($this->status == 5) {
-            return "<span class='badge badge-pill alert-table badge-warning'>".
-            __('admin.PendingRequest')."</span>";
-        }
-        elseif ($this->status == 6) {
-            return "<span class='badge badge-pill alert-table badge-warning'>".
-            __('admin.Cancelled')."</span>";
+            return "<span class='badge badge-pill alert-table badge-danger'>" .
+                __('admin.ReviewedRequest') . "</span>";
+        } elseif ($this->status == 4) {
+            return "<span class='badge badge-pill alert-table badge-success'>" .
+                __('admin.FinishedRequest') . "</span>";
+        } elseif ($this->status == 5) {
+            return "<span class='badge badge-pill alert-table badge-warning'>" .
+                __('admin.PendingRequest') . "</span>";
+        } elseif ($this->status == 6) {
+            return "<span class='badge badge-pill alert-table badge-warning'>" .
+                __('admin.Cancelled') . "</span>";
         }
     }
 
@@ -65,7 +73,7 @@ class EvaluationTransaction extends Model
     {
         return $this->belongsTo(Category::class, 'type_id');
     }
-    
+
     public function city()
     {
         return $this->belongsTo(Category::class, 'city_id');
@@ -85,9 +93,10 @@ class EvaluationTransaction extends Model
     {
         return $this->belongsTo(EvaluationEmployee::class, 'previewer_id');
     }
-       public function files()
+
+    public function files()
     {
-        return $this->hasMany(Transaction_files::class ,'Transaction_id','id');
+        return $this->hasMany(Transaction_files::class, 'Transaction_id', 'id');
 
     }
 
@@ -104,43 +113,18 @@ class EvaluationTransaction extends Model
 
     public function getIteratedSpanAttribute($value)
     {
-        if(is_numeric($this->instrument_number))
-        {
+        if (is_numeric($this->instrument_number)) {
             if (EvaluationTransaction::where('instrument_number', $this->instrument_number)->count() > 1) {
                 $value = "<span class='badge badge-pill badge-danger'> نعم</span>";
             } else {
                 $value = "<span class='badge badge-pill badge-success'>لا</span>";
             }
 
-        }
-        else
-        {
+        } else {
             $value = "<span class='badge badge-pill badge-success'>لا</span>";
         }
-        
 
 
         return $value;
     }
-
-     public function getIsIteratedAttribute($value)
-    {
-        if(is_numeric($this->instrument_number))
-        {
-        
-        if (EvaluationTransaction::where('instrument_number', $this->instrument_number)->count() > 1) {
-            $value = 1;
-        } else {
-            $value = 0;
-        }
-        }
-        else
-        {
-            $value = 0;
-        }
-
-        return $value;
-    }
-
-
 }
