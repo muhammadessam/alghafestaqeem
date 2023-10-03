@@ -38,6 +38,7 @@ final class EvaluationTransactionTable extends PowerGridComponent
     public function datasource(): Builder
     {
         return EvaluationTransaction::query()
+            ->with(['city', 'income', 'review'])
             ->join('evaluation_companies', function ($query) {
                 $query->on('evaluation_transactions.evaluation_company_id', '=', 'evaluation_companies.id');
             })->join('evaluation_employees', function ($query) {
@@ -54,10 +55,13 @@ final class EvaluationTransactionTable extends PowerGridComponent
                 'evaluation_transactions.review_fundoms',
                 'evaluation_transactions.owner_name',
                 'evaluation_transactions.is_iterated',
+                'evaluation_transactions.city_id',
+                'evaluation_transactions.type_id',
                 'evaluation_transactions.status',
                 'evaluation_transactions.notes',
+                'evaluation_transactions.updated_at',
 
-                'categories.title as category_title',
+
                 'evaluation_employees.title as employee_name',
                 'evaluation_companies.title as company_title',
             ]);
@@ -65,9 +69,11 @@ final class EvaluationTransactionTable extends PowerGridComponent
 
     public function relationSearch(): array
     {
-        return ['company' => [
-            'title',
-        ]];
+        return [
+            'company' => [
+                'title',
+            ]
+        ];
     }
 
     public function addColumns(): PowerGridColumns
@@ -77,7 +83,9 @@ final class EvaluationTransactionTable extends PowerGridComponent
             ->addColumn('instrument_number')
             ->addColumn('transaction_number')
             ->addColumn('phone')
-            ->addColumn('company_title')
+            ->addColumn('city_id', function (EvaluationTransaction $model) {
+                return view('components.transaction_details', ['model' => $model]);
+            })
             ->addColumn('region')
             ->addColumn('company_fundoms')
             ->addColumn('review_fundoms')
@@ -120,12 +128,12 @@ final class EvaluationTransactionTable extends PowerGridComponent
             Column::make(trans('admin.review_fundoms'), 'review_fundoms'),
             Column::make(trans('admin.previewer'), 'employee_name', 'evaluation_employees.title')->sortable()->searchable(),
 
-            Column::make(trans('admin.TransactionDetail'), 'category_title', 'categories.title')->sortable()->searchable(),
+            Column::make(trans('admin.TransactionDetail'), 'city_id'),
 
             Column::make(trans('admin.Status'), 'status', 'evaluation_transactions.status')->sortable(),
 
             Column::make(trans('admin.is_iterated'), 'is_iterated', 'is_iterated')->sortable(),
-            Column::make(trans('admin.LastUpdate'), 'updated_at_formatted', 'updated_at')->sortable(),
+            Column::make(trans('admin.LastUpdate'), 'updated_at_formatted', 'evaluation_transactions.updated_at')->sortable(),
             Column::make(trans('admin.notes'), 'notes')->searchable(),
             Column::action(trans('admin.Actions'))
         ];
@@ -134,11 +142,13 @@ final class EvaluationTransactionTable extends PowerGridComponent
     public function filters(): array
     {
         return [
-            Filter::inputText('instrument_number')->operators(['contains']),
-            Filter::inputText('transaction_number')->operators(['contains']),
-            Filter::multiSelect('evaluation_company_id')->dataSource(EvaluationCompany::all())->optionValue('id')->optionLabel('title'),
+            Filter::inputText('instrument_number', 'evaluation_transactions.instrument_number')->operators(['contains']),
+            Filter::inputText('transaction_number', 'evaluation_transactions.transaction_number')->operators(['contains']),
+            Filter::multiSelect('company_title', 'evaluation_company_id')
+                ->dataSource(EvaluationCompany::all())
+                ->optionValue('id')->optionLabel('title'),
             Filter::boolean('is_iterated')->label('نعم', 'لا'),
-            Filter::datepicker('updated_at'),
+            Filter::datepicker('updated_at_formatted', 'evaluation_transactions.updated_at'),
             Filter::inputText('owner_name')->operators(['contains']),
             Filter::inputText('region')->operators(['contains']),
             Filter::inputText('phone')->operators(['contains']),
