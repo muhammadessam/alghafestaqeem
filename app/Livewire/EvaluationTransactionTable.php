@@ -42,6 +42,8 @@ final class EvaluationTransactionTable extends PowerGridComponent
                 $query->on('evaluation_transactions.evaluation_company_id', '=', 'evaluation_companies.id');
             })->join('evaluation_employees', function ($query) {
                 $query->on('evaluation_transactions.previewer_id', '=', 'evaluation_employees.id');
+            })->join('categories', function ($query) {
+                $query->on('evaluation_transactions.city_id', '=', 'categories.id');
             })->select([
                 'evaluation_transactions.id',
                 'evaluation_transactions.instrument_number',
@@ -50,9 +52,12 @@ final class EvaluationTransactionTable extends PowerGridComponent
                 'evaluation_transactions.region',
                 'evaluation_transactions.company_fundoms',
                 'evaluation_transactions.review_fundoms',
+                'evaluation_transactions.owner_name',
                 'evaluation_transactions.is_iterated',
                 'evaluation_transactions.status',
                 'evaluation_transactions.notes',
+
+                'categories.title as category_title',
                 'evaluation_employees.title as employee_name',
                 'evaluation_companies.title as company_title',
             ]);
@@ -76,6 +81,7 @@ final class EvaluationTransactionTable extends PowerGridComponent
             ->addColumn('region')
             ->addColumn('company_fundoms')
             ->addColumn('review_fundoms')
+            ->addColumn('category_title')
             ->addColumn('employee_name')
             ->addColumn('is_iterated', fn(EvaluationTransaction $model) => $model->is_iterated ? 'نعم' : 'لا')
             ->addColumn('status', function (EvaluationTransaction $model) {
@@ -113,6 +119,9 @@ final class EvaluationTransactionTable extends PowerGridComponent
             Column::make(trans('admin.company_fundoms'), 'company_fundoms'),
             Column::make(trans('admin.review_fundoms'), 'review_fundoms'),
             Column::make(trans('admin.previewer'), 'employee_name', 'evaluation_employees.title')->sortable()->searchable(),
+
+            Column::make(trans('admin.TransactionDetail'), 'category_title', 'categories.title')->sortable()->searchable(),
+
             Column::make(trans('admin.Status'), 'status', 'evaluation_transactions.status')->sortable(),
 
             Column::make(trans('admin.is_iterated'), 'is_iterated', 'is_iterated')->sortable(),
@@ -127,10 +136,7 @@ final class EvaluationTransactionTable extends PowerGridComponent
         return [
             Filter::inputText('instrument_number')->operators(['contains']),
             Filter::inputText('transaction_number')->operators(['contains']),
-            Filter::multiSelect('evaluation_company_id')
-                ->dataSource(EvaluationCompany::all())
-                ->optionValue('id')
-                ->optionLabel('title'),
+            Filter::multiSelect('evaluation_company_id')->dataSource(EvaluationCompany::all())->optionValue('id')->optionLabel('title'),
             Filter::boolean('is_iterated')->label('نعم', 'لا'),
             Filter::datepicker('updated_at'),
             Filter::inputText('owner_name')->operators(['contains']),
@@ -140,14 +146,19 @@ final class EvaluationTransactionTable extends PowerGridComponent
         ];
     }
 
-
     public function actions(\App\Models\Evaluation\EvaluationTransaction $row): array
     {
         return [
+            Button::add('show')
+                ->slot('<i class="fa fa-eye"></i>')
+                ->class('pg-btn-white text-warning dark:ring-pg-primary-600 dark:border-pg-primary-600 dark:hover:bg-pg-primary-700 dark:ring-offset-pg-primary-800 dark:text-pg-primary-300 dark:bg-pg-primary-700')
+                ->route('admin.evaluation-transactions.show', ['evaluation_transaction' => $row->id]),
             Button::add('edit')
-                ->slot('Edit: ' . $row->id)
-                ->class('pg-btn-white dark:ring-pg-primary-600 dark:border-pg-primary-600 dark:hover:bg-pg-primary-700 dark:ring-offset-pg-primary-800 dark:text-pg-primary-300 dark:bg-pg-primary-700')
-                ->route('admin', $row->id)
+                ->slot('<i class="fa fa-edit"></i>')
+                ->class('pg-btn-white text-secondary dark:ring-pg-primary-600 dark:border-pg-primary-600 dark:hover:bg-pg-primary-700 dark:ring-offset-pg-primary-800 dark:text-pg-primary-300 dark:bg-pg-primary-700')
+                ->route('admin.evaluation-transactions.edit', ['evaluation_transaction' => $row->id]),
+            Button::add('delete')
+                ->bladeComponent('delete-form', ['id' => $row->id])
         ];
     }
 
