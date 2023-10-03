@@ -1,5 +1,5 @@
 <div class="items-center justify-between sm:flex">
-    <div class="items-center justify-between w-full sm:flex-1 sm:flex">
+    <div class="items-center justify-between w-full sm:flex-1 sm:flex flex-row-reverse">
         @if ($recordCount === 'full')
             <div>
                 <div
@@ -40,7 +40,7 @@
                 aria-label="Pagination Navigation"
                 class="items-center justify-between sm:flex"
             >
-                <div class="flex justify-center mt-2 md:flex-none md:justify-end sm:mt-0">
+                <div class="flex justify-center mt-2 md:flex-none md:justify-end sm:mt-0 flex-row-reverse">
 
                     @if (!$paginator->onFirstPage())
                         <a

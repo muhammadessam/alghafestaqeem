@@ -21,6 +21,9 @@ final class EvaluationTransactionTable extends PowerGridComponent
 {
     use WithExport;
 
+    public string $sortDirection = 'desc';
+    public string $primaryKey = 'evaluation_transactions.id';
+
     public function setUp(): array
     {
         $this->showCheckBox();
@@ -34,7 +37,25 @@ final class EvaluationTransactionTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return EvaluationTransaction::query()->latest()->with(['company', 'employee', 'type', 'previewer', 'review']);
+        return EvaluationTransaction::query()
+            ->join('evaluation_companies', function ($query) {
+                $query->on('evaluation_transactions.evaluation_company_id', '=', 'evaluation_companies.id');
+            })->join('evaluation_employees', function ($query) {
+                $query->on('evaluation_transactions.previewer_id', '=', 'evaluation_employees.id');
+            })->select([
+                'evaluation_transactions.id',
+                'evaluation_transactions.instrument_number',
+                'evaluation_transactions.transaction_number',
+                'evaluation_transactions.phone',
+                'evaluation_transactions.region',
+                'evaluation_transactions.company_fundoms',
+                'evaluation_transactions.review_fundoms',
+                'evaluation_transactions.is_iterated',
+                'evaluation_transactions.status',
+                'evaluation_transactions.notes',
+                'evaluation_employees.title as employee_name',
+                'evaluation_companies.title as company_title',
+            ]);
     }
 
     public function relationSearch(): array
@@ -51,12 +72,11 @@ final class EvaluationTransactionTable extends PowerGridComponent
             ->addColumn('instrument_number')
             ->addColumn('transaction_number')
             ->addColumn('phone')
-            ->addColumn('evaluation_company_id', fn(EvaluationTransaction $model) => $model->company->title ?? '')
+            ->addColumn('company_title')
             ->addColumn('region')
             ->addColumn('company_fundoms')
-            ->addColumn('evaluation_employee_id')
             ->addColumn('review_fundoms')
-            ->addColumn('previewer_id', fn(EvaluationTransaction $model) => $model->previewer->title ?? '')
+            ->addColumn('employee_name')
             ->addColumn('is_iterated', fn(EvaluationTransaction $model) => $model->is_iterated ? 'نعم' : 'لا')
             ->addColumn('status', function (EvaluationTransaction $model) {
                 if ($model->status == 0) {
@@ -88,16 +108,17 @@ final class EvaluationTransactionTable extends PowerGridComponent
             Column::make(trans('admin.instrument_number'), 'instrument_number')->sortable()->searchable(),
             Column::make(trans('admin.transaction_number'), 'transaction_number')->sortable()->searchable(),
             Column::make(trans('admin.phone'), 'phone')->searchable(),
-            Column::make(trans('admin.company'), 'evaluation_company_id')->searchable(),
+            Column::make(trans('admin.company'), 'company_title', 'evaluation_companies.title')->sortable()->searchable(),
             Column::make(trans('admin.region'), 'region')->searchable(),
             Column::make(trans('admin.company_fundoms'), 'company_fundoms'),
             Column::make(trans('admin.review_fundoms'), 'review_fundoms'),
-            Column::make(trans('admin.previewer'), 'previewer_id'),
-            Column::make(trans('admin.is_iterated'), 'is_iterated'),
-            Column::make(trans('admin.Status'), 'status'),
+            Column::make(trans('admin.previewer'), 'employee_name', 'evaluation_employees.title')->sortable()->searchable(),
+            Column::make(trans('admin.Status'), 'status', 'evaluation_transactions.status')->sortable(),
+
+            Column::make(trans('admin.is_iterated'), 'is_iterated', 'is_iterated')->sortable(),
             Column::make(trans('admin.LastUpdate'), 'updated_at_formatted', 'updated_at')->sortable(),
             Column::make(trans('admin.notes'), 'notes')->searchable(),
-            Column::action('Action')
+            Column::action(trans('admin.Actions'))
         ];
     }
 
@@ -119,20 +140,14 @@ final class EvaluationTransactionTable extends PowerGridComponent
         ];
     }
 
-    #[\Livewire\Attributes\On('edit')]
-    public function edit($rowId): void
-    {
-        $this->js('alert(' . $rowId . ')');
-    }
 
     public function actions(\App\Models\Evaluation\EvaluationTransaction $row): array
     {
         return [
             Button::add('edit')
                 ->slot('Edit: ' . $row->id)
-                ->id()
                 ->class('pg-btn-white dark:ring-pg-primary-600 dark:border-pg-primary-600 dark:hover:bg-pg-primary-700 dark:ring-offset-pg-primary-800 dark:text-pg-primary-300 dark:bg-pg-primary-700')
-                ->dispatch('edit', ['rowId' => $row->id])
+                ->route('admin', $row->id)
         ];
     }
 
