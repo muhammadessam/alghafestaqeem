@@ -1,9 +1,14 @@
 import './bootstrap';
-import './../../vendor/power-components/livewire-powergrid/dist/powergrid'
-import './../../vendor/power-components/livewire-powergrid/dist/powergrid.css'
 
 import flatpickr from "flatpickr";
 import TomSelect from "tom-select";
+import 'flatpickr/dist/flatpickr.min.css'
+import Alpine from 'alpinejs'
 
-window.TomSelect = TomSelect
-window.pgFlatpickr = flatpickr;
+window.Alpine = Alpine
+
+import './../../vendor/power-components/livewire-powergrid/dist/powergrid'
+import './../../vendor/power-components/livewire-powergrid/dist/powergrid.css'
+
+
+Alpine.start();

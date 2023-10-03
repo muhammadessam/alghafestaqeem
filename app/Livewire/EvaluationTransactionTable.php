@@ -33,24 +33,24 @@ final class EvaluationTransactionTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return EvaluationTransaction::query();
+        return EvaluationTransaction::query()->latest();
     }
 
     public function relationSearch(): array
     {
-        return [];
+        return ['company'];
     }
 
     public function addColumns(): PowerGridColumns
     {
         return PowerGrid::columns()
             ->addColumn('id')
-            ->addColumn('evaluation_company_id')
+            ->addColumn('evaluation_company_id', fn(EvaluationTransaction $model) => $model->company->title ?? '')
             ->addColumn('evaluation_employee_id')
             ->addColumn('instrument_number')
             ->addColumn('transaction_number')
             ->addColumn('is_iterated')
-            ->addColumn('date_formatted', fn (EvaluationTransaction $model) => Carbon::parse($model->date)->format('d/m/Y'))
+            ->addColumn('date_formatted', fn(EvaluationTransaction $model) => Carbon::parse($model->date)->format('d/m/Y'))
             ->addColumn('owner_name')
             ->addColumn('type_id')
             ->addColumn('region')
@@ -63,7 +63,7 @@ final class EvaluationTransactionTable extends PowerGridComponent
             ->addColumn('review_fundoms')
             ->addColumn('company_fundoms')
             ->addColumn('phone')
-            ->addColumn('created_at_formatted', fn (EvaluationTransaction $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('created_at_formatted', fn(EvaluationTransaction $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
 
     public function columns(): array
@@ -72,20 +72,16 @@ final class EvaluationTransactionTable extends PowerGridComponent
             Column::make('Id', 'id'),
             Column::make(trans('admin.instrument_number'), 'instrument_number')->sortable()->searchable(),
             Column::make(trans('admin.transaction_number'), 'transaction_number')->sortable()->searchable(),
-            Column::make('Evaluation company id', 'evaluation_company_id'),
+            Column::make(trans('admin.phone'), 'phone')->searchable(),
+            Column::make(trans('admin.company'), 'evaluation_company_id')->searchable(),
+            Column::make(trans('admin.region'), 'region')->searchable(),
             Column::make('Evaluation employee id', 'evaluation_employee_id'),
             Column::make('Is iterated', 'is_iterated')->toggleable(),
-
             Column::make('Date', 'date_formatted', 'date')->sortable(),
-
-            Column::make('Owner name', 'owner_name')
-                ->sortable()
-                ->searchable(),
+            Column::make('Owner name', 'owner_name')->sortable()->searchable(),
 
             Column::make('Type id', 'type_id'),
-            Column::make('Region', 'region')
-                ->sortable()
-                ->searchable(),
+
 
             Column::make('Previewer id', 'previewer_id'),
             Column::make('Review id', 'review_id'),
@@ -98,9 +94,7 @@ final class EvaluationTransactionTable extends PowerGridComponent
             Column::make('Status', 'status'),
             Column::make('Review fundoms', 'review_fundoms'),
             Column::make('Company fundoms', 'company_fundoms'),
-            Column::make('Phone', 'phone')
-                ->sortable()
-                ->searchable(),
+
 
             Column::make('Created at', 'created_at_formatted', 'created_at')
                 ->sortable(),
@@ -126,14 +120,14 @@ final class EvaluationTransactionTable extends PowerGridComponent
     #[\Livewire\Attributes\On('edit')]
     public function edit($rowId): void
     {
-        $this->js('alert('.$rowId.')');
+        $this->js('alert(' . $rowId . ')');
     }
 
     public function actions(\App\Models\Evaluation\EvaluationTransaction $row): array
     {
         return [
             Button::add('edit')
-                ->slot('Edit: '.$row->id)
+                ->slot('Edit: ' . $row->id)
                 ->id()
                 ->class('pg-btn-white dark:ring-pg-primary-600 dark:border-pg-primary-600 dark:hover:bg-pg-primary-700 dark:ring-offset-pg-primary-800 dark:text-pg-primary-300 dark:bg-pg-primary-700')
                 ->dispatch('edit', ['rowId' => $row->id])

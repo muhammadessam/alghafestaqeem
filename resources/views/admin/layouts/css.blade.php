@@ -18,5 +18,3 @@
     width: 20px !important;
 }
  </style>
-
-@yield('css')

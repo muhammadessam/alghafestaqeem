@@ -37,13 +37,13 @@ class TransactionsController extends Controller
         $this->middleware('checkPermission:evaluation-transactions.show')->only(['daily']);
 
     }
-    
+
      public function DeleteFile($id)
     {
         Transaction_files::where('id',$id)->delete();
         return back();
     }
-    
+
     private function uploadfiles(Request $request,$id)
 {
 
@@ -61,12 +61,12 @@ class TransactionsController extends Controller
       'type'=>$extension,
       ]);
     }
-    
+
 
 }
-    
-    
-    
+
+
+
      public function chick_instrument_number ($value)
     {
         //dd($value);
@@ -75,7 +75,7 @@ class TransactionsController extends Controller
             $test=EvaluationTransaction::where('instrument_number', $value)->get();
            if (count($test)>0) {
                 $massage = "<span  style='color: #dc3545;'>رقم الصك موجود مسبقا</span>";
-            } 
+            }
             else {
                   $massage = "<span  style='color: #3d8d3d;'> يمكنك استخدام رقم الصك</span>";
             }
@@ -83,7 +83,7 @@ class TransactionsController extends Controller
         }
         return response()->json($massage);
     }
-    
+
         public function index(Request $request)
     {
 
@@ -144,8 +144,8 @@ class TransactionsController extends Controller
             'income'=>$income,
             'amount' => $amount
         ];
-        
-   
+
+
         return view(
             'admin.evaluation.transactions.index2',
             compact('result')
@@ -220,7 +220,7 @@ class TransactionsController extends Controller
             compact('result')
         );
     }
-   
+
 
 
     public function create(EvaluationTransaction $item,request $request)
@@ -248,7 +248,7 @@ class TransactionsController extends Controller
             return redirect()->route('admin.evaluation-transactions.index');
         }
         $data = $request->all();
-        // 
+        //
         if($data['review_id'] != null)
         {
             $status=4;
@@ -274,8 +274,8 @@ class TransactionsController extends Controller
         $user=User::find('1');
         $message=" تمت أضافة معاملة جديدة برقم". $transaction->instrument_number;
         $user->notify(new NotfyTransaction($transaction,$message));
-        // 
-        
+        //
+
         if(isset($request->company)&&$request->company!=null)
         {
             return redirect()->route('admin.single_transactions',$request->company)
@@ -332,7 +332,7 @@ class TransactionsController extends Controller
         }
 
         $data['status']=$status;
-        
+
 
         $this->transactionRepository->updateTransaction($id, $data);
          if($request->has('files'))
@@ -357,7 +357,7 @@ class TransactionsController extends Controller
     {
         $data = ['status' => $request->status];;
         $this->transactionRepository->updateTransaction($id, $data);
-         // 
+         //
         if ($request->status == 0) {
           $Newstatus=__('admin.NewTransaction');
         } elseif ($request->status == 1) {
@@ -377,7 +377,7 @@ class TransactionsController extends Controller
 
 
 
-        // 
+        //
         $transaction=EvaluationTransaction::find($id);
         $user=User::find('1');
         $message= "تمت تغير حالة معاملة برقم " .$transaction->instrument_number." إالى" .$Newstatus;
@@ -394,8 +394,8 @@ class TransactionsController extends Controller
         $message="تمت مسح معاملة برقم " .$transaction->instrument_number;
         $user->notify(new NotfyTransaction($transaction,$message));
         $this->transactionRepository->deleteTransaction($id);
-        
-        
+
+
 
         return redirect()->back()
             ->with('message', __('admin.DeletedMessage'));
