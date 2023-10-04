@@ -24,11 +24,12 @@ final class EvaluationTransactionTable extends PowerGridComponent
 
     public string $sortDirection = 'desc';
     public string $primaryKey = 'evaluation_transactions.id';
+    public int $company;
 
     public function setUp(): array
     {
         $this->showCheckBox();
-
+        $this->persist(['columns', 'filters']);
         return [
             Exportable::make(now()->toDateString())->striped()->type(Exportable::TYPE_XLS)->deleteFileAfterSend(true),
             Header::make()->showSearchInput(),
@@ -38,7 +39,11 @@ final class EvaluationTransactionTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return EvaluationTransaction::query()
+        $query = EvaluationTransaction::query();
+        if (isset($this->company)) {
+            $query = $query->where('evaluation_company_id', $this->company);
+        }
+        return $query
             ->with(['city', 'income', 'review'])
             ->join('evaluation_companies', function ($query) {
                 $query->on('evaluation_transactions.evaluation_company_id', '=', 'evaluation_companies.id');
@@ -171,7 +176,7 @@ final class EvaluationTransactionTable extends PowerGridComponent
             Filter::multiSelect('company_title', 'evaluation_company_id')->dataSource(EvaluationCompany::all())->optionValue('id')->optionLabel('title'),
             Filter::boolean('is_iterated')->label('نعم', 'لا'),
             Filter::select('evaluation_employee_id')->dataSource(EvaluationEmployee::all())->optionValue('id')->optionLabel('title'),
-            Filter::datepicker('updated_at_formatted', 'evaluation_transactions.updated_at')->params(['timezone'=>'Asia/Riyadh']),
+            Filter::datepicker('updated_at_formatted', 'evaluation_transactions.updated_at')->params(['timezone' => 'Asia/Riyadh']),
             Filter::inputText('owner_name')->operators(['contains']),
             Filter::inputText('region')->operators(['contains']),
             Filter::inputText('phone')->operators(['contains']),

@@ -19,7 +19,4 @@
         <div class="font-bold ml-2">{{trans('admin.income')}}:</div>
         <div>{{$model->income->title ?? ''}}</div>
     </div>
-
-
-
 </div>

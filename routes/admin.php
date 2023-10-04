@@ -19,7 +19,7 @@ Route::get('lang/{locale}', function ($locale) {
 });
 
 
-Route::group(['namespace' => 'App\\Http\\Controllers\\Admin', 'as'=>'admin.'], function () {
+Route::group(['namespace' => 'App\\Http\\Controllers\\Admin', 'as' => 'admin.'], function () {
     Route::post('/login', 'LoginController@postLogin')->name('login');
     Route::get('/login', 'LoginController@showLoginForm')->name('showLogin');
     Route::group(['middleware' => 'auth'], function () {
@@ -29,17 +29,17 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\Admin', 'as'=>'admin.'], f
         Route::get('404', function () {
             return view('404');
         });
-         Route::get('makeAsread', function(){
+        Route::get('makeAsread', function () {
             auth()->user()->unreadNotifications->markAsRead();
         });
-         Route::get('notifucation', function(){
-            return view('admin.evaluation.transactions.notifucation');       
+        Route::get('notifucation', function () {
+            return view('admin.evaluation.transactions.notifucation');
         });
-                Route::get('notification/delete/{id}', 'Evaluation\\dailyController@deletenotification');
+        Route::get('notification/delete/{id}', 'Evaluation\\dailyController@deletenotification');
 
         Route::post('logout', 'LoginController@logout')->name('logout');
         Route::resource('services', 'ServicesController');
-                Route::resource('privacy', 'PrivacyController');
+        Route::resource('privacy', 'PrivacyController');
 
         Route::resource('about', 'AboutController');
         Route::resource('clients', 'ClientsController');
@@ -53,16 +53,15 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\Admin', 'as'=>'admin.'], f
         Route::resource('evaluation-companies', 'Evaluation\\CompaniesController');
         Route::resource('evaluation-employees', 'Evaluation\\EmployeesController');
         Route::resource('evaluation-transactions', 'Evaluation\\TransactionsController');
-        Route::put('evaluation-transactions/update/{id}', 'Evaluation\\TransactionsController@changeStatus')
-            ->name('evaluation-transactions.update-status');
+        Route::put('evaluation-transactions/update/{id}', 'Evaluation\\TransactionsController@changeStatus')->name('evaluation-transactions.update-status');
         Route::get('/evaluation-transactions/Delete/File/{id}', 'Evaluation\\TransactionsController@DeleteFile');
-        // 
-        
-                Route::get('evaluationtransactions/2', 'Evaluation\\TransactionsController@index2');
+        //
 
-        // 
+        Route::get('evaluationtransactions/2', 'Evaluation\\TransactionsController@index2');
 
-         // sh
+        //
+
+        // sh
         Route::get('daily-transactions', 'Evaluation\\dailyController@index')->name('daily-transactions');
         Route::get('company_transactions', 'Evaluation\\dailyController@company_transactions')->name('company_transactions');
         Route::get('user_transactions', 'Evaluation\\dailyController@user_transactions')->name('user_transactions');
@@ -72,8 +71,7 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\Admin', 'as'=>'admin.'], f
         Route::get('exportxlsx/', 'Evaluation\\dailyController@export');
 
 
-
-        // 
+        //
 
         Route::resource('/goals', 'Category\\GoalController');
         Route::resource('/types', 'Category\\TypeController');
@@ -96,11 +94,11 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\Admin', 'as'=>'admin.'], f
                 'index', 'update',
             ]
         );
-        
-          Route::get('/our_backup_database', 'BackupDBController@our_backup_database')->name('our_backup_database');
-        Route::get('/backup_database', 'BackupDBController@backup_database')->name('backup_database');
-                Route::get('/chick_instrument_number/{value}', 'Evaluation\\TransactionsController@chick_instrument_number');
 
-        
+        Route::get('/our_backup_database', 'BackupDBController@our_backup_database')->name('our_backup_database');
+        Route::get('/backup_database', 'BackupDBController@backup_database')->name('backup_database');
+        Route::get('/chick_instrument_number/{value}', 'Evaluation\\TransactionsController@chick_instrument_number');
+
+
     });
 });

@@ -30,17 +30,17 @@ class dailyController extends Controller
         $this->middleware('auth');
         $this->middleware('checkPermission:evaluation-transactions.index')->only(['index']);
 
-    
+
 
     }
-    
-      public function export(request $request) 
+
+      public function export(request $request)
     {
       // return Excel::download($item, 'EvaluationTransactionExport.xlsx');
 
       return Excel::download(new EvaluationTransactionExportview($request), 'صالح بن علي الغفيص عاملات التقييم .xlsx');
     }
-    // 
+    //
      public function deletenotification($id)
     {
         auth()->user()->notifications()->where('id', $id)->delete();
@@ -67,7 +67,7 @@ class dailyController extends Controller
         $counts = $this->transactionRepository->getCount();
         $items = $this->transactionRepository->getdailyTransactions($data);
         $statuses = Constants::TransactionStatuses;
-        
+
         if (isset($employee) && $employee != '') {
             $previewer = $items
                 ->where('previewer_id',  $employee)
@@ -111,11 +111,11 @@ class dailyController extends Controller
             compact('result')
         );
     }
-    // sh 
-    
+    // sh
+
     public function Review_transactions(Request $request)
     {
-         
+
         $result = [];
         $amount = 0;
         $transaction = 0;
@@ -132,7 +132,7 @@ class dailyController extends Controller
         $counts = $this->transactionRepository->getCount();
         $items = $this->transactionRepository->getReviewTransactions($data);
         $statuses = Constants::TransactionStatuses;
-        
+
         if (isset($employee) && $employee != '') {
             $previewer = $items
                 ->where('previewer_id',  $employee)
@@ -174,16 +174,16 @@ class dailyController extends Controller
             'admin.evaluation.transactions.review',
             compact('result')
         );
-        
+
     }
-    
+
      public function company_transactions(Request $request)
     {
-       
+
         $result = [];
         $amount = 0;
         $transaction = 0;
-       
+
         $data = $request->all();
         $status = $data['status'] ?? '-1';
         $search = $data['search'] ?? '';
@@ -194,8 +194,8 @@ class dailyController extends Controller
         $statuses = Constants::TransactionStatuses;
         $counts = Count($items);
 
-        
-      
+
+
         $result = [
             'from_date' => $from_date,
             'to_date' => $to_date,
@@ -205,7 +205,7 @@ class dailyController extends Controller
             'search' => $search,
             'statuses' => $statuses,
             'cities' => Category::City()->get(),
-           
+
         ];
 
         //$data= DataTable::of($result['items'])->make(true);
@@ -215,9 +215,9 @@ class dailyController extends Controller
             'admin.evaluation.transactions.company.index',
             compact('result')
         );
-        
+
     }
-        
+
          public function user_transactions(Request $request)
     {
         $result = [];
@@ -232,7 +232,7 @@ class dailyController extends Controller
         $statuses = Constants::TransactionStatuses;
         $counts = count($items);
 
-        
+
         // if (isset($employee) && $employee != '') {
         //     $previewer = $items
         //         ->where('previewer_id',  $employee)
@@ -258,7 +258,7 @@ class dailyController extends Controller
             'search' => $search,
             'statuses' => $statuses,
             'types' => Category::ApartmentType()->get(),
-           
+
             'amount' => $amount
         ];
 
@@ -269,15 +269,15 @@ class dailyController extends Controller
             compact('result')
         );
     }
-    
-    
+
+
         public function AllCompany_transactions(Request $request)
     {
-       
+
         $result = [];
         $amount = 0;
         $transaction = 0;
-       
+
         $data = $request->all();
         $status = $data['status'] ?? '-1';
         $search = $data['search'] ?? '';
@@ -288,8 +288,8 @@ class dailyController extends Controller
         $statuses = Constants::TransactionStatuses;
         $counts = Count($items);
 
-        
-      
+
+
         $result = [
             'from_date' => $from_date,
             'to_date' => $to_date,
@@ -299,7 +299,7 @@ class dailyController extends Controller
             'search' => $search,
             'statuses' => $statuses,
             'cities' => Category::City()->get(),
-           
+
         ];
 
         //$data= DataTable::of($result['items'])->make(true);
@@ -309,9 +309,9 @@ class dailyController extends Controller
             'admin.evaluation.transactions.company.companies',
             compact('result')
         );
-        
+
     }
-    
+
     public function single_transactions($id,Request $request)
     {
         $result = [];
@@ -331,7 +331,7 @@ class dailyController extends Controller
         $counts = $this->transactionRepository->getCount();
         $items = $this->transactionRepository->getPaginateTransactions($data);
         $statuses = Constants::TransactionStatuses;
-        
+
         if (isset($employee) && $employee != '') {
             $previewer = $items
                 ->where('previewer_id',  $employee)
@@ -374,18 +374,18 @@ class dailyController extends Controller
             compact('result')
         );
     }
-    
-
-   
-    
-
-   
-
-   
-   
 
 
-  
 
-   
+
+
+
+
+
+
+
+
+
+
+
 }
