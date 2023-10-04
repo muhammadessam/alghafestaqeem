@@ -76,7 +76,7 @@ return [
     |
     */
 
-    'filter' => 'outside',
+    'filter' => 'inline',
 
     /*
     |--------------------------------------------------------------------------
@@ -113,7 +113,7 @@ return [
     */
 
     'exportable' => [
-        'default' => 'openspout_v4',
+        'default' => 'laravel_excel',
         'openspout_v4' => [
             'xlsx' => \PowerComponents\LivewirePowerGrid\Components\Exports\OpenSpout\v4\ExportToXLS::class,
             'csv' => \PowerComponents\LivewirePowerGrid\Components\Exports\OpenSpout\v4\ExportToCsv::class,
@@ -122,5 +122,8 @@ return [
             'xlsx' => \PowerComponents\LivewirePowerGrid\Components\Exports\OpenSpout\v3\ExportToXLS::class,
             'csv' => \PowerComponents\LivewirePowerGrid\Components\Exports\OpenSpout\v3\ExportToCsv::class,
         ],
+        'laravel_excel' => [
+            'xlsx' => \App\PowerGridExportables\ExportToXLS::class,
+        ]
     ],
 ];

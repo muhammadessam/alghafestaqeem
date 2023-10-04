@@ -41,6 +41,13 @@ class EvaluationTransaction extends Model
                 ]);
             }
         });
+        static::updated(function (EvaluationTransaction $evaluationTransaction) {
+            if (is_numeric($evaluationTransaction->instrument_number)) {
+                EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)->update([
+                    'is_iterated' => true,
+                ]);
+            }
+        });
     }
 
     public function getStatusSpanAttribute()

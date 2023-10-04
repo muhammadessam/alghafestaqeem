@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Evaluation\EvaluationCompany;
+use App\Models\Evaluation\EvaluationEmployee;
 use App\Models\Evaluation\EvaluationTransaction;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,7 +30,7 @@ final class EvaluationTransactionTable extends PowerGridComponent
         $this->showCheckBox();
 
         return [
-            Exportable::make('export')->striped()->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
+            Exportable::make(now()->toDateString())->striped()->type(Exportable::TYPE_XLS)->deleteFileAfterSend(true),
             Header::make()->showSearchInput(),
             Footer::make()->showPerPage()->showRecordCount(),
         ];
@@ -60,9 +61,10 @@ final class EvaluationTransactionTable extends PowerGridComponent
                 'evaluation_transactions.status',
                 'evaluation_transactions.notes',
                 'evaluation_transactions.updated_at',
+                'evaluation_transactions.evaluation_employee_id',
 
 
-                'evaluation_employees.title as employee_name',
+                'evaluation_employees.title as previewer_name',
                 'evaluation_companies.title as company_title',
             ]);
     }
@@ -90,7 +92,8 @@ final class EvaluationTransactionTable extends PowerGridComponent
             ->addColumn('company_fundoms')
             ->addColumn('review_fundoms')
             ->addColumn('category_title')
-            ->addColumn('employee_name')
+            ->addColumn('previewer_name')
+            ->addColumn('evaluation_employee_id', fn(EvaluationTransaction $model) => $model->employee->title ?? '')
             ->addColumn('is_iterated', fn(EvaluationTransaction $model) => $model->is_iterated ? 'نعم' : 'لا')
             ->addColumn('status', function (EvaluationTransaction $model) {
                 if ($model->status == 0) {
@@ -111,6 +114,25 @@ final class EvaluationTransactionTable extends PowerGridComponent
                     return '';
                 }
             })
+            ->addColumn('status_formatted', function (EvaluationTransaction $model) {
+                if ($model->status == 0) {
+                    return __('admin.NewTransaction');
+                } elseif ($model->status == 1) {
+                    return __('admin.InReviewRequest');
+                } elseif ($model->status == 2) {
+                    return __('admin.ContactedRequest');
+                } elseif ($model->status == 3) {
+                    return __('admin.ReviewedRequest');
+                } elseif ($model->status == 4) {
+                    return __('admin.FinishedRequest');
+                } elseif ($model->status == 5) {
+                    return __('admin.PendingRequest');
+                } elseif ($model->status == 6) {
+                    return __('admin.Cancelled');
+                } else {
+                    return '';
+                }
+            })
             ->addColumn('notes')
             ->addColumn('updated_at_formatted', fn(EvaluationTransaction $model) => Carbon::parse($model->updated_at)->format('d/m/Y'));
     }
@@ -126,11 +148,13 @@ final class EvaluationTransactionTable extends PowerGridComponent
             Column::make(trans('admin.region'), 'region')->searchable(),
             Column::make(trans('admin.company_fundoms'), 'company_fundoms'),
             Column::make(trans('admin.review_fundoms'), 'review_fundoms'),
-            Column::make(trans('admin.previewer'), 'employee_name', 'evaluation_employees.title')->sortable()->searchable(),
+            Column::make(trans('admin.previewer'), 'previewer_name', 'evaluation_employees.title')->sortable()->searchable(),
+            Column::make(trans('admin.employee'), 'evaluation_employee_id')->sortable()->searchable()->visibleInExport(false),
 
-            Column::make(trans('admin.TransactionDetail'), 'city_id'),
+            Column::make(trans('admin.TransactionDetail'), 'city_id')->visibleInExport(false),
 
-            Column::make(trans('admin.Status'), 'status', 'evaluation_transactions.status')->sortable(),
+            Column::make(trans('admin.Status'), 'status', 'evaluation_transactions.status')->sortable()->visibleInExport(false),
+            Column::make(trans('admin.Status'), 'status_formatted', 'evaluation_transactions.status')->hidden(true)->visibleInExport(true),
 
             Column::make(trans('admin.is_iterated'), 'is_iterated', 'is_iterated')->sortable(),
             Column::make(trans('admin.LastUpdate'), 'updated_at_formatted', 'evaluation_transactions.updated_at')->sortable(),
@@ -144,15 +168,13 @@ final class EvaluationTransactionTable extends PowerGridComponent
         return [
             Filter::inputText('instrument_number', 'evaluation_transactions.instrument_number')->operators(['contains']),
             Filter::inputText('transaction_number', 'evaluation_transactions.transaction_number')->operators(['contains']),
-            Filter::multiSelect('company_title', 'evaluation_company_id')
-                ->dataSource(EvaluationCompany::all())
-                ->optionValue('id')->optionLabel('title'),
+            Filter::multiSelect('company_title', 'evaluation_company_id')->dataSource(EvaluationCompany::all())->optionValue('id')->optionLabel('title'),
             Filter::boolean('is_iterated')->label('نعم', 'لا'),
-            Filter::datepicker('updated_at_formatted', 'evaluation_transactions.updated_at'),
+            Filter::select('evaluation_employee_id')->dataSource(EvaluationEmployee::all())->optionValue('id')->optionLabel('title'),
+            Filter::datepicker('updated_at_formatted', 'evaluation_transactions.updated_at')->params(['timezone'=>'Asia/Riyadh']),
             Filter::inputText('owner_name')->operators(['contains']),
             Filter::inputText('region')->operators(['contains']),
             Filter::inputText('phone')->operators(['contains']),
-            Filter::datetimepicker('created_at'),
         ];
     }
 
