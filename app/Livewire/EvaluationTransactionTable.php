@@ -13,13 +13,13 @@ use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\Exportable;
 use PowerComponents\LivewirePowerGrid\Facades\Filter;
+use PowerComponents\LivewirePowerGrid\Facades\Rule;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridColumns;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
-
 final class EvaluationTransactionTable extends PowerGridComponent
 {
     use WithExport;
@@ -116,19 +116,19 @@ final class EvaluationTransactionTable extends PowerGridComponent
             ->addColumn('is_iterated', fn(EvaluationTransaction $model) => $model->is_iterated ? 'نعم' : 'لا')
             ->addColumn('status', function (EvaluationTransaction $model) {
                 if ($model->status == 0) {
-                    return "<span class='badge badge-pill alert-table badge-warning'>" . __('admin.NewTransaction') . "</span>";
+                    return "<span class='badge badge-pill alert-table badge-warning text-black'>" . __('admin.NewTransaction') . "</span>";
                 } elseif ($model->status == 1) {
-                    return "<span class='badge badge-pill alert-table badge-info'>" . __('admin.InReviewRequest') . "</span>";
+                    return "<span class='badge badge-pill alert-table badge-info text-black'>" . __('admin.InReviewRequest') . "</span>";
                 } elseif ($model->status == 2) {
-                    return "<span class='badge badge-pill alert-table badge-primary'>" . __('admin.ContactedRequest') . "</span>";
+                    return "<span class='badge badge-pill alert-table badge-primary text-black'>" . __('admin.ContactedRequest') . "</span>";
                 } elseif ($model->status == 3) {
-                    return "<span class='badge badge-pill alert-table badge-danger'>" . __('admin.ReviewedRequest') . "</span>";
+                    return "<span class='badge badge-pill alert-table badge-danger text-black'>" . __('admin.ReviewedRequest') . "</span>";
                 } elseif ($model->status == 4) {
-                    return "<span class='badge badge-pill alert-table badge-success'>" . __('admin.FinishedRequest') . "</span>";
+                    return "<span class='badge badge-pill alert-table badge-success text-black'>" . __('admin.FinishedRequest') . "</span>";
                 } elseif ($model->status == 5) {
-                    return "<span class='badge badge-pill alert-table badge-warning'>" . __('admin.PendingRequest') . "</span>";
+                    return "<span class='badge badge-pill alert-table badge-warning text-black'>" . __('admin.PendingRequest') . "</span>";
                 } elseif ($model->status == 6) {
-                    return "<span class='badge badge-pill alert-table badge-warning'>" . __('admin.Cancelled') . "</span>";
+                    return "<span class='badge badge-pill alert-table badge-warning text-black'>" . __('admin.Cancelled') . "</span>";
                 } else {
                     return '';
                 }
@@ -229,15 +229,12 @@ final class EvaluationTransactionTable extends PowerGridComponent
         ];
     }
 
-    /*
-    public function actionRules($row): array
+
+    public function actionRules(): array
     {
-       return [
-            // Hide button edit for ID 1
-            Rule::button('edit')
-                ->when(fn($row) => $row->id === 1)
-                ->hide(),
+        return [
+            Rule::rows()->when(fn($model) => (bool)$model->is_iterated === true)->setAttribute('class', 'bg-danger'),
         ];
     }
-    */
+
 }
