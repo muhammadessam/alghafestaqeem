@@ -29,10 +29,9 @@ final class EvaluationTransactionTable extends PowerGridComponent
     public function setUp(): array
     {
         $this->showCheckBox();
-        $this->persist(['columns', 'filters']);
         return [
             Exportable::make(now()->toDateString())->striped()->type(Exportable::TYPE_XLS)->deleteFileAfterSend(true),
-            Header::make()->showSearchInput(),
+            Header::make()->showSearchInput()->includeViewOnBottom('components.filters.employee'),
             Footer::make()->showPerPage()->showRecordCount(),
         ];
     }
@@ -67,7 +66,9 @@ final class EvaluationTransactionTable extends PowerGridComponent
                 'evaluation_transactions.notes',
                 'evaluation_transactions.updated_at',
                 'evaluation_transactions.evaluation_employee_id',
-
+                'evaluation_transactions.review_id',
+                'evaluation_transactions.income_id',
+                'evaluation_transactions.city_id',
 
                 'evaluation_employees.title as previewer_name',
                 'evaluation_companies.title as company_title',
@@ -175,8 +176,19 @@ final class EvaluationTransactionTable extends PowerGridComponent
             Filter::inputText('transaction_number', 'evaluation_transactions.transaction_number')->operators(['contains']),
             Filter::multiSelect('company_title', 'evaluation_company_id')->dataSource(EvaluationCompany::all())->optionValue('id')->optionLabel('title'),
             Filter::boolean('is_iterated')->label('نعم', 'لا'),
-            Filter::select('evaluation_employee_id')->dataSource(EvaluationEmployee::all())->optionValue('id')->optionLabel('title'),
+            Filter::select('evaluation_employee_id')->dataSource(EvaluationEmployee::all())->optionValue('id')->optionLabel('title')->builder(function (Builder $query, $value) {
+                $query->where('previewer_id', $value)->orWhere('review_id', $value)->orWhere('income_id', $value);
+            }),
             Filter::datepicker('updated_at_formatted', 'evaluation_transactions.updated_at')->params(['timezone' => 'Asia/Riyadh']),
+            Filter::multiSelect('status', 'evaluation_transactions.status')->dataSource([
+                ['id' => 0, 'name' => trans('admin.NewTransaction')],
+                ['id' => 1, 'name' => trans('admin.InReviewRequest')],
+                ['id' => 2, 'name' => trans('admin.ContactedRequest')],
+                ['id' => 3, 'name' => trans('admin.ReviewedRequest')],
+                ['id' => 4, 'name' => trans('admin.FinishedRequest')],
+                ['id' => 5, 'name' => trans('admin.PendingRequest')],
+                ['id' => 6, 'name' => trans('admin.Cancelled')],
+            ])->optionLabel('name')->optionValue('id'),
             Filter::inputText('owner_name')->operators(['contains']),
             Filter::inputText('region')->operators(['contains']),
             Filter::inputText('phone')->operators(['contains']),

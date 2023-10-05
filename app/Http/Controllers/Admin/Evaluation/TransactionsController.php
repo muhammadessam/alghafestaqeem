@@ -111,9 +111,7 @@ class TransactionsController extends Controller
         'income',
          */
         if (isset($employee) && $employee != '') {
-            $previewer = $totalitems
-                ->where('previewer_id',  $employee)
-                ->count();
+            $previewer = $totalitems->where('previewer_id',  $employee)->count();
             $review = $totalitems->where('review_id',  $employee)->count();
             $income = $totalitems->where('income_id',  $employee)->count();
             $employee= EvaluationEmployee::where('id', $employee)->first();
