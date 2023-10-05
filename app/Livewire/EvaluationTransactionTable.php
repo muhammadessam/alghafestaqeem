@@ -5,6 +5,8 @@ namespace App\Livewire;
 use App\Models\Evaluation\EvaluationCompany;
 use App\Models\Evaluation\EvaluationEmployee;
 use App\Models\Evaluation\EvaluationTransaction;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
@@ -25,6 +27,15 @@ final class EvaluationTransactionTable extends PowerGridComponent
     public string $sortDirection = 'desc';
     public string $primaryKey = 'evaluation_transactions.id';
     public int $company;
+    public $new_data = null;
+
+    public function updated($property)
+    {
+        $this->new_data = $this->datasource()->where(
+            fn(EloquentBuilder|QueryBuilder $query) => \PowerComponents\LivewirePowerGrid\DataSource\Builder::make($query, $this)
+                ->filter()
+        )->get();
+    }
 
     public function setUp(): array
     {
@@ -69,7 +80,9 @@ final class EvaluationTransactionTable extends PowerGridComponent
                 'evaluation_transactions.review_id',
                 'evaluation_transactions.income_id',
                 'evaluation_transactions.city_id',
+                'evaluation_transactions.previewer_id',
 
+                'evaluation_companies.id as evaluation_company_id',
                 'evaluation_employees.title as previewer_name',
                 'evaluation_companies.title as company_title',
             ]);
@@ -149,7 +162,7 @@ final class EvaluationTransactionTable extends PowerGridComponent
             Column::make('Id', 'id'),
             Column::make(trans('admin.instrument_number'), 'instrument_number')->sortable()->searchable(),
             Column::make(trans('admin.transaction_number'), 'transaction_number')->sortable()->searchable(),
-            Column::make(trans('admin.phone'), 'phone')->searchable(),
+            Column::make(trans('admin.phone'), 'phone', 'evaluation_transactions.phone')->searchable(),
             Column::make(trans('admin.company'), 'company_title', 'evaluation_companies.title')->sortable()->searchable(),
             Column::make(trans('admin.region'), 'region')->searchable(),
             Column::make(trans('admin.company_fundoms'), 'company_fundoms'),
@@ -174,13 +187,18 @@ final class EvaluationTransactionTable extends PowerGridComponent
         return [
             Filter::inputText('instrument_number', 'evaluation_transactions.instrument_number')->operators(['contains']),
             Filter::inputText('transaction_number', 'evaluation_transactions.transaction_number')->operators(['contains']),
-            Filter::multiSelect('company_title', 'evaluation_company_id')->dataSource(EvaluationCompany::all())->optionValue('id')->optionLabel('title'),
+            Filter::select('company_title', 'evaluation_company_id')->dataSource(EvaluationCompany::all())->optionValue('id')->optionLabel('title'),
             Filter::boolean('is_iterated')->label('نعم', 'لا'),
-            Filter::select('evaluation_employee_id')->dataSource(EvaluationEmployee::all())->optionValue('id')->optionLabel('title')->builder(function (Builder $query, $value) {
-                $query->where('previewer_id', $value)->orWhere('review_id', $value)->orWhere('income_id', $value);
-            }),
-            Filter::datepicker('updated_at_formatted', 'evaluation_transactions.updated_at')->params(['timezone' => 'Asia/Riyadh']),
-            Filter::multiSelect('status', 'evaluation_transactions.status')->dataSource([
+            Filter::select('evaluation_employee_id')
+                ->dataSource(EvaluationEmployee::all())
+                ->optionValue('id')->optionLabel('title')
+                ->builder(function (Builder $query, $value) {
+                    $query->where(function (Builder $query) use ($value) {
+                        $query->where('previewer_id', $value)->orWhere('review_id', $value)->orWhere('income_id', $value);
+                    });
+                }),
+            Filter::datepicker('updated_at_formatted', 'evaluation_transactions.updated_at'),
+            Filter::select('status', 'evaluation_transactions.status')->dataSource([
                 ['id' => 0, 'name' => trans('admin.NewTransaction')],
                 ['id' => 1, 'name' => trans('admin.InReviewRequest')],
                 ['id' => 2, 'name' => trans('admin.ContactedRequest')],
@@ -191,7 +209,7 @@ final class EvaluationTransactionTable extends PowerGridComponent
             ])->optionLabel('name')->optionValue('id'),
             Filter::inputText('owner_name')->operators(['contains']),
             Filter::inputText('region')->operators(['contains']),
-            Filter::inputText('phone')->operators(['contains']),
+            Filter::inputText('phone', 'evaluation_transactions.phone')->operators(['contains']),
         ];
     }
 

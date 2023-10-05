@@ -36,7 +36,6 @@ class RateRequestsController extends Controller
         $counts = $this->rateRepository->getCount();
         $items = $this->rateRepository->getPaginateRateRequests($data);
         $statuses = Constants::Statuses;
-
         $result = [
             'from_date' => $from_date,
             'to_date' => $to_date,
@@ -67,7 +66,7 @@ class RateRequestsController extends Controller
 
     public function update(RequestRate $request, $id)
     {
-        $data = $request->except(['_token', '_method' ]);
+        $data = $request->except(['_token', '_method']);
 
         $this->rateRepository->updateRateRequest($id, $data);
 

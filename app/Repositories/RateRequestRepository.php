@@ -19,7 +19,7 @@ class RateRequestRepository implements RateRequestRepositoryInterface
 
     public function getPaginateRateRequests($data)
     {
-        $items = RateRequest::Recent();
+        $items = RateRequest::latest();
         $status = $data['status'] ?? '-1';
         $search = $data['search'] ?? '';
         $from_date = $data['from_date'] ?? '';

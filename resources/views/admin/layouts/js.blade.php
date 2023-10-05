@@ -33,6 +33,14 @@
         $('#tableone').DataTable({
             //   "ordering": false,
             //   "paging": false,
+            order: [[0, 'desc']],
+            columnDefs:[
+                {
+                    target: 0,
+                    visible: false,
+                    searchable: false
+                }
+            ],
             dom: 'Bfrtip',
             buttons: [
                 'copy', 'csv', 'excel', 'print'

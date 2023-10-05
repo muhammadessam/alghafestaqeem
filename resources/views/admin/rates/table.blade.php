@@ -1,6 +1,7 @@
 <thead>
     <tr class="table-primary">
         <th class="text-xs-center">#</th>
+        <th class="text-xs-center">#</th>
 
         <th> @lang('admin.Customer')</th>
         <th> @lang('admin.ApartmentDetail')</th>
@@ -15,8 +16,9 @@
 <tbody>
     @foreach ($result['items'] as $item)
         <tr>
+            <td>{{$item->id}}</td>
            <td>
-               
+
                {{ $item->id }}
                <br/>
                 {{ $item->dateFormatted('d M Y', 'created_at') }}
@@ -24,9 +26,9 @@
                     <i class="text-white fa fa-eye"> </i> {{ $item->request_no }}
                 </a>
            </td>
-            
+
             <td>
-                
+
                 <p>
                     <strong class="text-dark ">الاسم:
                     </strong> {{ $item->name }}
@@ -45,9 +47,9 @@
                 </p>
                 <p>
                     <strong class="text-dark "> @lang('admin.Notes'): </strong>
-                    </strong> 
+                    </strong>
                  </p>
-                 
+
             </td>
             <td>
                 <p>

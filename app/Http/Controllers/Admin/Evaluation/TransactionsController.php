@@ -38,116 +38,51 @@ class TransactionsController extends Controller
 
     }
 
-     public function DeleteFile($id)
+    public function DeleteFile($id)
     {
-        Transaction_files::where('id',$id)->delete();
+        Transaction_files::where('id', $id)->delete();
         return back();
     }
 
-    private function uploadfiles(Request $request,$id)
-{
+    private function uploadfiles(Request $request, $id)
+    {
 
-  $files = $request->file('files');
-   foreach($files as $file)
-   {
-   $filename = $file->getClientOriginalName();
-   $destinationPath = 'upload/transaction';
-   $extension = $file->getClientMimeType();
-   $file->move(public_path($destinationPath), $filename);
+        $files = $request->file('files');
+        foreach ($files as $file) {
+            $filename = $file->getClientOriginalName();
+            $destinationPath = 'upload/transaction';
+            $extension = $file->getClientMimeType();
+            $file->move(public_path($destinationPath), $filename);
 
-      Transaction_files::create([
-      'Transaction_id' => $id,
-      'path' =>$filename,
-      'type'=>$extension,
-      ]);
+            Transaction_files::create([
+                'Transaction_id' => $id,
+                'path' => $filename,
+                'type' => $extension,
+            ]);
+        }
+
+
     }
 
 
-}
-
-
-
-     public function chick_instrument_number ($value)
+    public function chick_instrument_number($value)
     {
         //dd($value);
-        if(is_numeric($value))
-        {
-            $test=EvaluationTransaction::where('instrument_number', $value)->get();
-           if (count($test)>0) {
+        if (is_numeric($value)) {
+            $test = EvaluationTransaction::where('instrument_number', $value)->get();
+            if (count($test) > 0) {
                 $massage = "<span  style='color: #dc3545;'>رقم الصك موجود مسبقا</span>";
-            }
-            else {
-                  $massage = "<span  style='color: #3d8d3d;'> يمكنك استخدام رقم الصك</span>";
+            } else {
+                $massage = "<span  style='color: #3d8d3d;'> يمكنك استخدام رقم الصك</span>";
             }
 
         }
         return response()->json($massage);
     }
 
-        public function index(Request $request)
+    public function index(Request $request)
     {
-
-        $result = [];
-        $amount = 0;
-        $previewer=0;
-        $review=0;
-        $income=0;
-        $transaction = 0;
-        $data = $request->all();
-        $status = $data['status'] ?? '-1';
-        $search = $data['search'] ?? '';
-        $from_date = $data['from_date'] ?? '';
-        $to_date = $data['to_date'] ?? '';
-        $employee = $data['employee'] ?? '';
-        $company = $data['company'] ?? '';
-        $totalitems = $this->transactionRepository->getPaginateTransactions($data);
-        $counts = $this->transactionRepository->getCount();
-        $items = $this->transactionRepository->getPaginateTransactions2($data);
-        $statuses = Constants::TransactionStatuses;
-        /*
-        عدد المعاملات  =(مجموع المعاين بيساوى 1+  مجموع الادخال بيساوى 0.5 + مجموع المراحعه بيساوى 0.5 )
-        'previewer',
-        'review',
-        'income',
-         */
-        if (isset($employee) && $employee != '') {
-            $previewer = $totalitems->where('previewer_id',  $employee)->count();
-            $review = $totalitems->where('review_id',  $employee)->count();
-            $income = $totalitems->where('income_id',  $employee)->count();
-            $employee= EvaluationEmployee::where('id', $employee)->first();
-            $transaction = $previewer + (0.5* ($review+$income)) ;
-
-            if(! empty($employee) ){
-                $amount = $employee->price *  $transaction;
-            }
-        }else{
-            $transaction = $items->total();
-        }
-
-        $result = [
-            'from_date' => $from_date,
-            'to_date' => $to_date,
-            'items' => $items,
-            'counts' => $counts,
-            'status' => $status,
-            'search' => $search,
-            'statuses' => $statuses,
-            'employees' => EvaluationEmployee::get(),
-            'companies' => EvaluationCompany::get(),
-            'types' => Category::ApartmentType()->get(),
-            'cities' => Category::City()->get(),
-            'transaction'  => $transaction,
-            'previewer'=>$previewer,
-            'review'=>$review,
-            'income'=>$income,
-            'amount' => $amount
-        ];
-
-
-        return view(
-            'admin.evaluation.transactions.index2',
-            compact('result')
-        );
+        return view('admin.evaluation.transactions.index2');
     }
 
 
@@ -156,9 +91,9 @@ class TransactionsController extends Controller
 
         $result = [];
         $amount = 0;
-         $previewer=0;
-        $review=0;
-        $income=0;
+        $previewer = 0;
+        $review = 0;
+        $income = 0;
         $transaction = 0;
         $data = $request->all();
         $status = $data['status'] ?? '-1';
@@ -178,17 +113,17 @@ class TransactionsController extends Controller
          */
         if (isset($employee) && $employee != '') {
             $previewer = $items
-                ->where('previewer_id',  $employee)
+                ->where('previewer_id', $employee)
                 ->count();
-            $review = $items->where('review_id',  $employee)->count();
-            $income = $items->where('income_id',  $employee)->count();
-            $employee= EvaluationEmployee::where('id', $employee)->first();
-            $transaction = $previewer + (0.5* ($review+$income)) ;
+            $review = $items->where('review_id', $employee)->count();
+            $income = $items->where('income_id', $employee)->count();
+            $employee = EvaluationEmployee::where('id', $employee)->first();
+            $transaction = $previewer + (0.5 * ($review + $income));
 
-            if(! empty($employee) ){
-                $amount = $employee->price *  $transaction;
+            if (!empty($employee)) {
+                $amount = $employee->price * $transaction;
             }
-        }else{
+        } else {
             $transaction = $items->count();
         }
 
@@ -205,10 +140,10 @@ class TransactionsController extends Controller
             'types' => Category::ApartmentType()->get(),
             'cities' => Category::City()->get(),
 
-            'transaction'  => $transaction,
-            'previewer'=>$previewer,
-            'review'=>$review,
-            'income'=>$income,
+            'transaction' => $transaction,
+            'previewer' => $previewer,
+            'review' => $review,
+            'income' => $income,
             'amount' => $amount
         ];
 
@@ -220,13 +155,11 @@ class TransactionsController extends Controller
     }
 
 
-
-    public function create(EvaluationTransaction $item,request $request)
+    public function create(EvaluationTransaction $item, request $request)
     {
-         $result['company']=null;
+        $result['company'] = null;
 
-        if($request->company!=null)
-        {
+        if ($request->company != null) {
             $result['company'] = EvaluationCompany::find($request->company);
 
         }
@@ -234,55 +167,47 @@ class TransactionsController extends Controller
         $result['companies'] = EvaluationCompany::get();
         $result['types'] = Category::ApartmentType()->get();
         $result['cities'] = Category::City()->get();
-        return view('admin.evaluation.transactions.create_and_edit', compact('item','result'));
+        return view('admin.evaluation.transactions.create_and_edit', compact('item', 'result'));
     }
 
     public function store(TransactionRequest $request)
     {
-        $search=EvaluationTransaction::where('instrument_number',$request->instrument_number)->where('transaction_number',$request->transaction_number)
-        ->where('owner_name',$request->owner_name)->where('region',$request->region)->where('notes',$request->notes)->where('date',$request->date)->get();
-        if(count($search)>0)
-        {
+        $search = EvaluationTransaction::where('instrument_number', $request->instrument_number)->where('transaction_number', $request->transaction_number)
+            ->where('owner_name', $request->owner_name)->where('region', $request->region)->where('notes', $request->notes)->where('date', $request->date)->get();
+        if (count($search) > 0) {
             return redirect()->route('admin.evaluation-transactions.index');
         }
         $data = $request->all();
         //
-        if($data['review_id'] != null)
-        {
-            $status=4;
-        }
-        elseif($data['previewer_id'] != null)
-        {
-            $status=3;
-        }
-        else
-        {
-            $status=0;
+        if ($data['review_id'] != null) {
+            $status = 4;
+        } elseif ($data['previewer_id'] != null) {
+            $status = 3;
+        } else {
+            $status = 0;
         }
 
-        $data['status']=$status;
+        $data['status'] = $status;
 
 
         $transaction = $this->transactionRepository->createTransaction($data);
-         if($request->has('files'))
-        {
-            $this->uploadfiles($request,$transaction->id);
+        if ($request->has('files')) {
+            $this->uploadfiles($request, $transaction->id);
         }
-          // notfy
-        $user=User::find('1');
-        $message=" تمت أضافة معاملة جديدة برقم". $transaction->instrument_number;
-        $user->notify(new NotfyTransaction($transaction,$message));
+        // notfy
+        $user = User::find('1');
+        $message = " تمت أضافة معاملة جديدة برقم" . $transaction->instrument_number;
+        $user->notify(new NotfyTransaction($transaction, $message));
         //
 
-        if(isset($request->company)&&$request->company!=null)
-        {
-            return redirect()->route('admin.single_transactions',$request->company)
-            ->with('message', __('admin.AddedMessage'));
+        if (isset($request->company) && $request->company != null) {
+            return redirect()->route('admin.single_transactions', $request->company)
+                ->with('message', __('admin.AddedMessage'));
         }
 
         if (isset($request->action) && $request->action == 'preview') {
             return redirect()->route('admin.evaluation-transactions.store')
-                    ->with('message', __('admin.AddedMessage'));
+                ->with('message', __('admin.AddedMessage'));
         }
 
         return redirect()->route('admin.evaluation-transactions.index')
@@ -295,12 +220,11 @@ class TransactionsController extends Controller
         return view('admin.evaluation.transactions.show', compact('item'));
     }
 
-    public function edit($id,request $request)
+    public function edit($id, request $request)
     {
-         $result['company']=null;
+        $result['company'] = null;
 
-        if($request->company!=null)
-        {
+        if ($request->company != null) {
             $result['company'] = EvaluationCompany::find($request->company);
 
         }
@@ -315,36 +239,29 @@ class TransactionsController extends Controller
 
     public function update(TransactionRequest $request, $id)
     {
-        $data = $request->except(['_token', '_method' ]);
-        if($data['review_id'] != null)
-        {
-            $status=4;
-        }
-        elseif($data['previewer_id'] != null)
-        {
-            $status=3;
-        }
-        else
-        {
-            $status=0;
+        $data = $request->except(['_token', '_method']);
+        if ($data['review_id'] != null) {
+            $status = 4;
+        } elseif ($data['previewer_id'] != null) {
+            $status = 3;
+        } else {
+            $status = 0;
         }
 
-        $data['status']=$status;
+        $data['status'] = $status;
 
 
         $this->transactionRepository->updateTransaction($id, $data);
-         if($request->has('files'))
-        {
-            $this->uploadfiles($request,$id);
+        if ($request->has('files')) {
+            $this->uploadfiles($request, $id);
         }
-        $transaction=EvaluationTransaction::find($id);
-        $user=User::find('1');
-        $message="تمت تعديل معاملة برقم " . $transaction->instrument_number;
-        $user->notify(new NotfyTransaction($transaction,$message));
-          if(isset($request->company)&&$request->company!=null)
-        {
-            return redirect()->route('admin.single_transactions',$request->company)
-            ->with('message', __('admin.UpdatedMessage'));
+        $transaction = EvaluationTransaction::find($id);
+        $user = User::find('1');
+        $message = "تمت تعديل معاملة برقم " . $transaction->instrument_number;
+        $user->notify(new NotfyTransaction($transaction, $message));
+        if (isset($request->company) && $request->company != null) {
+            return redirect()->route('admin.single_transactions', $request->company)
+                ->with('message', __('admin.UpdatedMessage'));
         }
 
         return redirect()->route('admin.evaluation-transactions.index')
@@ -355,31 +272,29 @@ class TransactionsController extends Controller
     {
         $data = ['status' => $request->status];;
         $this->transactionRepository->updateTransaction($id, $data);
-         //
+        //
         if ($request->status == 0) {
-          $Newstatus=__('admin.NewTransaction');
+            $Newstatus = __('admin.NewTransaction');
         } elseif ($request->status == 1) {
-            $Newstatus= __('admin.InReviewRequest');
+            $Newstatus = __('admin.InReviewRequest');
         } elseif ($request->status == 2) {
-            $Newstatus= __('admin.ContactedRequest');
+            $Newstatus = __('admin.ContactedRequest');
         } elseif ($request->status == 3) {
-            $Newstatus= __('admin.ReviewedRequest');
-        }elseif ($request->status == 4) {
-            $Newstatus= __('admin.FinishedRequest');
-        }elseif ($request->status == 5) {
-            $Newstatus=__('admin.PendingRequest');
+            $Newstatus = __('admin.ReviewedRequest');
+        } elseif ($request->status == 4) {
+            $Newstatus = __('admin.FinishedRequest');
+        } elseif ($request->status == 5) {
+            $Newstatus = __('admin.PendingRequest');
+        } elseif ($request->status == 6) {
+            $Newstatus = __('admin.Cancelled');
         }
-        elseif ($request->status == 6) {
-            $Newstatus= __('admin.Cancelled');
-        }
-
 
 
         //
-        $transaction=EvaluationTransaction::find($id);
-        $user=User::find('1');
-        $message= "تمت تغير حالة معاملة برقم " .$transaction->instrument_number." إالى" .$Newstatus;
-        $user->notify(new NotfyTransaction($transaction,$message));
+        $transaction = EvaluationTransaction::find($id);
+        $user = User::find('1');
+        $message = "تمت تغير حالة معاملة برقم " . $transaction->instrument_number . " إالى" . $Newstatus;
+        $user->notify(new NotfyTransaction($transaction, $message));
 
         return redirect()->route('admin.evaluation-transactions.index')
             ->with('message', __('admin.UpdatedMessage'));
@@ -387,12 +302,11 @@ class TransactionsController extends Controller
 
     public function destroy($id)
     {
-         $transaction=EvaluationTransaction::find($id);
-        $user=User::find('1');
-        $message="تمت مسح معاملة برقم " .$transaction->instrument_number;
-        $user->notify(new NotfyTransaction($transaction,$message));
+        $transaction = EvaluationTransaction::find($id);
+        $user = User::find('1');
+        $message = "تمت مسح معاملة برقم " . $transaction->instrument_number;
+        $user->notify(new NotfyTransaction($transaction, $message));
         $this->transactionRepository->deleteTransaction($id);
-
 
 
         return redirect()->back()

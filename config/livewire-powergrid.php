@@ -28,6 +28,7 @@ return [
          * https://flatpickr.js.org
          */
         'flatpickr' => [
+            'timezone' => 'Asia/Riyadh',
             'locales' => [
                 'ar' => [
                     'locale' => 'ar',
@@ -76,7 +77,7 @@ return [
     |
     */
 
-    'filter' => 'inline',
+    'filter' => 'outside',
 
     /*
     |--------------------------------------------------------------------------
