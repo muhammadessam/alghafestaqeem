@@ -188,7 +188,7 @@ final class EvaluationTransactionTable extends PowerGridComponent
             Filter::inputText('instrument_number', 'evaluation_transactions.instrument_number')->operators(['contains']),
             Filter::inputText('transaction_number', 'evaluation_transactions.transaction_number')->operators(['contains']),
             Filter::select('company_title', 'evaluation_company_id')->dataSource(EvaluationCompany::all())->optionValue('id')->optionLabel('title'),
-            Filter::boolean('is_iterated')->label('نعم', 'لا'),
+            Filter::boolean('is_iterated', 'is_iterated')->label('نعم', 'لا'),
             Filter::select('evaluation_employee_id')
                 ->dataSource(EvaluationEmployee::all())
                 ->optionValue('id')->optionLabel('title')
