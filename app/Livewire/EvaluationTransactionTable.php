@@ -198,7 +198,7 @@ final class EvaluationTransactionTable extends PowerGridComponent
                     });
                 }),
             Filter::datepicker('updated_at_formatted', 'evaluation_transactions.updated_at'),
-            Filter::select('status', 'evaluation_transactions.status')->dataSource([
+            Filter::select('status', 'status')->dataSource([
                 ['id' => 0, 'name' => trans('admin.NewTransaction')],
                 ['id' => 1, 'name' => trans('admin.InReviewRequest')],
                 ['id' => 2, 'name' => trans('admin.ContactedRequest')],
