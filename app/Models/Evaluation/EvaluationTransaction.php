@@ -50,8 +50,13 @@ class EvaluationTransaction extends Model
                 ]);
             }
         });
-        static::deleting(function (EvaluationTransaction $evaluationTransaction) {
-
+        static::deleted(function (EvaluationTransaction $evaluationTransaction) {
+            $trans = EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)->get();
+            if ($trans->count() == 1) {
+                $trans->first()->update([
+                    'is_iterated' => false
+                ]);
+            }
         });
     }
 
