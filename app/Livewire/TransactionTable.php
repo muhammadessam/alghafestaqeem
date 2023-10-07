@@ -163,14 +163,14 @@ final class TransactionTable extends PowerGridComponent
             Column::make(trans('admin.company_fundoms'), 'company_fundoms'),
             Column::make(trans('admin.review_fundoms'), 'review_fundoms'),
             Column::make(trans('admin.previewer'), 'previewer_id_formatted')->searchable(),
-            Column::add()->title(trans('admin.TransactionDetail'))->field('details')->visibleInExport(false),
-            Column::make(trans('admin.is_iterated'), 'is_iterated_formatted')->visibleInExport(false)->sortable(),
+            Column::make(trans('admin.TransactionDetail'), 'details')->visibleInExport(false),
+            Column::make(trans('admin.is_iterated'), 'is_iterated_formatted', 'is_iterated')->visibleInExport(false)->sortable(),
             Column::make(trans('admin.Status'), 'status_excel')->hidden(true)->visibleInExport(true),
-            Column::make(trans('admin.is_iterated'), 'is_iterated_excel')->hidden(true)->visibleInExport(true)->sortable(),
+            Column::make(trans('admin.is_iterated'), 'is_iterated_excel')->hidden(true)->visibleInExport(true),
             Column::make(trans('admin.Status'), 'status_formatted')->visibleInExport(false),
 
 
-            Column::make(trans('admin.LastUpdate'), 'updated_at_formatted')->sortable(),
+            Column::make(trans('admin.LastUpdate'), 'updated_at_formatted', 'updated_at')->sortable(),
             Column::make(trans('admin.notes'), 'notes'),
 
             Column::action(trans('admin.Actions'))
