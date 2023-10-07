@@ -1,6 +1,5 @@
 @extends('admin.layouts.app')
 @section('tab_name', __('admin.EvaluationTransaction'))
-
 @section('css')
     @livewireStyles
     @vite('resources/css/app.css')
@@ -23,7 +22,7 @@
     </div>
 @endsection
 @section('js')
-    @wireUiScripts(['defer'=>false])
+    @wireUiScripts
     @vite('resources/js/app.js')
     @livewireScripts
 

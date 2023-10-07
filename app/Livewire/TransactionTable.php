@@ -24,6 +24,8 @@ final class TransactionTable extends PowerGridComponent
 
     public string $sortDirection = 'desc';
     public $new_data = null;
+    public int $company;
+
     public array $my_filters = [
         'text' => null,
         'employee_id' => null,
@@ -55,7 +57,11 @@ final class TransactionTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return EvaluationTransaction::query()->filters($this->my_filters)->with(['city', 'review', 'company', 'previewer', 'income']);
+        $query = EvaluationTransaction::query();
+        if (isset($this->company)) {
+            $query->where('evaluation_company_id', $this->company);
+        }
+        return $query->filters($this->my_filters)->with(['city', 'review', 'company', 'previewer', 'income']);
     }
 
     public function relationSearch(): array
@@ -165,10 +171,11 @@ final class TransactionTable extends PowerGridComponent
     public function actionRules(): array
     {
         return [
+            Rule::button('show')->when(function ($model) {
+                return auth()->user()->can('evaluation-transactions.edit');
+            })->hide(),
             // Hide button edit for ID 1
-            Rule::rows()
-                ->when(fn($model) => $model->is_iterated == true)
-                ->setAttribute('class', 'bg-danger'),
+            Rule::rows()->when(fn($model) => $model->is_iterated == true)->setAttribute('class', 'bg-danger'),
         ];
     }
 

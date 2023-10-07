@@ -8,15 +8,17 @@
         wire:model.live="my_filters.employee_id"
         :clearable="true"
     />
-    <x-select
-        label="{{trans('admin.company')}}"
-        placeholder="{{trans('admin.company')}}"
-        :options="\App\Models\Evaluation\EvaluationCompany::all()"
-        option-label="title"
-        option-value="id"
-        wire:model.live="my_filters.company_id"
-        :clearable="true"
-    />
+    @if(!isset($company))
+        <x-select
+            label="{{trans('admin.company')}}"
+            placeholder="{{trans('admin.company')}}"
+            :options="\App\Models\Evaluation\EvaluationCompany::all()"
+            option-label="title"
+            option-value="id"
+            wire:model.live="my_filters.company_id"
+            :clearable="true"
+        />
+    @endif
     <x-select
         label="{{trans('admin.Status')}}"
         placeholder="{{trans('admin.Status')}}"
