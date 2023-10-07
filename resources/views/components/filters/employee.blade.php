@@ -1,7 +1,7 @@
 <div class="w-full bg-white p-3 grid grid-cols-4 gap-x-2 gap-y-3 mt-3">
     <x-select
         label="{{trans('admin.employee')}}"
-        placeholder="{{trans('admin.evaluation_employee_id')}}"
+        placeholder="{{trans('admin.employee')}}"
         :options="\App\Models\Evaluation\EvaluationEmployee::all()"
         option-label="title"
         option-value="id"
