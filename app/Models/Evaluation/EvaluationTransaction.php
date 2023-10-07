@@ -37,17 +37,25 @@ class EvaluationTransaction extends Model
     protected static function booted(): void
     {
         static::created(function (EvaluationTransaction $evaluationTransaction) {
+            $evaluationTransaction->update([
+                'is_iterated' => true
+            ]);
             if (is_numeric($evaluationTransaction->instrument_number)) {
-                EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)->where('id','!=',$evaluationTransaction->id)->update([
-                    'is_iterated' => true,
-                ]);
+                EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)
+                    ->where('id', '!=', $evaluationTransaction->id)->update([
+                        'is_iterated' => true,
+                    ]);
             }
         });
         static::updated(function (EvaluationTransaction $evaluationTransaction) {
+            $evaluationTransaction->update([
+                'is_iterated' => true
+            ]);
             if (is_numeric($evaluationTransaction->instrument_number)) {
-                EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)->where('id','!=',$evaluationTransaction->id)->update([
-                    'is_iterated' => true,
-                ]);
+                EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)
+                    ->where('id', '!=', $evaluationTransaction->id)->update([
+                        'is_iterated' => true,
+                    ]);
             }
         });
     }
