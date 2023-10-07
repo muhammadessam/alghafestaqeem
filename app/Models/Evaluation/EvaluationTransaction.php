@@ -36,28 +36,33 @@ class EvaluationTransaction extends Model
 
     protected static function booted(): void
     {
-        static::created(function (EvaluationTransaction $evaluationTransaction) {
+        static::creating(function (EvaluationTransaction $evaluationTransaction) {
             if (is_numeric($evaluationTransaction->instrument_number)) {
-                EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)->where('id', '!=', $evaluationTransaction->id)->update([
-                    'is_iterated' => true,
-                ]);
-                $evaluationTransaction->update([
-                    'is_iterated' => true,
-                ]);
+                $updated = EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)->get();
+                if ($updated->count()) {
+                    foreach ($updated as $item) {
+                        $item->is_iterated = true;
+                        $item->saveQuietly();
+                    }
+                    $evaluationTransaction->is_iterated = true;
+                }
             }
         });
         static::updated(function (EvaluationTransaction $evaluationTransaction) {
             if (is_numeric($evaluationTransaction->instrument_number)) {
-                EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)->update([
-                    'is_iterated' => true,
-                ]);
-            }
-        });
-        static::deleted(function (EvaluationTransaction $evaluationTransaction) {
-            $trans = EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)->get();
-            if ($trans->count() == 1) {
-                $trans->first()->update([
-                    'is_iterated' => false
+                $updated = EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)->get();
+                if ($updated->count() > 1) {
+                    foreach ($updated as $item) {
+                        $item->is_iterated = true;
+                        $item->saveQuietly();
+                    }
+                } else {
+                    $evaluationTransaction->is_iterated = false;
+                    $evaluationTransaction->saveQuietly();
+                }
+            } else {
+                $evaluationTransaction->update([
+                    'is_iterated' => false,
                 ]);
             }
         });

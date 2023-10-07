@@ -91,7 +91,9 @@ final class TransactionTable extends PowerGridComponent
             ->addColumn('review_fundoms')
             ->addColumn('previewer_id')
             ->addColumn('previewer_id_formatted', fn(EvaluationTransaction $model) => $model->previewer->title ?? '')
-            ->addColumn('is_iterated')
+            ->addColumn('is_iterated', function (EvaluationTransaction $model) {
+                return EvaluationTransaction::where('instrument_number', $model->instrument_number)->where('id', '!=', $model->id)->count();
+            })
             ->addColumn('is_iterated_formatted', function (EvaluationTransaction $model) {
                 return $model->is_iterated ? '<span class="badge badge-danger bg-danger text-black px-2">نعم</span>' : '<span class="badge badge-success bg-success text-black px-2">لا</span>';
             })
