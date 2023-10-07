@@ -38,7 +38,10 @@ class EvaluationTransaction extends Model
     {
         static::created(function (EvaluationTransaction $evaluationTransaction) {
             if (is_numeric($evaluationTransaction->instrument_number)) {
-                EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)->update([
+                EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)->where('id', '!=', $evaluationTransaction->id)->update([
+                    'is_iterated' => true,
+                ]);
+                $evaluationTransaction->update([
                     'is_iterated' => true,
                 ]);
             }
