@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\Evaluation\EvaluationTransaction;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
@@ -21,7 +23,9 @@ final class TransactionTable extends PowerGridComponent
     use WithExport;
 
     public string $sortDirection = 'desc';
+    public $new_data = null;
     public array $my_filters = [
+        'text' => null,
         'employee_id' => null,
         'company_id' => null,
         'status' => null,
@@ -29,7 +33,15 @@ final class TransactionTable extends PowerGridComponent
         'from_date' => null,
         'to_date' => null,
     ];
-    
+
+    public function updated($property): void
+    {
+        $this->new_data = $this->datasource()->where(
+            fn(EloquentBuilder|QueryBuilder $query) => \PowerComponents\LivewirePowerGrid\DataSource\Builder::make($query, $this)
+                ->filterContains()
+        )->get();
+    }
+
     public function setUp(): array
     {
         $this->showCheckBox();
