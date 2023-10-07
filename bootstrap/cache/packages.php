@@ -146,4 +146,14 @@
       'Signal' => 'Spatie\\SignalAwareCommand\\Facades\\Signal',
     ),
   ),
+  'wireui/wireui' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'WireUi\\Providers\\WireUiServiceProvider',
+    ),
+    'aliases' => 
+    array (
+    ),
+  ),
 );

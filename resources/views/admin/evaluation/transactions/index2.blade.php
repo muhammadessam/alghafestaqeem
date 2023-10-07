@@ -2,7 +2,8 @@
 @section('tab_name', __('admin.EvaluationTransaction'))
 
 @section('css')
-    @vite(['resources/css/app.css','resources/js/app.js'])
+    @livewireStyles
+    @vite('resources/css/app.css')
 @endsection
 
 @section('content')
@@ -17,6 +18,13 @@
                 @endif
             </div>
         </div>
-        <livewire:evaluation-transaction-table></livewire:evaluation-transaction-table>
+        {{--        <livewire:evaluation-transaction-table></livewire:evaluation-transaction-table>--}}
+        <livewire:transaction-table></livewire:transaction-table>
     </div>
+@endsection
+@section('js')
+    @wireUiScripts(['defer'=>false])
+    @vite('resources/js/app.js')
+    @livewireScripts
+
 @endsection

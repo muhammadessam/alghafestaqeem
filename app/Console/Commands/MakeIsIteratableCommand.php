@@ -13,18 +13,16 @@ class MakeIsIteratableCommand extends Command
 
     public function handle(): void
     {
+        \DB::statement('update evaluation_transactions set  is_iterated = 0;');
         $trans = EvaluationTransaction::all();
         foreach ($trans as $tran) {
             $tran->timestamps = false;
             if (is_numeric($tran['instrument_number'])) {
-                if (EvaluationTransaction::where('instrument_number', $tran['instrument_number'])->where('id', '!=', $tran['id'])->count())
-                    EvaluationTransaction::where('instrument_number', $tran['instrument_number'])->where('id', '!=', $tran['id'])->update([
-                        'is_iterated' => true
-                    ]);
-                else
-                    $tran->update([
-                        'is_iterated' => false
-                    ]);
+                $col = EvaluationTransaction::where('instrument_number', $tran['instrument_number'])->where('id', '!=', $tran['id']);
+                $col->timestamps = false;
+                $col->update([
+                    'is_iterated' => true
+                ]);
             } else {
                 $tran->update([
                     'is_iterated' => false

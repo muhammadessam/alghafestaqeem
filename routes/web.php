@@ -16,12 +16,12 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
 Route::get('/clear-cache', function () {
-   Artisan::call('cache:clear');
-   Artisan::call('route:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
 
-   return "Cache cleared successfully";
+    return "Cache cleared successfully";
 });
-Route::group(['namespace' => 'App\\Http\\Controllers\\Website', 'as'=>'website.'], function () {
+Route::group(['namespace' => 'App\\Http\\Controllers\\Website', 'as' => 'website.'], function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/rate-request', 'RateRequestsController@show')->name('rate-request.show');
     Route::post('/rate-request', 'RateRequestsController@store')->name('rate-request.store');
@@ -31,22 +31,12 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\Website', 'as'=>'website.'
     Route::get('/tracking_number', 'RateRequestsController@tracking_request_no')->name('tracking_number');
 
 
-        
-
 });
 
 
-
-
-
-
-
-
-
-
-Route::get('/commands', function(){
+Route::get('/commands', function () {
     \Artisan::call('optimize');
-   // \Artisan::call('storage:link');
+    // \Artisan::call('storage:link');
     return \Artisan::call('db:seed --class=MainPermissionsTableDataSeeder --force');
- // return Artisan::call('migrate', ["--force" => true ]);
+    // return Artisan::call('migrate', ["--force" => true ]);
 });

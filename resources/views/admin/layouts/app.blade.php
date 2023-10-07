@@ -22,7 +22,6 @@
         </style>
     @endif
     @yield('css')
-    @livewireStyles
 
 </head>
 
@@ -76,7 +75,6 @@
     <!-- container-scroller -->
 
     @include('admin.layouts.js')
-    @livewireScripts
     @yield('js')
 
 </body>

@@ -1,8 +1,6 @@
 import './bootstrap';
 
-import flatpickr from "flatpickr";
 import 'flatpickr/dist/flatpickr.min.css'
-import Alpine from 'alpinejs'
 
 import TomSelect from "tom-select";
 window.TomSelect = TomSelect

@@ -11,7 +11,7 @@ return [
     | Configure here the theme of your choice.
     */
 
-    'theme' => \App\PowerGridThemes\CustomTheme::class,
+    'theme' => \PowerComponents\LivewirePowerGrid\Themes\Tailwind::class,
     //'theme' => \PowerComponents\LivewirePowerGrid\Themes\Bootstrap5::class,
 
     /*
@@ -50,7 +50,7 @@ return [
                         'title' => 'Remove all selected options',]
                 ],
                 'persist' => false,
-                'create' => true,
+                'create' => false,
             ],
 
             /*
@@ -89,7 +89,7 @@ return [
     |
     */
 
-    'cached_data' => true,
+    'cached_data' => false,
 
     /*
     |--------------------------------------------------------------------------

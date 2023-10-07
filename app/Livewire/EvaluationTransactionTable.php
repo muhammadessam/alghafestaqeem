@@ -20,6 +20,7 @@ use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridColumns;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
+
 final class EvaluationTransactionTable extends PowerGridComponent
 {
     use WithExport;
@@ -27,10 +28,12 @@ final class EvaluationTransactionTable extends PowerGridComponent
     public string $sortDirection = 'desc';
     public string $primaryKey = 'evaluation_transactions.id';
     public int $company;
+    public bool $showFilters = true;
     public $new_data = null;
 
     public function updated($property)
     {
+        dump($this->filters);
         $this->new_data = $this->datasource()->where(
             fn(EloquentBuilder|QueryBuilder $query) => \PowerComponents\LivewirePowerGrid\DataSource\Builder::make($query, $this)
                 ->filter()
@@ -112,7 +115,7 @@ final class EvaluationTransactionTable extends PowerGridComponent
             ->addColumn('review_fundoms')
             ->addColumn('category_title')
             ->addColumn('previewer_name')
-            ->addColumn('evaluation_employee_id', fn(EvaluationTransaction $model) => $model->employee->title ?? '')
+            ->addColumn('review_id', fn(EvaluationTransaction $model) => $model->review->title ?? '')
             ->addColumn('is_iterated', fn(EvaluationTransaction $model) => $model->is_iterated ? 'نعم' : 'لا')
             ->addColumn('status', function (EvaluationTransaction $model) {
                 if ($model->status == 0) {
@@ -168,7 +171,7 @@ final class EvaluationTransactionTable extends PowerGridComponent
             Column::make(trans('admin.company_fundoms'), 'company_fundoms'),
             Column::make(trans('admin.review_fundoms'), 'review_fundoms'),
             Column::make(trans('admin.previewer'), 'previewer_name', 'evaluation_employees.title')->sortable()->searchable(),
-            Column::make(trans('admin.employee'), 'evaluation_employee_id')->sortable()->searchable()->visibleInExport(false),
+            Column::make(trans('admin.employee'), 'review_id')->sortable()->searchable()->visibleInExport(false),
 
             Column::make(trans('admin.TransactionDetail'), 'city_id')->visibleInExport(false),
 
@@ -189,7 +192,7 @@ final class EvaluationTransactionTable extends PowerGridComponent
             Filter::inputText('transaction_number', 'evaluation_transactions.transaction_number')->operators(['contains']),
             Filter::select('company_title', 'evaluation_company_id')->dataSource(EvaluationCompany::all())->optionValue('id')->optionLabel('title'),
             Filter::boolean('is_iterated', 'is_iterated')->label('نعم', 'لا'),
-            Filter::select('evaluation_employee_id')
+            Filter::select('review_id')
                 ->dataSource(EvaluationEmployee::all())
                 ->optionValue('id')->optionLabel('title')
                 ->builder(function (Builder $query, $value) {
@@ -198,7 +201,7 @@ final class EvaluationTransactionTable extends PowerGridComponent
                     });
                 }),
             Filter::datepicker('updated_at_formatted', 'evaluation_transactions.updated_at'),
-            Filter::select('status', 'status')->dataSource([
+            Filter::select('status', 'evaluation_transactions.status')->dataSource([
                 ['id' => 0, 'name' => trans('admin.NewTransaction')],
                 ['id' => 1, 'name' => trans('admin.InReviewRequest')],
                 ['id' => 2, 'name' => trans('admin.ContactedRequest')],

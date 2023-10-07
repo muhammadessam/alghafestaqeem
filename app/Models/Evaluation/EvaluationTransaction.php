@@ -4,6 +4,7 @@ namespace App\Models\Evaluation;
 
 use App\Models\Model;
 use App\Models\Category;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Transaction_files;
@@ -31,6 +32,7 @@ class EvaluationTransaction extends Model
         'company_fundoms',
         'phone',
     ];
+    public $timestamps = false;
 
     protected static function booted(): void
     {
@@ -50,14 +52,31 @@ class EvaluationTransaction extends Model
         });
     }
 
+    public function scopeFilters(Builder $builder, array $filters): void
+    {
+        $builder->when($filters['employee_id'] ?? false, function (Builder $builder, $employee_id) {
+            $builder->where(function (Builder $builder) use ($employee_id) {
+                $builder->where('review_id', $employee_id)->orWhere('previewer_id', $employee_id)->orWhere('income_id', $employee_id);
+            });
+        })->when($filters['company_id'] ?? false, function (Builder $builder, $comp_id) {
+            $builder->where('evaluation_company_id', $comp_id);
+        })->when($filters['status'] ?? false, function (Builder $builder, $status) {
+            $builder->where('status', $status);
+        })->when($filters['city_id'] ?? false, function (Builder $builder, $city) {
+            $builder->where('city_id', $city);
+        })->when($filters['from_date'] ?? false, function (Builder $builder, $from) {
+            $builder->where('updated_at', '>=', $from);
+        })->when($filters['to_date'] ?? false, function (Builder $builder, $to) {
+            $builder->where('updated_at', '<=', $to);
+        });
+    }
+
     public function getStatusSpanAttribute()
     {
         if ($this->status == 0) {
-            return "<span class='badge badge-pill alert-table badge-warning'>" .
-                __('admin.NewTransaction') . "</span>";
+            return "<span class='badge badge-pill alert-table badge-warning'>" . __('admin.NewTransaction') . "</span>";
         } elseif ($this->status == 1) {
-            return "<span class='badge badge-pill alert-table badge-info'>" .
-                __('admin.InReviewRequest') . "</span>";
+            return "<span class='badge badge-pill alert-table badge-info'>" . __('admin.InReviewRequest') . "</span>";
         } elseif ($this->status == 2) {
             return "<span class='badge badge-pill alert-table badge-primary'>" .
                 __('admin.ContactedRequest') . "</span>";
