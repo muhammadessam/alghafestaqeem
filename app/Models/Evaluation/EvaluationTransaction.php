@@ -59,7 +59,7 @@ class EvaluationTransaction extends Model
                 $builder->where('review_id', $employee_id)->orWhere('previewer_id', $employee_id)->orWhere('income_id', $employee_id);
             });
         })->when($filters['company_id'] ?? false, function (Builder $builder, $comp_id) {
-            $builder->where('evaluation_company_id', $comp_id);
+            $builder->whereIn('evaluation_company_id', $comp_id);
         })->when($filters['status'] ?? false, function (Builder $builder, $status) {
             $builder->where('status', $status);
         })->when($filters['city_id'] ?? false, function (Builder $builder, $city) {

@@ -17,6 +17,7 @@
             option-value="id"
             wire:model.live="my_filters.company_id"
             :clearable="true"
+            :multiselect="true"
         />
     @endif
     <x-select

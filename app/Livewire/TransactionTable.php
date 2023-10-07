@@ -167,7 +167,7 @@ final class TransactionTable extends PowerGridComponent
             Column::make(trans('admin.is_iterated'), 'is_iterated_formatted', 'is_iterated')->visibleInExport(false)->sortable(),
             Column::make(trans('admin.Status'), 'status_excel')->hidden(true)->visibleInExport(true),
             Column::make(trans('admin.is_iterated'), 'is_iterated_excel')->hidden(true)->visibleInExport(true),
-            Column::make(trans('admin.Status'), 'status_formatted')->visibleInExport(false),
+            Column::make(trans('admin.Status'), 'status_formatted', 'status')->sortable()->visibleInExport(false),
 
 
             Column::make(trans('admin.LastUpdate'), 'updated_at_formatted', 'updated_at')->sortable(),
