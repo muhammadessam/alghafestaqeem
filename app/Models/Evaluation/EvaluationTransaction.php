@@ -65,9 +65,9 @@ class EvaluationTransaction extends Model
         })->when($filters['city_id'] ?? false, function (Builder $builder, $city) {
             $builder->where('city_id', $city);
         })->when($filters['from_date'] ?? false, function (Builder $builder, $from) {
-            $builder->where('updated_at', '>=', $from);
+            $builder->whereDate('updated_at', '>=', $from);
         })->when($filters['to_date'] ?? false, function (Builder $builder, $to) {
-            $builder->where('updated_at', '<=', $to);
+            $builder->whereDate('updated_at', '<=', $to);
         });
     }
 

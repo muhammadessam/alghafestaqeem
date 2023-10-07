@@ -49,7 +49,7 @@ final class TransactionTable extends PowerGridComponent
         $this->showCheckBox();
 
         return [
-            Exportable::make('export')->striped()->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
+            Exportable::make(now()->toDateString())->striped()->type(Exportable::TYPE_XLS)->deleteFileAfterSend(true),
             Header::make()->showSearchInput()->includeViewOnBottom('components.filters.employee'),
             Footer::make()->showPerPage()->showRecordCount(),
         ];
@@ -95,8 +95,29 @@ final class TransactionTable extends PowerGridComponent
             ->addColumn('is_iterated_formatted', function (EvaluationTransaction $model) {
                 return $model->is_iterated ? '<span class="badge badge-danger bg-danger text-black px-2">نعم</span>' : '<span class="badge badge-success bg-success text-black px-2">لا</span>';
             })
+            ->addColumn('is_iterated_excel', function (EvaluationTransaction $model) {
+                return $model->is_iterated ? 'نعم' : 'لا';
+            })
             ->addColumn('status')
             ->addColumn('status_formatted', function (EvaluationTransaction $model) {
+                if ($model->status == 0) {
+                    return "<span class='badge badge-pill alert-table badge-warning text-black'>" . __('admin.NewTransaction') . "</span>";
+                } elseif ($model->status == 1) {
+                    return "<span class='badge badge-pill alert-table badge-info text-black'>" . __('admin.InReviewRequest') . "</span>";
+                } elseif ($model->status == 2) {
+                    return "<span class='badge badge-pill alert-table badge-primary text-black'>" . __('admin.ContactedRequest') . "</span>";
+                } elseif ($model->status == 3) {
+                    return "<span class='badge badge-pill alert-table badge-danger text-black'>" . __('admin.ReviewedRequest') . "</span>";
+                } elseif ($model->status == 4) {
+                    return "<span class='badge badge-pill alert-table badge-success text-black'>" . __('admin.FinishedRequest') . "</span>";
+                } elseif ($model->status == 5) {
+                    return "<span class='badge badge-pill alert-table badge-warning text-black'>" . __('admin.PendingRequest') . "</span>";
+                } elseif ($model->status == 6) {
+                    return "<span class='badge badge-pill alert-table badge-warning text-black'>" . __('admin.Cancelled') . "</span>";
+                } else {
+                    return '';
+                }
+            })->addColumn('status_excel', function (EvaluationTransaction $model) {
                 if ($model->status == 0) {
                     return __('admin.NewTransaction');
                 } elseif ($model->status == 1) {
@@ -133,17 +154,22 @@ final class TransactionTable extends PowerGridComponent
     {
         return [
             Column::make('Id', 'id_formatted', 'id'),
+            Column::make('Id', 'id', 'id')->visibleInExport(true)->hidden(true),
             Column::make(trans('admin.instrument_number'), 'instrument_number')->sortable()->searchable(),
             Column::make(trans('admin.transaction_number'), 'transaction_number')->sortable()->searchable(),
             Column::make(trans('admin.phone'), 'phone')->searchable(),
             Column::make(trans('admin.company'), 'evaluation_company_id_formatted', 'evaluation_company_id'),
             Column::make(trans('admin.region'), 'region', 'region')->sortable()->searchable(),
-            Column::make(trans('admin.review_fundoms'), 'review_fundoms'),
             Column::make(trans('admin.company_fundoms'), 'company_fundoms'),
+            Column::make(trans('admin.review_fundoms'), 'review_fundoms'),
             Column::make(trans('admin.previewer'), 'previewer_id_formatted')->searchable(),
-            Column::add()->title(trans('admin.TransactionDetail'))->field('details'),
-            Column::make(trans('admin.is_iterated'), 'is_iterated_formatted', 'is_iterated')->sortable(),
-            Column::make(trans('admin.Status'), 'status_formatted'),
+            Column::add()->title(trans('admin.TransactionDetail'))->field('details')->visibleInExport(false),
+            Column::make(trans('admin.is_iterated'), 'is_iterated_formatted')->visibleInExport(false)->sortable(),
+            Column::make(trans('admin.Status'), 'status_excel')->hidden(true)->visibleInExport(true),
+            Column::make(trans('admin.is_iterated'), 'is_iterated_excel')->hidden(true)->visibleInExport(true)->sortable(),
+            Column::make(trans('admin.Status'), 'status_formatted')->visibleInExport(false),
+
+
             Column::make(trans('admin.LastUpdate'), 'updated_at_formatted')->sortable(),
             Column::make(trans('admin.notes'), 'notes'),
 
@@ -171,9 +197,19 @@ final class TransactionTable extends PowerGridComponent
     public function actionRules(): array
     {
         return [
-            Rule::button('show')->when(function ($model) {
-                return auth()->user()->can('evaluation-transactions.edit');
-            })->hide(),
+            Rule::button('show')
+                ->when(function ($model) {
+                    return !auth()->user()->can('evaluation-transactions.show') and !auth()->user()->hasRole('super-admin');
+                })->hide(),
+            Rule::button('edit')
+                ->when(function ($model) {
+                    return ($model->status == 4 and !auth()->user()->hasRole('super-admin')) || (!auth()->user()->can('evaluation-transactions.edit') and !auth()->user()->hasRole('super-admin'));
+                })->hide(),
+            Rule::button('delete')
+                ->when(function ($model) {
+                    return !auth()->user()->can('evaluation-transactions.destroy') and !auth()->user()->hasRole('super-admin');
+                })->hide(),
+
             // Hide button edit for ID 1
             Rule::rows()->when(fn($model) => $model->is_iterated == true)->setAttribute('class', 'bg-danger'),
         ];
