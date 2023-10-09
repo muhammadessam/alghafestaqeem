@@ -32,38 +32,50 @@ class EvaluationTransaction extends Model
         'company_fundoms',
         'phone',
     ];
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected static function booted(): void
     {
         static::creating(function (EvaluationTransaction $evaluationTransaction) {
             if (is_numeric($evaluationTransaction->instrument_number)) {
-                $updated = EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)->get();
-                if ($updated->count()) {
-                    foreach ($updated as $item) {
-                        $item->is_iterated = true;
-                        $item->saveQuietly();
-                    }
+                if (EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)->count()) {
+                    \DB::update('update evaluation_transactions set is_iterated=1 where instrument_number=?', [$evaluationTransaction->instrument_number]);
                     $evaluationTransaction->is_iterated = true;
                 }
             }
         });
-        static::updated(function (EvaluationTransaction $evaluationTransaction) {
-            if (is_numeric($evaluationTransaction->instrument_number)) {
-                $updated = EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)->get();
-                if ($updated->count() > 1) {
-                    foreach ($updated as $item) {
-                        $item->is_iterated = true;
-                        $item->saveQuietly();
+        static::updating(function (EvaluationTransaction $evaluationTransaction) {
+            if ($evaluationTransaction->isDirty('instrument_number')) {
+                $new_trans = EvaluationTransaction::where('instrument_number', $evaluationTransaction->instrument_number)->where('id', '!=', $evaluationTransaction->id)->get();
+                $old_trans = EvaluationTransaction::where('instrument_number', $evaluationTransaction->getOriginal('instrument_number'))->where('id', '!=', $evaluationTransaction->id)->get();
+                if (is_numeric($evaluationTransaction->instrument_number) and is_numeric($evaluationTransaction->getOriginal('instrument_number'))) {
+                    if ($new_trans->count() == 1) {
+                        \DB::statement("update evaluation_transactions set is_iterated = true where instrument_number='" . $new_trans->first()->instrument_number . "'");
+                        $evaluationTransaction->is_iterated = 1;
+                    } elseif ($new_trans->count() > 1) {
+                        $evaluationTransaction->is_iterated = 1;
+                    }
+
+                    if ($old_trans->count() == 1) {
+                        \DB::statement("update evaluation_transactions set is_iterated = false where instrument_number='" . $old_trans->first()->instrument_number . "'");
+                    }
+                    if (!$new_trans->count() and !$old_trans->count()) {
+                        $evaluationTransaction->is_iterated = 0;
+                    }
+                } elseif (is_numeric($evaluationTransaction->instrument_number) and !is_numeric($evaluationTransaction->getOriginal('instrument_number'))) {
+                    if ($new_trans->count() == 1) {
+                        \DB::statement("update evaluation_transactions set is_iterated = true where instrument_number='" . $new_trans->first()->instrument_number . "'");
+                        $evaluationTransaction->is_iterated = 1;
+                    } elseif ($new_trans->count() > 1) {
+                        $evaluationTransaction->is_iterated = 1;
+                    }
+                } elseif (!is_numeric($evaluationTransaction->instrument_number) and is_numeric($evaluationTransaction->getOriginal('instrument_number'))) {
+                    if ($old_trans->count() == 1) {
+                        \DB::statement("update evaluation_transactions set is_iterated = false where instrument_number='" . $old_trans->first()->instrument_number . "'");
                     }
                 } else {
                     $evaluationTransaction->is_iterated = false;
-                    $evaluationTransaction->saveQuietly();
                 }
-            } else {
-                $evaluationTransaction->update([
-                    'is_iterated' => false,
-                ]);
             }
         });
     }

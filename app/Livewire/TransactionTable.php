@@ -29,7 +29,7 @@ final class TransactionTable extends PowerGridComponent
     public array $my_filters = [
         'text' => null,
         'employee_id' => null,
-        'company_id' => null,
+        'company_id' => [],
         'status' => null,
         'city_id' => null,
         'from_date' => null,
@@ -141,7 +141,7 @@ final class TransactionTable extends PowerGridComponent
                 return view('components.transaction_details', ['model' => $model]);
             })
             ->addColumn('updated_at')
-            ->addColumn('updated_at_formatted', fn(EvaluationTransaction $model) => Carbon::parse($model->updated_at)->format('d/m/Y'))
+            ->addColumn('updated_at_formatted', fn(EvaluationTransaction $model) => Carbon::parse($model->updated_at)->format('Y-m-d'))
             ->addColumn('owner_name')
             ->addColumn('review_id')
             ->addColumn('review_id_formatted', fn(EvaluationTransaction $model) => $model->review->title ?? '')
