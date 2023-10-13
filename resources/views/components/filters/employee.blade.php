@@ -1,4 +1,5 @@
 <div class="w-full bg-white p-3 grid grid-cols-4 gap-x-2 gap-y-3 mt-3">
+    <x-input wire:model.live="my_filters.transaction_number" :label="trans('admin.transaction_number')" />
     <x-select
         label="{{trans('admin.employee')}}"
         placeholder="{{trans('admin.employee')}}"

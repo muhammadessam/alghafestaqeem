@@ -34,7 +34,9 @@ final class TransactionTable extends PowerGridComponent
         'city_id' => null,
         'from_date' => null,
         'to_date' => null,
+        'transaction_number' => null
     ];
+
 
     public function updated($property): void
     {

@@ -86,14 +86,16 @@ class EvaluationTransaction extends Model
             });
         })->when($filters['company_id'] ?? false, function (Builder $builder, $comp_id) {
             $builder->whereIn('evaluation_company_id', $comp_id);
-        })->when($filters['status'] ?? false, function (Builder $builder, $status) {
-            $builder->where('status', $status);
+        })->when(!is_null($filters['status']), function (Builder $builder) use ($filters) {
+            $builder->where('status', '=', $filters['status']);
         })->when($filters['city_id'] ?? false, function (Builder $builder, $city) {
             $builder->where('city_id', $city);
         })->when($filters['from_date'] ?? false, function (Builder $builder, $from) {
             $builder->whereDate('updated_at', '>=', $from);
         })->when($filters['to_date'] ?? false, function (Builder $builder, $to) {
             $builder->whereDate('updated_at', '<=', $to);
+        })->when($filters['transaction_number'] ?? false, function (Builder $builder, $transaction_number) {
+            $builder->where('transaction_number', 'LIKE', '%' . $transaction_number . '%');
         });
     }
 
