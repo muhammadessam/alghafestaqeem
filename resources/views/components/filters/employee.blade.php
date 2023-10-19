@@ -52,12 +52,15 @@
         :without-time="true"
         wire:model.live="my_filters.from_date"
         dir="ltr"
+        display-format="YYYY-MM-DD"
     />
     <x-datetime-picker
         :label="trans('admin.LastUpdate'). ' الي'"
         :without-time="true"
         wire:model.live="my_filters.to_date"
         dir="ltr"
+        display-format="YYYY-MM-DD"
+
     />
     @if(isset($my_filters['employee_id']))
         @php
