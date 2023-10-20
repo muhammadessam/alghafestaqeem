@@ -1,5 +1,5 @@
 <div class="w-full bg-white p-3 grid grid-cols-4 gap-x-2 gap-y-3 mt-3">
-    <x-input wire:model.live="my_filters.transaction_number" :label="trans('admin.transaction_number')" />
+    <x-input wire:model.live="my_filters.transaction_number" :label="trans('admin.transaction_number')"/>
     <x-select
         label="{{trans('admin.employee')}}"
         placeholder="{{trans('admin.employee')}}"
@@ -95,4 +95,27 @@
             </div>
         </div>
     @endif
+    <x-modal.card squared align="center" wire:model.live="edit_modal" :title="__('admin.ChangeStatus')">
+        <x-select
+            label="{{trans('admin.Status')}}"
+            placeholder="{{trans('admin.Status')}}"
+            :options="[
+                ['id' => 0, 'name' => trans('admin.NewTransaction')],
+                ['id' => 1, 'name' => trans('admin.InReviewRequest')],
+                ['id' => 2, 'name' => trans('admin.ContactedRequest')],
+                ['id' => 3, 'name' => trans('admin.ReviewedRequest')],
+                ['id' => 4, 'name' => trans('admin.FinishedRequest')],
+                ['id' => 5, 'name' => trans('admin.PendingRequest')],
+                ['id' => 6, 'name' => trans('admin.Cancelled')],
+            ]"
+            option-label="name"
+            option-value="id"
+            wire:model.live="selected_status"
+        />
+        <x-slot:footer>
+            <x-button class="btn btn-primary" wire:click="updateStatus">{{__('admin.Save')}}</x-button>
+            <x-button class="btn btn-secondary" x-on:click="close">{{__('admin.Cancel')}}</x-button>
+        </x-slot:footer>
+    </x-modal.card>
+
 </div>

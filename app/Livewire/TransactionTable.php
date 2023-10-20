@@ -25,6 +25,33 @@ final class TransactionTable extends PowerGridComponent
     public string $sortDirection = 'desc';
     public $new_data = null;
     public int $company;
+    public bool $edit_modal = false;
+    public $selected_model;
+    public int $selected_status = 0;
+
+    public function editStatus($model): void
+    {
+        $this->selected_model = $model;
+        $this->selected_status = $model['status'];
+        $this->edit_modal = true;
+    }
+
+    public function updateStatus(): void
+    {
+        EvaluationTransaction::find($this->selected_model['id'])->update([
+            'status' => $this->selected_status,
+        ]);
+        $this->selected_model = null;
+        $this->selected_status = 0;
+        $this->edit_modal = false;
+    }
+
+    protected function getListeners()
+    {
+        return array_merge([
+            'updateStatus',
+        ], parent::getListeners());
+    }
 
     public array $my_filters = [
         'text' => null,
@@ -104,23 +131,26 @@ final class TransactionTable extends PowerGridComponent
             })
             ->addColumn('status')
             ->addColumn('status_formatted', function (EvaluationTransaction $model) {
+                $status = '';
                 if ($model->status == 0) {
-                    return "<span class='badge badge-pill alert-table badge-warning text-black'>" . __('admin.NewTransaction') . "</span>";
+                    $status = __('admin.NewTransaction');
                 } elseif ($model->status == 1) {
-                    return "<span class='badge badge-pill alert-table badge-info text-black'>" . __('admin.InReviewRequest') . "</span>";
+                    $status = __('admin.InReviewRequest');
                 } elseif ($model->status == 2) {
-                    return "<span class='badge badge-pill alert-table badge-primary text-black'>" . __('admin.ContactedRequest') . "</span>";
+                    $status = __('admin.ContactedRequest');
                 } elseif ($model->status == 3) {
-                    return "<span class='badge badge-pill alert-table badge-danger text-black'>" . __('admin.ReviewedRequest') . "</span>";
+                    $status = __('admin.ReviewedRequest');
                 } elseif ($model->status == 4) {
-                    return "<span class='badge badge-pill alert-table badge-success text-black'>" . __('admin.FinishedRequest') . "</span>";
+                    $status = __('admin.FinishedRequest');
                 } elseif ($model->status == 5) {
-                    return "<span class='badge badge-pill alert-table badge-warning text-black'>" . __('admin.PendingRequest') . "</span>";
+                    $status = __('admin.PendingRequest');
                 } elseif ($model->status == 6) {
-                    return "<span class='badge badge-pill alert-table badge-warning text-black'>" . __('admin.Cancelled') . "</span>";
-                } else {
-                    return '';
+                    $status = __('admin.Cancelled');
                 }
+                return view('components.status_change', [
+                    'model' => $model,
+                    'status' => $status
+                ]);
             })->addColumn('status_excel', function (EvaluationTransaction $model) {
                 if ($model->status == 0) {
                     return __('admin.NewTransaction');
