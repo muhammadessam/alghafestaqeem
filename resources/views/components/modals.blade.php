@@ -22,7 +22,7 @@
         </x-slot:footer>
     </x-modal.card>
 
-    <x-modal.card squared align="center" wire:model.live="edit_details_modal" :title="__('admin.TransactionDetail')">
+    <x-modal.card squared align="center" wire:model.live="edit_details_modal" :title="__('admin.TransactionDetail') . $details['transaction_number']">
         <x-select
             class="mb-3"
             searchable
@@ -32,6 +32,14 @@
             option-label="title"
             option-value="id"/>
 
+        <x-select
+            class="mb-3"
+            searchable
+            label="{{trans('admin.EvaluationCompanies')}}"
+            wire:model.live="details.evaluation_company_id"
+            :options="\App\Models\Evaluation\EvaluationCompany::all()"
+            option-label="title"
+            option-value="id"/>
         <x-select
             class="mb-3"
             searchable

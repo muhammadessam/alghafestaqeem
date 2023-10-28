@@ -36,6 +36,8 @@ final class TransactionTable extends PowerGridComponent
         'review_id' => null,
         'income_id' => null,
         'previewer_id' => null,
+        'evaluation_company_id' => null,
+        'transaction_number' => '',
         'notes' => '',
     ];
 
@@ -50,7 +52,7 @@ final class TransactionTable extends PowerGridComponent
 
     public function editDetails($model): void
     {
-        $this->details = EvaluationTransaction::select(['id', 'city_id', 'review_id', 'income_id', 'notes', 'previewer_id'])->find($model['id'])->toArray();
+        $this->details = EvaluationTransaction::select(['id', 'transaction_number', 'city_id', 'review_id', 'income_id', 'evaluation_company_id', 'notes', 'previewer_id'])->find($model['id'])->toArray();
         $this->edit_details_modal = true;
     }
 
