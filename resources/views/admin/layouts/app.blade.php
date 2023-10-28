@@ -26,7 +26,7 @@
 </head>
 
 <body class="@if (app()->getLocale() == 'ar') rtl @endif">
-    <div class="container-scroller">
+    <div class="container-scroller soft-scrollbar">
 
         <!-- partial:partials/_navbar.html -->
         @include('admin.layouts.navbar')

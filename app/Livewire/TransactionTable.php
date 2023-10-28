@@ -28,12 +28,30 @@ final class TransactionTable extends PowerGridComponent
     public bool $edit_modal = false;
     public $selected_model;
     public int $selected_status = 0;
+    public string $loadingComponent = 'components.my-custom-loading';
+
+    public array $details = [
+        'id' => null,
+        'city_id' => null,
+        'review_id' => null,
+        'income_id' => null,
+        'previewer_id' => null,
+        'notes' => '',
+    ];
+
+    public bool $edit_details_modal = false;
 
     public function editStatus($model): void
     {
         $this->selected_model = $model;
         $this->selected_status = $model['status'];
         $this->edit_modal = true;
+    }
+
+    public function editDetails($model): void
+    {
+        $this->details = EvaluationTransaction::select(['id', 'city_id', 'review_id', 'income_id', 'notes', 'previewer_id'])->find($model['id'])->toArray();
+        $this->edit_details_modal = true;
     }
 
     public function updateStatus(): void
@@ -44,6 +62,12 @@ final class TransactionTable extends PowerGridComponent
         $this->selected_model = null;
         $this->selected_status = 0;
         $this->edit_modal = false;
+    }
+
+    public function updateDetails(): void
+    {
+        EvaluationTransaction::find($this->details['id'])->update($this->details);
+        $this->edit_details_modal = false;
     }
 
     protected function getListeners()
@@ -80,7 +104,7 @@ final class TransactionTable extends PowerGridComponent
         return [
             Exportable::make(now()->toDateString())->striped()->type(Exportable::TYPE_XLS)->deleteFileAfterSend(true),
             Header::make()->showSearchInput()->includeViewOnBottom('components.filters.employee'),
-            Footer::make()->showPerPage()->showRecordCount(),
+            Footer::make()->showPerPage()->showRecordCount()->includeViewOnBottom('components.modals'),
         ];
     }
 
@@ -187,27 +211,24 @@ final class TransactionTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('Id', 'id_formatted', 'id'),
-            Column::make('Id', 'id', 'id')->visibleInExport(true)->hidden(true),
-            Column::make(trans('admin.instrument_number'), 'instrument_number')->sortable()->searchable(),
-            Column::make(trans('admin.transaction_number'), 'transaction_number')->sortable()->searchable(),
-            Column::make(trans('admin.phone'), 'phone')->searchable(),
-            Column::make(trans('admin.company'), 'evaluation_company_id_formatted', 'evaluation_company_id'),
-            Column::make(trans('admin.region'), 'region', 'region')->sortable()->searchable(),
-            Column::make(trans('admin.company_fundoms'), 'company_fundoms'),
-            Column::make(trans('admin.review_fundoms'), 'review_fundoms'),
-            Column::make(trans('admin.previewer'), 'previewer_id_formatted')->searchable(),
-            Column::make(trans('admin.TransactionDetail'), 'details')->visibleInExport(false),
-            Column::make(trans('admin.is_iterated'), 'is_iterated_formatted', 'is_iterated')->visibleInExport(false)->sortable(),
-            Column::make(trans('admin.Status'), 'status_excel')->hidden(true)->visibleInExport(true),
-            Column::make(trans('admin.is_iterated'), 'is_iterated_excel')->hidden(true)->visibleInExport(true),
-            Column::make(trans('admin.Status'), 'status_formatted', 'status')->sortable()->visibleInExport(false),
-
-
-            Column::make(trans('admin.LastUpdate'), 'updated_at_formatted', 'updated_at')->sortable(),
-            Column::make(trans('admin.notes'), 'notes'),
-
-            Column::action(trans('admin.Actions'))
+            Column::make('Id', 'id_formatted', 'id')->headerAttribute('text-right'),
+            Column::make('Id', 'id', 'id')->visibleInExport(true)->hidden(true)->headerAttribute('text-right'),
+            Column::make(trans('admin.instrument_number'), 'instrument_number')->sortable()->searchable()->headerAttribute('text-right'),
+            Column::make(trans('admin.transaction_number'), 'transaction_number')->sortable()->searchable()->headerAttribute('text-right'),
+            Column::make(trans('admin.phone'), 'phone')->searchable()->headerAttribute('text-right'),
+            Column::make(trans('admin.company'), 'evaluation_company_id_formatted', 'evaluation_company_id')->headerAttribute('text-right'),
+            Column::make(trans('admin.region'), 'region', 'region')->sortable()->searchable()->headerAttribute('text-right'),
+            Column::make(trans('admin.company_fundoms'), 'company_fundoms')->headerAttribute('text-right'),
+            Column::make(trans('admin.review_fundoms'), 'review_fundoms')->headerAttribute('text-right'),
+            Column::make(trans('admin.previewer'), 'previewer_id_formatted')->searchable()->headerAttribute('text-right'),
+            Column::make(trans('admin.TransactionDetail'), 'details')->visibleInExport(false)->headerAttribute('text-right'),
+            Column::make(trans('admin.is_iterated'), 'is_iterated_formatted', 'is_iterated')->visibleInExport(false)->sortable()->headerAttribute('text-right'),
+            Column::make(trans('admin.Status'), 'status_excel')->hidden(true)->visibleInExport(true)->headerAttribute('text-right'),
+            Column::make(trans('admin.is_iterated'), 'is_iterated_excel')->hidden(true)->visibleInExport(true)->headerAttribute('text-right'),
+            Column::make(trans('admin.Status'), 'status_formatted', 'status')->sortable()->visibleInExport(false)->headerAttribute('text-right'),
+            Column::make(trans('admin.LastUpdate'), 'updated_at_formatted', 'updated_at')->sortable()->headerAttribute('text-right'),
+            Column::make(trans('admin.notes'), 'notes')->headerAttribute('text-right'),
+            Column::action(trans('admin.Actions'))->headerAttribute('text-right')
         ];
     }
 
