@@ -1,4 +1,4 @@
-<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="z-index: 49">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
         <a class="navbar-brand brand-logo me-5" href="{{ route('admin.home') }}"><img
                 src="{{ $setting->imagePath('logo') ?? asset('/images/logo.png') }}" class="me-2" alt="logo" /></a>
@@ -26,23 +26,23 @@
                   <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="markAsread">
 
                   <ul class="dropdown-item " >
-                   
+
                       <!-- inner menu: contains the actual data -->
-                        
-                        @foreach (auth()->user()->unreadNotifications as $notification) 
+
+                        @foreach (auth()->user()->unreadNotifications as $notification)
                         @if($notification->read_at ==null)
                         <li style="display: block !important;padding: 10px 7px;text-align: right !important; border-bottom: 1px solid #f3f3f3;" class=" dropdown-item">
                         @if($notification->type=='App\Notifications\Transaction')
                         <a style="color: #000;font-size: 14px;font-weight: bold;text-decoration: inherit; padding: 12px 0px;" href="{{ route('admin.evaluation-transactions.show', $notification->data['Transaction']['id']) }}">
-                       
+
                                   {{$notification->data['type']}} بواسطة  {{$notification->data['user']['name']}} بتاريخ  {{$notification->created_at}}
                         </a>
                         @endif
                         <!--  -->
-                       
+
                         </li>
                         @endif
-                          
+
                         @endforeach
                        <li style="display: block !important;padding: 10px 7px;text-align: right !important; border-bottom: 1px solid #f3f3f3;" class=" dropdown-item">
                         <a style="color: #000;font-size: 14px;font-weight: bold;text-decoration: inherit; padding: 12px 0px;" href="{{ url('admin/notifucation') }}">
@@ -52,8 +52,8 @@
 
 
 
-                      
-                        
+
+
 
                   </ul>
                   </div>

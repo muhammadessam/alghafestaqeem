@@ -6,6 +6,7 @@
 @endsection
 
 @section('content')
+    <x-notifications  z-index="z-50"/>
     <div class="w-full" dir="rtl">
         <div class="row">
             <div class="col-12">
@@ -17,8 +18,7 @@
                 @endif
             </div>
         </div>
-        {{--        <livewire:evaluation-transaction-table></livewire:evaluation-transaction-table>--}}
-        <livewire:transaction-table></livewire:transaction-table>
+        <livewire:evaluation-transaction.index/>
     </div>
 @endsection
 @section('js')

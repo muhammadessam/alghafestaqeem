@@ -17,6 +17,7 @@ use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridColumns;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
+use Throwable;
 
 final class TransactionTable extends PowerGridComponent
 {
@@ -26,56 +27,12 @@ final class TransactionTable extends PowerGridComponent
     public $new_data = null;
     public int $company;
     public bool $edit_modal = false;
-    public $selected_model;
-    public int $selected_status = 0;
     public string $loadingComponent = 'components.my-custom-loading';
-
-    public array $details = [
-        'id' => null,
-        'city_id' => null,
-        'review_id' => null,
-        'income_id' => null,
-        'previewer_id' => null,
-        'evaluation_company_id' => null,
-        'transaction_number' => '',
-        'notes' => '',
-    ];
-
-    public bool $edit_details_modal = false;
-
-    public function editStatus($model): void
-    {
-        $this->selected_model = $model;
-        $this->selected_status = $model['status'];
-        $this->edit_modal = true;
-    }
-
-    public function editDetails($model): void
-    {
-        $this->details = EvaluationTransaction::select(['id', 'transaction_number', 'city_id', 'review_id', 'income_id', 'evaluation_company_id', 'notes', 'previewer_id'])->find($model['id'])->toArray();
-        $this->edit_details_modal = true;
-    }
-
-    public function updateStatus(): void
-    {
-        EvaluationTransaction::find($this->selected_model['id'])->update([
-            'status' => $this->selected_status,
-        ]);
-        $this->selected_model = null;
-        $this->selected_status = 0;
-        $this->edit_modal = false;
-    }
-
-    public function updateDetails(): void
-    {
-        EvaluationTransaction::find($this->details['id'])->update($this->details);
-        $this->edit_details_modal = false;
-    }
 
     protected function getListeners()
     {
         return array_merge([
-            'updateStatus',
+            'updateStatus', 'updatedData'
         ], parent::getListeners());
     }
 
@@ -90,6 +47,14 @@ final class TransactionTable extends PowerGridComponent
         'transaction_number' => null
     ];
 
+
+    /**
+     * @throws Throwable
+     */
+    public function updatedData(): void
+    {
+        $this->fillData();
+    }
 
     public function updated($property): void
     {
@@ -106,7 +71,7 @@ final class TransactionTable extends PowerGridComponent
         return [
             Exportable::make(now()->toDateString())->striped()->type(Exportable::TYPE_XLS)->deleteFileAfterSend(true),
             Header::make()->showSearchInput()->includeViewOnBottom('components.filters.employee'),
-            Footer::make()->showPerPage()->showRecordCount()->includeViewOnBottom('components.modals'),
+            Footer::make()->showPerPage()->showRecordCount(),
         ];
     }
 

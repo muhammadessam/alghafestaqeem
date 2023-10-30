@@ -147,7 +147,6 @@ class TransactionsController extends Controller
             'amount' => $amount
         ];
 
-
         return view(
             'admin.evaluation.transactions.index',
             compact('result')

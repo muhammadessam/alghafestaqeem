@@ -16,6 +16,6 @@
     @endif
 
     @if($model->status != 4 || auth()->user()->hasRole('super-admin'))
-        <x-button.circle wire:click="editStatus({{$model}})" icon="pencil"></x-button.circle>
+        <x-button.circle wire:click="$dispatchTo('evaluation-transaction','editStatus', {'model':{{$model}}})" icon="pencil"></x-button.circle>
     @endif
 </div>

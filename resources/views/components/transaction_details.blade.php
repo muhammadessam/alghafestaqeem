@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-y-2">
-    <div class="hover:cursor-pointer" wire:click="editDetails({{$model}})">
+    <div class="hover:cursor-pointer" wire:click="$dispatchTo('evaluation-transaction','edit', {'model':{{$model}}})">
         <div class="flex">
             <div class="font-bold ml-2">{{trans('admin.type_id')}}:</div>
             <div>{{$model->type->title ?? ''}}</div>
