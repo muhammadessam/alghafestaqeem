@@ -61,12 +61,17 @@ class Index extends Component
         if ($value != null and $this->selected->previewer_id == null) {
             $this->status = 3;
         }
+        if ($value == null) {
+            $this->status = 0;
+        }
     }
 
     public function updatedReviewId($value): void
     {
         if ($value != null and $this->selected->review_id == null)
             $this->status = 4;
+        if ($value == null and $this->previewer_id != null)
+            $this->status = 3;
     }
 
     public function updateStatus(): void
