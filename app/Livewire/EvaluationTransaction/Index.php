@@ -49,10 +49,24 @@ class Index extends Component
             'income_id' => $this->income_id,
             'previewer_id' => $this->previewer_id,
             'notes' => $this->notes,
+            'status' => $this->status,
         ]);
         $this->dispatch('updatedData')->to('transaction-table');
         $this->reset(['city_id', 'selected', 'review_id', 'details_modal', 'income_id', 'previewer_id', 'evaluation_company_id', 'notes', 'status_modal']);
         $this->notification()->success('تم الحفظ بنجاح', 'تم حفظ تفاصيل المعاملة بنجاح');
+    }
+
+    public function updatedPreviewerId($value): void
+    {
+        if ($value != null and $this->selected->previewer_id == null) {
+            $this->status = 3;
+        }
+    }
+
+    public function updatedReviewId($value): void
+    {
+        if ($value != null and $this->selected->review_id == null)
+            $this->status = 4;
     }
 
     public function updateStatus(): void
