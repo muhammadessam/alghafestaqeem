@@ -48,6 +48,13 @@ final class TransactionTable extends PowerGridComponent
     ];
 
 
+    public function updatedMyFilters($value, $key)
+    {
+        if ($key == "employee_id") {
+            $this->gotoPage(1);
+        }
+    }
+
     /**
      * @throws Throwable
      */

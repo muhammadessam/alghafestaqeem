@@ -33,7 +33,24 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\Website', 'as' => 'website
 
 });
 
+Route::get('test-pdf', function () {
+    $fpdi = new FPDF();
+    $count = $fpdi->setSourceFile(public_path('template.pdf'));
+    $template = $fpdi->importPage(2);
+    $size = $fpdi->getTemplateSize($template);
+    $fpdi->AddPage($size['orientation'], array($size['width'], $size['height']));
+    $fpdi->useTemplate($template);
 
+    $fpdi->SetFont("dejavusans", "", 15);
+    $fpdi->SetTextColor(153,0,153);
+
+    $left = 10;
+    $top = 10;
+    $text = "السادة المحترمين";
+    $fpdi->Text($left,$top,$text);
+    return $fpdi->Output(public_path('output.pdf'), 'F');
+
+});
 Route::get('/commands', function () {
     \Artisan::call('optimize');
     // \Artisan::call('storage:link');
