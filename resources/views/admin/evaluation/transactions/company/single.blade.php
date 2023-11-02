@@ -16,7 +16,7 @@
                 @endif
             </div>
         </div>
-        <livewire:transaction-table :company="$result['company']['id']"/>
+        <livewire:evaluation-transaction.index :company="$result['company']['id']"/>
     </div>
 @endsection
 @section('js')

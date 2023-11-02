@@ -48,11 +48,9 @@ final class TransactionTable extends PowerGridComponent
     ];
 
 
-    public function updatedMyFilters($value, $key)
+    public function updatedMyFilters($value, $key): void
     {
-        if ($key == "employee_id") {
-            $this->gotoPage(1);
-        }
+        $this->gotoPage(1);
     }
 
     /**

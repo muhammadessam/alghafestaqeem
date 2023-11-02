@@ -3,6 +3,7 @@
 namespace App\Livewire\EvaluationTransaction;
 
 use App\Models\Evaluation\EvaluationTransaction;
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use WireUi\Traits\Actions;
@@ -13,7 +14,7 @@ class Index extends Component
     use  Actions;
 
     public ?EvaluationTransaction $selected = null;
-
+    public ?int $company = null;
     public $city_id = null;
     public $evaluation_company_id = null;
     public $review_id = null;
@@ -25,6 +26,11 @@ class Index extends Component
     public bool $status_modal = false;
 
     protected $listeners = ['edit', 'editStatus'];
+
+    public function mount($company): void
+    {
+        $this->company = $company;
+    }
 
     public function editStatus(EvaluationTransaction $model): void
     {
@@ -84,7 +90,7 @@ class Index extends Component
         $this->notification()->success('تم الحفظ بنجاح', 'تم حفظ الحالة بنجاح');
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.evaluation-transaction.index');
     }
