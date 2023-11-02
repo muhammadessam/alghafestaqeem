@@ -14,7 +14,7 @@ class Index extends Component
     use  Actions;
 
     public ?EvaluationTransaction $selected = null;
-    public ?int $company = null;
+    public $company = null;
     public $city_id = null;
     public $evaluation_company_id = null;
     public $review_id = null;
@@ -27,7 +27,7 @@ class Index extends Component
 
     protected $listeners = ['edit', 'editStatus'];
 
-    public function mount($company): void
+    public function mount($company=null): void
     {
         $this->company = $company;
     }

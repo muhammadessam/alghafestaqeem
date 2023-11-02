@@ -25,7 +25,7 @@ final class TransactionTable extends PowerGridComponent
 
     public string $sortDirection = 'desc';
     public $new_data = null;
-    public int $company;
+    public ?int $company;
     public bool $edit_modal = false;
     public string $loadingComponent = 'components.my-custom-loading';
 
