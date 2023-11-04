@@ -23,6 +23,7 @@ class GeneratePdf extends Component
     public ?string $city = '';
     public ?string $area = '';
     public ?string $serial = '';
+    public $duration = 15;
     public ?string $general_type = '';
     public ?string $price_in_words = '';
 
@@ -82,6 +83,7 @@ class GeneratePdf extends Component
             'groups.*.number' => 'required',
             'groups.*.type' => 'required',
             'groups.*.price' => 'required|numeric',
+            'duration'=>'required|numeric',
         ], [], [
             'title' => 'اللقب',
             'client_name' => 'اسم العميل',
@@ -94,6 +96,7 @@ class GeneratePdf extends Component
             'groups.*.number' => 'رقم الصك',
             'groups.*.type' => 'نوع العقار',
             'groups.*.price' => 'السعر',
+            'duration'=>'مدة الانجاز'
         ]);
         $line_starts = 10;
         $page_width = 190;
@@ -145,7 +148,7 @@ class GeneratePdf extends Component
                 $pdf->Cell($page_width / 2, 8, 'اجمالي القيمة + الضريبة كتابةً ', 'TLRB', 0, 'R', 1);
                 $pdf->Cell($page_width / 2, 8, $this->price_in_words, 'TLRB', 1, 'R', 1);
                 $pdf->setFillColor(255, 255, 255);
-                $html_txt = '<ul> <li>مدة الانجاز 15 يوم عمل بعد استلام جميع المستندات الازمةلانجاز المهمة</li> <li>وعليه نرجو منكم تحويل قيمة اتعاب التقييم علي الحساب البنكي التالي: </li> </ul>';
+                $html_txt = "<ul> <li>مدة الانجاز {$this->duration} يوم عمل بعد استلام جميع المستندات الازمةلانجاز المهمة</li> <li>وعليه نرجو منكم تحويل قيمة اتعاب التقييم علي الحساب البنكي التالي: </li> </ul>";
                 $pdf->setX($line_starts);
                 $pdf->MultiCell($page_width, 20, $html_txt, 'TLRB', 'R', 1, ln: 1, ishtml: true, valign: 'M');
                 $pdf->setX($line_starts);

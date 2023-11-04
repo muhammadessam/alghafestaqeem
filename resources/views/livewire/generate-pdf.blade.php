@@ -23,6 +23,7 @@
                                 <x-input class="mb-3" label="اسم العميل" wire:model.live="client_name"/>
                                 <x-input class="mb-3" label="النوع" wire:model.live="general_type"/>
                                 <x-input class="mb-3" label="الحي" wire:model.live="area"/>
+                                <x-input type="number" step="1" class="mb-3" label="مدة الانجاز" wire:model.live="duration"/>
                             </div>
                         </div>
                     </div>
