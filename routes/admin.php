@@ -10,7 +10,10 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 /*-*-*-*-*-*-*-*-*--*--*---** Agent Panel URL *---*-*--*-*-*-*-*-*-*-*-*-*-**/
+
+use Illuminate\Http\Request;
 
 Route::get('lang/{locale}', function ($locale) {
     Session::put('lang', $locale);
@@ -100,5 +103,11 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\Admin', 'as' => 'admin.'],
         Route::get('/chick_instrument_number/{value}', 'Evaluation\\TransactionsController@chick_instrument_number');
 
 
+        /*
+         * Adding pdf function an
+         */
+        Route::get('input-to-pdf', function () {
+            return view('admin.pdf.form');
+        })->name('pdf.form');
     });
 });

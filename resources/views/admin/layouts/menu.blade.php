@@ -17,18 +17,23 @@
                 </a>
             </li>
         @endif
-
+        <li class="nav-item {{ Request::routeIs('admin.pdf.form') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.pdf.form') }}">
+                <i class="icon-list menu-icon"></i>
+                <span class="menu-title">@lang('admin.price_offer') </span>
+            </a>
+        </li>
         @if (can('evaluation-transactions.index') || can('evaluation-companies.index') || can('evaluation-employees.index'))
             <li
                 class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*')  || Request::routeIs('admin.cities.*') || Request::routeIs('admin.evaluation-companies.*') || Request::routeIs('admin.evaluation-employees.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#evaluation-elements" aria-expanded="false"
-                    aria-controls="evaluation-elements">
+                   aria-controls="evaluation-elements">
                     <i class="icon-wallet menu-icon"></i>
                     <span class="menu-title">@lang('admin.EvaluationTransaction')</span>
                     <i class="menu-arrow"></i>
                 </a>
                 <div class="collapse {{ Request::routeIs('admin.evaluation-transactions.*') || Request::routeIs('admin.cities.*') || Request::routeIs('admin.evaluation-companies.*') || Request::routeIs('admin.evaluation-employees.*') ? 'show' : '' }}"
-                    id="evaluation-elements">
+                     id="evaluation-elements">
                     <ul class="nav flex-column sub-menu">
                         @if (can('evaluation-transactions.index'))
                             <li
@@ -47,8 +52,8 @@
                                 </a>
                             </li>
                         @endif
-                        
-                         @if (can('evaluation-transactions.index'))
+
+                        @if (can('evaluation-transactions.index'))
                             <li
                                 class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
                                 <a class="nav-link" href="{{ url('admin/Company-All-Transactions') }}">
@@ -64,7 +69,7 @@
                                 </a>
                             </li>
                         @endif
-                          @if (can('evaluation-transactions.index'))
+                        @if (can('evaluation-transactions.index'))
                             <li
                                 class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
                                 <a class="nav-link" href="{{ url('admin/company_transactions') }}">
@@ -72,7 +77,7 @@
                                 </a>
                             </li>
                         @endif
-                         @if (can('evaluation-transactions.index'))
+                        @if (can('evaluation-transactions.index'))
                             <li
                                 class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
                                 <a class="nav-link" href="{{ url('admin/user_transactions') }}">
@@ -98,7 +103,7 @@
                                 </a>
                             </li>
                         @endif
-                        
+
                         @if (can('cities.index'))
 
                             <li class="nav-item {{ Request::routeIs('admin.cities.*') ? 'activeItem' : '' }}">
@@ -117,13 +122,13 @@
             <li
                 class="nav-item {{ Request::routeIs('admin.admins.*') || Request::routeIs('admin.roles.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#admins-elements" aria-expanded="false"
-                    aria-controls="admins-elements">
+                   aria-controls="admins-elements">
                     <i class="icon-people menu-icon"></i>
                     <span class="menu-title">@lang('admin.Admins')</span>
                     <i class="menu-arrow"></i>
                 </a>
                 <div class="collapse {{ Request::routeIs('admin.admins.*') || Request::routeIs('admin.roles.*') ? 'show' : '' }}"
-                    id="admins-elements">
+                     id="admins-elements">
                     <ul class="nav flex-column sub-menu">
                         @if (can('admins.index'))
                             <li class="nav-item {{ Request::routeIs('admin.admins.*') ? 'activeItem' : '' }}">
@@ -164,7 +169,7 @@
             </li>
         @endif
         <!---->
-           @if (can('services.index'))
+        @if (can('services.index'))
             <li class="nav-item {{ Request::routeIs('admin.privacy.*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.privacy.index') }}">
                     <i class="icon-user menu-icon"></i>
@@ -172,11 +177,11 @@
                 </a>
             </li>
         @endif
-        
-        
-        
-        
-        
+
+
+
+
+
         <!---->
 
         @if (can('counters.index'))
@@ -236,13 +241,13 @@
             <li
                 class="nav-item {{ Request::routeIs('admin.types.*') || Request::routeIs('admin.entities.*') || Request::routeIs('admin.goals.*') || Request::routeIs('admin.usages.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#categories-elements" aria-expanded="false"
-                    aria-controls="categories-elements">
+                   aria-controls="categories-elements">
                     <i class="icon-equalizer menu-icon"></i>
                     <span class="menu-title">@lang('admin.Categories')</span>
                     <i class="menu-arrow"></i>
                 </a>
                 <div class="collapse {{ Request::routeIs('admin.types.*') || Request::routeIs('admin.entities.*') || Request::routeIs('admin.goals.*') || Request::routeIs('admin.usages.*') ? 'show' : '' }}"
-                    id="categories-elements">
+                     id="categories-elements">
                     <ul class="nav flex-column sub-menu">
                         @if (can('goals.index'))
 
@@ -276,15 +281,14 @@
                                 </a>
                             </li>
                         @endif
-                        
-                        
+
 
                     </ul>
                 </div>
             </li>
         @endif
         <!---->
-         @if (can('admins.index'))
+        @if (can('admins.index'))
             <li class="nav-item {{ Request::routeIs('admin.backup_database.*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.backup_database') }}">
                     <i class="icon-list download-icon"></i>
@@ -292,8 +296,8 @@
                 </a>
             </li>
         @endif
-        
-        
+
+
         <!---->
 
     </ul>
