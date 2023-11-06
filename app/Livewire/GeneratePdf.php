@@ -100,6 +100,7 @@ class GeneratePdf extends Component
         ]);
         $line_starts = 10;
         $page_width = 190;
+
         $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
         $pageCount = $pdf->setSourceFile(public_path('template.pdf'));
@@ -109,8 +110,7 @@ class GeneratePdf extends Component
         $lg['a_meta_language'] = 'fa';
         $lg['w_page'] = 'page';
         $pdf->setLanguageArray($lg);
-        $fontname = \TCPDF_FONTS::addTTFfont(public_path('ge_ss.otf'));
-        $pdf->SetFont($fontname, '', 12, false);
+        $pdf->SetFont('aealarabiya', '', 12, false);
         for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
             $templateId = $pdf->importPage($pageNo);
             $pdf->AddPage();
@@ -124,16 +124,23 @@ class GeneratePdf extends Component
                 $pdf->Cell(0, 0, 'مدينة ' . $this->city, 0, 1, 'C', 0, '', 1);
                 $pdf->Cell(0, 0, 'حي ' . $this->area, 0, 1, 'C', 0, '', 1);
                 $pdf->setY(200);
+                $pdf->setFontSize(20);
                 $pdf->Cell(0, 0, $this->serial, 0, 1, 'C', 0, '', 1);
                 $pdf->Cell(0, 0, \Carbon\Carbon::now()->toDateString(), 0, 1, 'C', 0, '', 1);
             } elseif ($pageNo == 2) {
-                $pdf->setFontSize(14);
-                $pdf->MultiCell(60, 0, 'الموضوع: عرض سعر باتعاب التقييم', 0, 'R', 0, 1, 18, 35);
-                $pdf->MultiCell(50, 0, \Carbon\Carbon::now()->toDateString(), 0, 'R', 0, 1, 165, 35);
+                $pdf->setFontSize(12);
+                $pdf->MultiCell(0.7*$page_width, 0, 'الموضوع: عرض سعر باتعاب التقييم', 0, 'R', 0, 0, 18, 35);
+                $pdf->setFontSize(10);
+                $pdf->MultiCell(50, 0, \Carbon\Carbon::now()->toDateString(), 0, 'L', 0, 1);
                 $pdf->Ln(4);
                 $pdf->setX($line_starts);
-                $pdf->Cell(0, 5, $this->title . '/' . $this->client_name, 0, 2, 'R', 0, '', 1);
+                $pdf->setFontSize(16);
+                $pdf->MultiCell(0.7 * $page_width, 5, $this->title . '/' . $this->client_name, 0, 'R', 0, 0);
+                $pdf->setFontSize(10);
+                $pdf->MultiCell(0, 5, 'المحترمون', 0, 'L', 0, 1);
+                $pdf->setFontSize(10);
                 $pdf->Cell(0, 10, 'السلام عليكم ورحمة الله وبركاته', 0, 2, 'R', 0, '', 1);
+                $pdf->setFontSize(12);
                 $txt = 'بناء علي طلبكم بخصوص تقديم عرض سعر اتعاب تقييم ' . $this->general_type . ' بمدينة ' . $this->city . ' وذلك لغرض ( ' . $this->purpose . ' ) نفيدكم باستعدادنا للقيام بأعمال التقييم وفقا للمعايير الدولية التقييم الدولية (IVS) لسنة (2022)، كما نود إبلاغكم بقيمة أتعاب الأعمال مفصلة كالتالي: ';
                 $pdf->setX($line_starts);
                 $pdf->MultiCell(0, 5, $txt . "\n", 0, 'R', 0, 2, $line_starts, '', true, 0, true);
@@ -161,9 +168,10 @@ class GeneratePdf extends Component
                 $pdf->setX($line_starts);
                 $pdf->setFillColor(255, 255, 255);
                 $pdf->setTextColor(0, 0, 0);
-                $pdf->MultiCell(0.4 * $page_width, 15, 'شركة صالح علي الغفيص للتقييم العقاري مهنية شركة شخص واحد', 1, 'C', 0, 0, valign: 'M');
-                $pdf->MultiCell(0.2 * $page_width, 15, 'مصرف الجزيرة', 1, 'C', 1, 0, valign: 'M');
-                $pdf->MultiCell(0.4 * $page_width, 15, 'SA2360100002694445569001', 1, 'C', 0, 0, valign: 'M');
+                $path = public_path('bank.jpg');
+                $pdf->MultiCell(0.4 * $page_width, 17, 'شركة صالح علي الغفيص للتقييم العقاري مهنية شركة شخص واحد', 1, 'C', 0, 0, valign: 'M');
+                $pdf->writeHTMLCell(0.2 * $page_width, 17, null, null, '<img src="' . $path . '" />', 1, 0, false, false, 'C', true);
+                $pdf->MultiCell(0.4 * $page_width, 17, 'SA2360100002694445569001', 1, 'C', 0, 0, valign: 'M');
 
 
             }
