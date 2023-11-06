@@ -83,7 +83,7 @@ class GeneratePdf extends Component
             'groups.*.number' => 'required',
             'groups.*.type' => 'required',
             'groups.*.price' => 'required|numeric',
-            'duration'=>'required|numeric',
+            'duration' => 'required|numeric',
         ], [], [
             'title' => 'اللقب',
             'client_name' => 'اسم العميل',
@@ -96,7 +96,7 @@ class GeneratePdf extends Component
             'groups.*.number' => 'رقم الصك',
             'groups.*.type' => 'نوع العقار',
             'groups.*.price' => 'السعر',
-            'duration'=>'مدة الانجاز'
+            'duration' => 'مدة الانجاز'
         ]);
         $line_starts = 10;
         $page_width = 190;
@@ -109,13 +109,14 @@ class GeneratePdf extends Component
         $lg['a_meta_language'] = 'fa';
         $lg['w_page'] = 'page';
         $pdf->setLanguageArray($lg);
-        $pdf->SetFont('aealarabiya', '', 12);
+        $fontname = \TCPDF_FONTS::addTTFfont(public_path('ge_ss.otf'));
+        $pdf->SetFont($fontname, '', 12, false);
         for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
             $templateId = $pdf->importPage($pageNo);
             $pdf->AddPage();
             $pdf->useTemplate($templateId, ['adjustPageSize' => true]);
             if ($pageNo == 1) {
-                $pdf->setFontSize(36);
+                $pdf->setFontSize(36, 'B', '');
                 $pdf->setY(105);
                 $pdf->Cell(0, 0, 'عرض سعر', 0, 1, 'C', 0, '', 1);
                 $pdf->setFontSize(24);
