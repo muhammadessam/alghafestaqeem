@@ -27,26 +27,36 @@ class Index extends Component
 
     protected $listeners = ['edit', 'editStatus'];
 
-    public function mount($company=null): void
+    public function mount($company = null): void
     {
         $this->company = $company;
     }
 
     public function editStatus(EvaluationTransaction $model): void
     {
-        $this->selected = $model;
-        $this->status = $model->status;
-        $this->status_modal = true;
+        if ($model->status != 4 || auth()->user()->hasRole('super-admin')) {
+            $this->selected = $model;
+            $this->status = $model->status;
+            $this->status_modal = true;
+        } else {
+            $this->notification()->error('لا يمكنك التعديل', 'التعديل غير مسموح بعد اكتمال الحال');
+        }
+
     }
 
     public function edit(EvaluationTransaction $model): void
     {
-        $this->fill($model);
-        $this->selected = $model;
-        $this->details_modal = true;
+        if ($model->status != 4 || auth()->user()->hasRole('super-admin')) {
+            $this->fill($model);
+            $this->selected = $model;
+            $this->details_modal = true;
+        } else {
+            $this->notification()->error('لا يمكنك التعديل', 'التعديل غير مسموح بعد اكتمال الحال');
+        }
     }
 
-    public function save(): void
+    public
+    function save(): void
     {
         $this->selected->update([
             'city_id' => $this->city_id,
@@ -62,7 +72,8 @@ class Index extends Component
         $this->notification()->success('تم الحفظ بنجاح', 'تم حفظ تفاصيل المعاملة بنجاح');
     }
 
-    public function updatedPreviewerId($value): void
+    public
+    function updatedPreviewerId($value): void
     {
         if ($value != null and $this->selected->previewer_id == null) {
             $this->status = 3;
@@ -72,7 +83,8 @@ class Index extends Component
         }
     }
 
-    public function updatedReviewId($value): void
+    public
+    function updatedReviewId($value): void
     {
         if ($value != null and $this->selected->review_id == null)
             $this->status = 4;
@@ -80,7 +92,8 @@ class Index extends Component
             $this->status = 3;
     }
 
-    public function updateStatus(): void
+    public
+    function updateStatus(): void
     {
         $this->selected->update([
             'status' => $this->status
@@ -90,7 +103,8 @@ class Index extends Component
         $this->notification()->success('تم الحفظ بنجاح', 'تم حفظ الحالة بنجاح');
     }
 
-    public function render(): View
+    public
+    function render(): View
     {
         return view('livewire.evaluation-transaction.index');
     }
