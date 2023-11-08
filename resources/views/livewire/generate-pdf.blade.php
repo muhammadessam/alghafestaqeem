@@ -20,10 +20,10 @@
                                 <x-input class="mb-3" label="الغرض من التقييم" wire:model.live="purpose"/>
                             </div>
                             <div class="col">
-                                <x-input class="mb-3" label="اسم العميل" wire:model.live="client_name"/>
-                                <x-input class="mb-3" label="النوع" wire:model.live="general_type"/>
-                                <x-input class="mb-3" label="الحي" wire:model.live="area"/>
-                                <x-input type="number" step="1" class="mb-3" label="مدة الانجاز" wire:model.live="duration"/>
+                                <x-input class="mb-3" label="اسم العميل" wire:model.debounce="client_name"/>
+                                <x-input class="mb-3" label="النوع" wire:model.debounce="general_type"/>
+                                <x-input class="mb-3" label="الحي" wire:model.debounce="area"/>
+                                <x-input type="number" step="1" class="mb-3" label="مدة الانجاز" wire:model.debounce="duration"/>
                             </div>
                         </div>
                     </div>
@@ -46,11 +46,11 @@
                                     />
                                 </div>
                                 <div class="col">
-                                    <x-input  wire:model.live="groups.{{$index}}.number" label="رقم الصك"/>
+                                    <x-input wire:model.debounce="groups.{{$index}}.number" label="رقم الصك"/>
                                 </div>
                                 <div class="col">
                                     <div class="flex items-end">
-                                        <x-input type="number" step="0.1" wire:model.live="groups.{{$index}}.price" label="الاتعاب">
+                                        <x-input type="number" step="0.1" wire:model.live.debounce.1000ms="groups.{{$index}}.price" label="الاتعاب">
                                             <x-slot name="prepend">
                                                 <div class="absolute inset-y-0 left-0 flex items-center p-0.5">
                                                     <x-button primary flat squared icon="minus-circle" wire:click="removeGroup('{{$index}}')"/>
@@ -59,34 +59,36 @@
                                         </x-input>
                                     </div>
                                 </div>
-                                @if(isset($groups[$index]['price']) and is_numeric($groups[$index]['price']))
-                                    <div class="col">
-                                        <span class="d-block font-bold">الضريبة 15% :</span>
+                                <div class="col">
+                                    <span class="d-block font-bold">الضريبة 15% :</span>
+                                    @if(isset($groups[$index]['price']) and is_numeric($groups[$index]['price']))
                                         <span class="d-block mt-3 font-bold">{{$groups[$index]['price'] * 0.15}}</span>
-                                    </div>
-                                    <div class="col">
-                                        <span class="d-block font-bold">المجموع: </span>
+                                    @endif
+                                </div>
+                                <div class="col">
+                                    <span class="d-block font-bold">المجموع: </span>
+                                    @if(isset($groups[$index]['price']) and is_numeric($groups[$index]['price']))
                                         <span class="d-block mt-3 font-bold">{{($groups[$index]['price'] * 0.15) + $groups[$index]['price']}}</span>
-                                    </div>
-                                @endif
+                                    @endif
+                                </div>
                             </div>
                         @endforeach
                         <div class="row">
                             <div class="col"></div>
                             <div class="col"></div>
                             <div class="col"></div>
-                            <div class="col font-bold">الاجمالي: </div>
+                            <div class="col font-bold">الاجمالي:</div>
                             <div class="col">{{collect($groups)->sum('total')}}</div>
                         </div>
-                            <div class="row">
-                                <div class="col"></div>
-                                <div class="col"></div>
-                                <div class="col"></div>
-                                <div class="col font-bold">مجموع الارقام كتابة</div>
-                                <div class="col">
-                                    <x-input wire:model.live="price_in_words"></x-input>
-                                </div>
+                        <div class="row">
+                            <div class="col"></div>
+                            <div class="col"></div>
+                            <div class="col"></div>
+                            <div class="col font-bold">مجموع الارقام كتابة</div>
+                            <div class="col">
+                                <x-input wire:model.live="price_in_words"></x-input>
                             </div>
+                        </div>
                         <div class="row mt-5">
                             <div class="col">
                                 <x-button label="انشاء الملف" wire:click="generate"></x-button>
