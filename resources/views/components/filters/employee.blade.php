@@ -47,21 +47,23 @@
         wire:model.live="my_filters.city_id"
         :clearable="true"
     />
-    <x-datetime-picker
-        :label="trans('admin.LastUpdate'). ' من'"
-        :without-time="true"
-        wire:model.live="my_filters.from_date"
-        dir="ltr"
-        display-format="YYYY-MM-DD"
-    />
-    <x-datetime-picker
-        :label="trans('admin.LastUpdate'). ' الي'"
-        :without-time="true"
-        wire:model.live="my_filters.to_date"
-        dir="ltr"
-        display-format="YYYY-MM-DD"
+    @if(!$is_daily)
+        <x-datetime-picker
+            :label="trans('admin.LastUpdate'). ' من'"
+            :without-time="true"
+            wire:model.live="my_filters.from_date"
+            dir="ltr"
+            display-format="YYYY-MM-DD"
+        />
+        <x-datetime-picker
+            :label="trans('admin.LastUpdate'). ' الي'"
+            :without-time="true"
+            wire:model.live="my_filters.to_date"
+            dir="ltr"
+            display-format="YYYY-MM-DD"
+        />
+    @endif
 
-    />
     @if(isset($my_filters['employee_id']))
         @php
             $emp = $my_filters['employee_id'];

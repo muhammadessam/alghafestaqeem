@@ -1,6 +1,6 @@
 <div>
 
-    <livewire:transaction-table :company="$company"></livewire:transaction-table>
+    <livewire:transaction-table :is_daily="$is_daily" :company="$company"></livewire:transaction-table>
 
     <x-modal.card squared align="center" wire:model.live="status_modal" :title="__('admin.ChangeStatus')">
         <x-select
@@ -77,6 +77,5 @@
             <x-button class="btn btn-secondary" x-on:click="close">{{__('admin.Cancel')}}</x-button>
         </x-slot:footer>
     </x-modal.card>
-
 
 </div>

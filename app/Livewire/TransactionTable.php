@@ -29,6 +29,8 @@ final class TransactionTable extends PowerGridComponent
     public bool $edit_modal = false;
     public string $loadingComponent = 'components.my-custom-loading';
 
+    public bool $is_daily = false;
+
     protected function getListeners()
     {
         return array_merge([
@@ -85,6 +87,9 @@ final class TransactionTable extends PowerGridComponent
         $query = EvaluationTransaction::query();
         if (isset($this->company)) {
             $query->where('evaluation_company_id', $this->company);
+        }
+        if ($this->is_daily) {
+            $query->whereDate('created_at', today()->toDateString());
         }
         return $query->filters($this->my_filters)->with(['city', 'review', 'company', 'previewer', 'income']);
     }

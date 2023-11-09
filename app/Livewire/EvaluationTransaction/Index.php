@@ -12,7 +12,7 @@ class Index extends Component
 {
 
     use  Actions;
-
+    public bool $is_daily= false;
     public ?EvaluationTransaction $selected = null;
     public $company = null;
     public $city_id = null;
