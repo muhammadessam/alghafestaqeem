@@ -8,7 +8,12 @@
                 </a>
             </li>
         @endif
-
+        <li class="nav-item {{ Request::routeIs('admin.statistics.index') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.statistics.index') }}">
+                <i class="icon-stack-2 menu-icon"></i>
+                <span class="menu-title">@lang('admin.statistics') </span>
+            </a>
+        </li>
         @if (can('rates.index'))
             <li class="nav-item {{ Request::routeIs('admin.rates.*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.rates.index') }}">
@@ -25,7 +30,7 @@
         </li>
         @if (can('evaluation-transactions.index') || can('evaluation-companies.index') || can('evaluation-employees.index'))
             <li
-                class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*')  || Request::routeIs('admin.cities.*') || Request::routeIs('admin.evaluation-companies.*') || Request::routeIs('admin.evaluation-employees.*') ? 'active' : '' }}">
+                    class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*')  || Request::routeIs('admin.cities.*') || Request::routeIs('admin.evaluation-companies.*') || Request::routeIs('admin.evaluation-employees.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#evaluation-elements" aria-expanded="false"
                    aria-controls="evaluation-elements">
                     <i class="icon-wallet menu-icon"></i>
@@ -37,7 +42,7 @@
                     <ul class="nav flex-column sub-menu">
                         @if (can('evaluation-transactions.index'))
                             <li
-                                class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
+                                    class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
                                 <a class="nav-link" href="{{ route('admin.evaluation-transactions.index') }}">
                                     @lang('admin.EvaluationTransactions')
                                 </a>
@@ -46,7 +51,7 @@
                         <!-- sh -->
                         @if (can('evaluation-transactions.index'))
                             <li
-                                class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
+                                    class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
                                 <a class="nav-link" href="{{ url('admin/daily-transactions') }}">
                                     @lang('admin.dailyTransactions')
                                 </a>
@@ -55,7 +60,7 @@
 
                         @if (can('evaluation-transactions.index'))
                             <li
-                                class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
+                                    class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
                                 <a class="nav-link" href="{{ url('admin/Company-All-Transactions') }}">
                                     @lang('admin.TransactionsAllCompany')
                                 </a>
@@ -63,7 +68,7 @@
                         @endif
                         @if (can('evaluation-transactions.index'))
                             <li
-                                class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
+                                    class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
                                 <a class="nav-link" href="{{ url('admin/Review-transactions') }}">
                                     @lang('admin.reviewTransactions')
                                 </a>
@@ -71,7 +76,7 @@
                         @endif
                         @if (can('evaluation-transactions.index'))
                             <li
-                                class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
+                                    class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
                                 <a class="nav-link" href="{{ url('admin/company_transactions') }}">
                                     @lang('admin.company_transactions')
                                 </a>
@@ -79,7 +84,7 @@
                         @endif
                         @if (can('evaluation-transactions.index'))
                             <li
-                                class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
+                                    class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
                                 <a class="nav-link" href="{{ url('admin/user_transactions') }}">
                                     @lang('admin.user_transactions')
                                 </a>
@@ -88,7 +93,7 @@
                         <!---->
                         @if (can('evaluation-companies.index'))
                             <li
-                                class="nav-item {{ Request::routeIs('admin.evaluation-companies.*') ? 'activeItem' : '' }}">
+                                    class="nav-item {{ Request::routeIs('admin.evaluation-companies.*') ? 'activeItem' : '' }}">
                                 <a class="nav-link" href="{{ route('admin.evaluation-companies.index') }}">
                                     @lang('admin.EvaluationCompanies')
                                 </a>
@@ -97,7 +102,7 @@
                         @if (can('evaluation-employees.index'))
 
                             <li
-                                class="nav-item {{ Request::routeIs('admin.evaluation-employees.*') ? 'activeItem' : '' }}">
+                                    class="nav-item {{ Request::routeIs('admin.evaluation-employees.*') ? 'activeItem' : '' }}">
                                 <a class="nav-link" href="{{ route('admin.evaluation-employees.index') }}">
                                     @lang('admin.EvaluationEmployees')
                                 </a>
@@ -120,7 +125,7 @@
         @endif
         @if (can('admins.index') || can('roles.index'))
             <li
-                class="nav-item {{ Request::routeIs('admin.admins.*') || Request::routeIs('admin.roles.*') ? 'active' : '' }}">
+                    class="nav-item {{ Request::routeIs('admin.admins.*') || Request::routeIs('admin.roles.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#admins-elements" aria-expanded="false"
                    aria-controls="admins-elements">
                     <i class="icon-people menu-icon"></i>
@@ -239,7 +244,7 @@
         @endif
         @if (can('types.index') || can('goals.index') || can('entities.index') || can('usages.index'))
             <li
-                class="nav-item {{ Request::routeIs('admin.types.*') || Request::routeIs('admin.entities.*') || Request::routeIs('admin.goals.*') || Request::routeIs('admin.usages.*') ? 'active' : '' }}">
+                    class="nav-item {{ Request::routeIs('admin.types.*') || Request::routeIs('admin.entities.*') || Request::routeIs('admin.goals.*') || Request::routeIs('admin.usages.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#categories-elements" aria-expanded="false"
                    aria-controls="categories-elements">
                     <i class="icon-equalizer menu-icon"></i>

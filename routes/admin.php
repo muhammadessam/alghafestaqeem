@@ -103,11 +103,7 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\Admin', 'as' => 'admin.'],
         Route::get('/chick_instrument_number/{value}', 'Evaluation\\TransactionsController@chick_instrument_number');
 
 
-        /*
-         * Adding pdf function an
-         */
-        Route::get('input-to-pdf', function () {
-            return view('admin.pdf.form');
-        })->name('pdf.form');
+        Route::view('input-to-pdf', 'admin.pdf.form')->name('pdf.form');
+        Route::view('statistics', 'admin.statistics.index')->name('statistics.index');
     });
 });

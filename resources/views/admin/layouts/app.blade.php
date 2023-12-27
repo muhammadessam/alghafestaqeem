@@ -21,61 +21,66 @@
 
         </style>
     @endif
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
     @yield('css')
 
 </head>
 
 <body class="@if (app()->getLocale() == 'ar') rtl @endif">
-    <div class="container-scroller soft-scrollbar">
+<div class="container-scroller soft-scrollbar">
 
-        <!-- partial:partials/_navbar.html -->
-        @include('admin.layouts.navbar')
+    <!-- partial:partials/_navbar.html -->
+    @include('admin.layouts.navbar')
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_settings-panel.html -->
+        @include('admin.layouts.sidebar')
         <!-- partial -->
-        <div class="container-fluid page-body-wrapper">
-            <!-- partial:partials/_settings-panel.html -->
-            @include('admin.layouts.sidebar')
-            <!-- partial -->
 
-            <!-- partial:partials/_sidebar.html -->
-            @include('admin.layouts.menu')
-            <!-- partial -->
-            <div class="main-panel">
-                <div class="content-wrapper">
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+        <!-- partial:partials/_sidebar.html -->
+        @include('admin.layouts.menu')
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-                    @if (Session::has('message'))
-                        <div class="alert alert-success"> {{ Session::get('message') }}</div>
-                    @endif
-                    @include('flash::message')
-                    @yield('content')
-                </div>
-                <!-- content-wrapper ends -->
-                <!-- partial:partials/_footer.html -->
-                <footer class="footer">
-                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                @if (Session::has('message'))
+                    <div class="alert alert-success"> {{ Session::get('message') }}</div>
+                @endif
+                @include('flash::message')
+                @yield('content')
+            </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:partials/_footer.html -->
+            <footer class="footer">
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
                         <span
                             class="text-muted text-center text-sm-left d-block d-sm-inline-block">{{ $setting->footer }}</span>
 
-                    </div>
-                </footer>
-                <!-- partial -->
-            </div>
-            <!-- main-panel ends -->
+                </div>
+            </footer>
+            <!-- partial -->
         </div>
-        <!-- page-body-wrapper ends -->
+        <!-- main-panel ends -->
     </div>
-    <!-- container-scroller -->
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
 
-    @include('admin.layouts.js')
-    @yield('js')
+@include('admin.layouts.js')
+@yield('js')
 
 </body>
 
