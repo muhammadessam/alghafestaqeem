@@ -20,6 +20,21 @@
                 <livewire:status-count-widget/>
             </div>
         </div>
+        <div class="row mt-2">
+            <div class="col">
+                <livewire:entry-employee-count-widget/>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <livewire:previewer-employee-count-widget/>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <livewire:reviewer-employee-count-widget/>
+            </div>
+        </div>
     </div>
 @endsection
 @section('js')
