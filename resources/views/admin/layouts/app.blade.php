@@ -6,7 +6,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title> {{ $setting ? $setting->title . ' | ' : '' }} @yield('tab_name')</title>
-    @include('admin.layouts.css')
 
     <link rel="shortcut icon" href="{{ $setting->imagePath('logo') ?? asset('/images/logo.png') }}">
     @if (app()->getLocale() == 'ar')
@@ -27,6 +26,7 @@
         }
     </style>
     @yield('css')
+    @include('admin.layouts.css')
 
 </head>
 
@@ -79,8 +79,8 @@
 </div>
 <!-- container-scroller -->
 
-@include('admin.layouts.js')
 @yield('js')
+@include('admin.layouts.js')
 
 </body>
 

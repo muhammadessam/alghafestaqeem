@@ -86,7 +86,7 @@ class EvaluationTransaction extends Model
             });
         })->when($filters['company_id'] ?? false, function (Builder $builder, $comp_id) {
             $builder->whereIn('evaluation_company_id', $comp_id);
-        })->when(!is_null($filters['status']), function (Builder $builder) use ($filters) {
+        })->when(array_key_exists('status', $filters) and !is_null($filters['status']), function (Builder $builder) use ($filters) {
             $builder->where('status', '=', $filters['status']);
         })->when($filters['city_id'] ?? false, function (Builder $builder, $city) {
             $builder->where('city_id', $city);
@@ -94,6 +94,10 @@ class EvaluationTransaction extends Model
             $builder->whereDate('updated_at', '>=', $from);
         })->when($filters['to_date'] ?? false, function (Builder $builder, $to) {
             $builder->whereDate('updated_at', '<=', $to);
+        })->when($filters['created_at_from'] ?? false, function (Builder $builder, $created_at_from) {
+            $builder->whereDate('created_at' . '>=', $created_at_from);
+        })->when($filters['created_at_to'] ?? false, function (Builder $builder, $created_at_to) {
+            $builder->whereDate('created_at', '<=', $created_at_to);
         })->when($filters['transaction_number'] ?? false, function (Builder $builder, $transaction_number) {
             $builder->where('transaction_number', 'LIKE', '%' . $transaction_number . '%');
         });
@@ -180,5 +184,26 @@ class EvaluationTransaction extends Model
 
 
         return $value;
+    }
+
+    public function getStatusWordsAttribute(): string
+    {
+        if ($this->status == 0) {
+            return __('admin.NewTransaction');
+        } elseif ($this->status == 1) {
+            return __('admin.InReviewRequest');
+        } elseif ($this->status == 2) {
+            return __('admin.ContactedRequest');
+        } elseif ($this->status == 3) {
+            return __('admin.ReviewedRequest');
+        } elseif ($this->status == 4) {
+            return __('admin.FinishedRequest');
+        } elseif ($this->status == 5) {
+            return __('admin.PendingRequest');
+        } elseif ($this->status == 6) {
+            return __('admin.Cancelled');
+        } else {
+            return '';
+        }
     }
 }

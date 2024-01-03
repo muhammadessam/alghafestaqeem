@@ -7,10 +7,19 @@
 
 @section('content')
     <div class="w-full" dir="rtl">
-        <div class="col-6">
-            @livewire(\App\Livewire\BlogPostsChart::class)
+        <div class="row mb-5">
+            <div class="col-12">
+                <livewire:filters/>
+            </div>
         </div>
-        <div class="col-6"></div>
+        <div class="row">
+            <div class="col-6">
+                <livewire:companies-count-widget/>
+            </div>
+            <div class="col-6">
+                <livewire:status-count-widget/>
+            </div>
+        </div>
     </div>
 @endsection
 @section('js')
