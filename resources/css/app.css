@@ -5,3 +5,7 @@
 .collapse {
     visibility: inherit !important;
 }
+
+.fi-input-wrp {
+    border: lightgrey 1px solid;
+}

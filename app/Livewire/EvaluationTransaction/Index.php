@@ -2,17 +2,25 @@
 
 namespace App\Livewire\EvaluationTransaction;
 
+use App\Models\Category;
+use App\Models\Evaluation\EvaluationCompany;
+use App\Models\Evaluation\EvaluationEmployee;
 use App\Models\Evaluation\EvaluationTransaction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Illuminate\Contracts\View\View;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
-use WireUi\Traits\Actions;
 
-class Index extends Component
+class Index extends Component implements HasForms
 {
 
-    use  Actions;
-    public bool $is_daily= false;
+    use  InteractsWithForms;
+
+    public bool $is_daily = false;
     public ?EvaluationTransaction $selected = null;
     public $company = null;
     public $city_id = null;
@@ -32,14 +40,58 @@ class Index extends Component
         $this->company = $company;
     }
 
+    public function form(Form $form): Form
+    {
+        return $form->schema([
+            Select::make('city_id')
+                ->label(trans('admin.city'))
+                ->searchable()
+                ->live()
+                ->options(Category::where('type', 4)->pluck('title', 'id'))
+                ->preload(),
+
+            Select::make('evaluation_company_id')
+                ->label(trans('admin.EvaluationCompanies'))
+                ->live()
+                ->options(EvaluationCompany::all()->pluck('title', 'id'))
+                ->preload()
+                ->searchable(),
+
+            Select::make('review_id')
+                ->label(trans('admin.review'))
+                ->live()
+                ->options(EvaluationEmployee::all()->pluck('title', 'id'))
+                ->preload()
+                ->searchable(),
+
+            Select::make('income_id')
+                ->label(trans('admin.income'))
+                ->live()
+                ->options(EvaluationEmployee::all()->pluck('title', 'id'))
+                ->preload()
+                ->searchable(),
+
+            Select::make('previewer_id')
+                ->label(trans('admin.previewer'))
+                ->live()
+                ->options(EvaluationEmployee::all()->pluck('title', 'id'))
+                ->preload()
+                ->searchable(),
+
+            TextInput::make('notes')->live()->label(trans('admin.notes')),
+
+        ]);
+    }
+
     public function editStatus(EvaluationTransaction $model): void
     {
         if ($model->status != 4 || auth()->user()->hasRole('super-admin')) {
             $this->selected = $model;
             $this->status = $model->status;
             $this->status_modal = true;
+            $this->dispatch('open-modal', id: 'edit-status');
         } else {
-            $this->notification()->error('لا يمكنك التعديل', 'التعديل غير مسموح بعد اكتمال الحال');
+            Notification::make()->title('لا يمكنك التعديل')->danger()->body('التعديل غير مسموح بعد اكتمال الحال')->send();
         }
 
     }
@@ -49,9 +101,9 @@ class Index extends Component
         if ($model->status != 4 || auth()->user()->hasRole('super-admin')) {
             $this->fill($model);
             $this->selected = $model;
-            $this->details_modal = true;
+            $this->dispatch('open-modal', id: 'edit-details');
         } else {
-            $this->notification()->error('لا يمكنك التعديل', 'التعديل غير مسموح بعد اكتمال الحال');
+            Notification::make()->title('لا يمكنك التعديل')->danger()->body('التعديل غير مسموح بعد اكتمال الحال')->send();
         }
     }
 
@@ -68,8 +120,10 @@ class Index extends Component
             'status' => $this->status,
         ]);
         $this->dispatch('updatedData')->to('transaction-table');
-        $this->reset(['city_id', 'selected', 'review_id', 'details_modal', 'income_id', 'previewer_id', 'evaluation_company_id', 'notes', 'status_modal']);
-        $this->notification()->success('تم الحفظ بنجاح', 'تم حفظ تفاصيل المعاملة بنجاح');
+        $this->reset(['city_id', 'selected', 'review_id', 'income_id', 'previewer_id', 'evaluation_company_id', 'notes']);
+        $this->dispatch('close-modal', id: 'edit-details');
+        Notification::make()->title('تم الحفظ بنجاح')
+            ->success()->body('تم حفظ تفاصيل المعاملة بنجاح')->send();
     }
 
     public
@@ -100,7 +154,10 @@ class Index extends Component
         ]);
         $this->dispatch('updatedData')->to('transaction-table');
         $this->reset(['city_id', 'selected', 'review_id', 'details_modal', 'income_id', 'previewer_id', 'evaluation_company_id', 'notes', 'status_modal']);
-        $this->notification()->success('تم الحفظ بنجاح', 'تم حفظ الحالة بنجاح');
+        $this->dispatch('close-modal', id: 'edit-status');
+        Notification::make()->title('تم الحفظ بنجاح')
+            ->success()
+            ->body('تم حفظ الحالة بنجاح')->send();
     }
 
     public

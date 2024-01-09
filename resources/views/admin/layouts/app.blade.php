@@ -30,7 +30,7 @@
 
 </head>
 
-<body class="@if (app()->getLocale() == 'ar') rtl @endif">
+<body class="@if (app()->getLocale() == 'ar') rtl @endif antialiased">
 <div class="container-scroller soft-scrollbar">
 
     <!-- partial:partials/_navbar.html -->

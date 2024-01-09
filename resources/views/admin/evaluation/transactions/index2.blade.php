@@ -1,12 +1,11 @@
 @extends('admin.layouts.app')
 @section('tab_name', __('admin.EvaluationTransaction'))
 @section('css')
-    @livewireStyles
+    @filamentStyles
     @vite('resources/css/app.css')
 @endsection
 
 @section('content')
-    <x-notifications  z-index="z-50"/>
     <div class="w-full" dir="rtl">
         <div class="row">
             <div class="col-12">
@@ -22,8 +21,7 @@
     </div>
 @endsection
 @section('js')
-    @wireUiScripts
+    <livewire:notifications/>
+    @filamentScripts
     @vite('resources/js/app.js')
-    @livewireScripts
-
 @endsection

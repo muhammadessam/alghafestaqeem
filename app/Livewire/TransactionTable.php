@@ -2,7 +2,18 @@
 
 namespace App\Livewire;
 
+use App\Models\Evaluation\EvaluationCompany;
+use App\Models\Evaluation\EvaluationEmployee;
 use App\Models\Evaluation\EvaluationTransaction;
+use Filament\Actions\Action;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Carbon;
@@ -19,9 +30,9 @@ use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 use Throwable;
 
-final class TransactionTable extends PowerGridComponent
+final class TransactionTable extends PowerGridComponent implements HasForms
 {
-    use WithExport;
+    use WithExport, InteractsWithForms;
 
     public string $sortDirection = 'desc';
     public $new_data = null;
@@ -49,6 +60,49 @@ final class TransactionTable extends PowerGridComponent
         'transaction_number' => null
     ];
 
+    public function form(Form $form): Form
+    {
+        return $form->schema([
+            TextInput::make('transaction_number')->label(trans('admin.transaction_number'))->live(),
+            Select::make('employee_id')
+                ->label(trans('admin.employee'))
+                ->live()
+                ->searchable(true)
+                ->preload()
+                ->options(EvaluationEmployee::all()->pluck('title', 'id')),
+            Select::make('company_id')
+                ->multiple()
+                ->searchable()
+                ->label(trans('admin.company'))
+                ->options(EvaluationCompany::all()->pluck('title', 'id'))
+                ->live()
+                ->hidden(fn() => isset($this->company)),
+            Select::make('status')
+                ->label(trans('admin.Status'))
+                ->live()->options([
+                    0 => trans('admin.NewTransaction'),
+                    1 => trans('admin.InReviewRequest'),
+                    2 => trans('admin.ContactedRequest'),
+                    3 => trans('admin.ReviewedRequest'),
+                    4 => trans('admin.FinishedRequest'),
+                    5 => trans('admin.PendingRequest'),
+                    6 => trans('admin.Cancelled'),
+                ]),
+            Select::make('city_id')
+                ->label(trans('admin.city'))
+                ->live()->options(\App\Models\Category::where('type', \App\Helpers\Constants::CityType)
+                    ->select(['id', 'title'])
+                    ->pluck('title', 'id')->toArray()),
+            DatePicker::make('from_date')
+                ->label(trans('admin.LastUpdate') . ' من')
+                ->live()
+                ->hidden(fn() => $this->is_daily),
+            DatePicker::make('to_date')
+                ->label(trans('admin.LastUpdate') . ' الي')
+                ->live()
+                ->hidden(fn() => $this->is_daily)
+        ])->statePath('my_filters')->columns(5);
+    }
 
     public function updatedMyFilters($value, $key): void
     {
