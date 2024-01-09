@@ -79,7 +79,10 @@ final class TransactionTable extends PowerGridComponent implements HasForms
                 ->hidden(fn() => isset($this->company)),
             Select::make('status')
                 ->label(trans('admin.Status'))
-                ->live()->options([
+                ->live()
+                ->nullable(true)
+                ->searchable()
+                ->options([
                     0 => trans('admin.NewTransaction'),
                     1 => trans('admin.InReviewRequest'),
                     2 => trans('admin.ContactedRequest'),
@@ -87,7 +90,7 @@ final class TransactionTable extends PowerGridComponent implements HasForms
                     4 => trans('admin.FinishedRequest'),
                     5 => trans('admin.PendingRequest'),
                     6 => trans('admin.Cancelled'),
-                ]),
+                ])->default(null),
             Select::make('city_id')
                 ->label(trans('admin.city'))
                 ->live()->options(\App\Models\Category::where('type', \App\Helpers\Constants::CityType)
