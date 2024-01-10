@@ -21,11 +21,11 @@ class PreviewerEmployeeCountWidget extends ChartWidget
     protected function getData(): array
     {
         $data = EvaluationTransaction::when($this->filters['from'] ?? false, function (Builder $builder, $from) {
-            $builder->where('evaluation_transactions.created_at', '>=', $from);
+            $builder->whereDate('evaluation_transactions.created_at', '>=', $from);
         })->when($this->filters['to'], function (Builder $builder, $to) {
             $builder->whereDate('evaluation_transactions.created_at', '<=', $to);
         })->join('evaluation_employees', 'evaluation_employees.id', 'evaluation_transactions.previewer_id')
-            ->select('evaluation_employees.title', \DB::raw('COUNT(*) as employee_count'))
+            ->select(['evaluation_employees.title', \DB::raw('COUNT(*) as employee_count'), 'evaluation_transactions.previewer_id'])
             ->groupBy('evaluation_transactions.previewer_id')
             ->orderBy('employee_count', 'desc')
             ->get();

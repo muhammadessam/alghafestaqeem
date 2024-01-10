@@ -21,7 +21,7 @@ class ReviewerEmployeeCountWidget extends ChartWidget
     protected function getData(): array
     {
         $data = EvaluationTransaction::when($this->filters['from'] ?? false, function (Builder $builder, $from) {
-            $builder->where('evaluation_transactions.created_at', '>=', $from);
+            $builder->whereDate('evaluation_transactions.created_at', '>=', $from);
         })->when($this->filters['to'], function (Builder $builder, $to) {
             $builder->whereDate('evaluation_transactions.created_at', '<=', $to);
         })->join('evaluation_employees', 'evaluation_employees.id', 'evaluation_transactions.review_id')
@@ -74,10 +74,9 @@ class ReviewerEmployeeCountWidget extends ChartWidget
                        'labels':{
                            'generateLabels':(chart  )=>{
                                const pie = chart.data;
-                               console.log(pie);
                                return pie.labels.map(function(item, index) {
                                  return {
-                                     text:item + ' ( ' + pie.datasets[0].data[index] + ' ) ',
+                                     text:item + ' ( ' + pie.datasets[0].data[index]*0.5 + ' ) ',
                                      fontColor : pie.datasets[0].backgroundColor[index%10],
                                      fillStyle:pie.datasets[0].backgroundColor[index%10],
                                  }
