@@ -1,19 +1,10 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-/*-*-*-*-*-*-*-*-*--*--*---** Agent Panel URL *---*-*--*-*-*-*-*-*-*-*-*-*-**/
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Route;
+use \App\Http\Controllers\Admin;
 
 Route::get('lang/{locale}', function ($locale) {
     Session::put('lang', $locale);
@@ -94,7 +85,8 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\Admin', 'as' => 'admin.'],
 
         Route::resource('settings', 'SettingsController')->only(
             [
-                'index', 'update',
+                'index',
+                'update',
             ]
         );
 
@@ -105,5 +97,9 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\Admin', 'as' => 'admin.'],
 
         Route::view('input-to-pdf', 'admin.pdf.form')->name('pdf.form');
         Route::view('statistics', 'admin.statistics.index')->name('statistics.index');
+
+        //
+
+        Route::resource('contracts', Admin\ContractController::class);
     });
 });
