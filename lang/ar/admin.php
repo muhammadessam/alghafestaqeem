@@ -209,5 +209,6 @@ return [
 
     'price_offer' => 'عرض سعر',
     'statistics' => 'احصائيات',
+    'contracts' => 'العقود'
 
 ];

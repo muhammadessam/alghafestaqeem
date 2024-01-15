@@ -231,6 +231,7 @@ return [
     'privacy' => 'Privacy Terms ',
     'privacy_en' => 'Privacy by English',
     'privacy_ar' => 'Privacy by Arabic',
-    'statistics' => 'Statistics'
+    'statistics' => 'Statistics',
 
+    'contracts' => 'Contracts'
 ];
