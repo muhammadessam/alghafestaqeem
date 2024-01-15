@@ -9,7 +9,7 @@ image:
 
 tasks:
   - init: composer install && npm install
-    command: npm run dev
+    command: npm run dev & php artisan serve
 
 vscode:
   extensions:
@@ -17,5 +17,3 @@ vscode:
     - "bmewburn.vscode-intelephense-client"
     - "christian-kohler.path-intellisense"
     - "TabNine.tabnine-vscode"
-
-
