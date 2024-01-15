@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('tab_name', __('admin.contracts'))
+@section('tab_name', __('admin.contracts.index'))
 @section('css')
 @filamentStyles
 @vite('resources/css/app.css')
@@ -16,7 +16,7 @@
       @endif
     </div>
   </div>
-  {{-- <livewire:evaluation-transaction.index /> --}}
+  <livewire:contracts.index />
 </div>
 @endsection
 @section('js')
