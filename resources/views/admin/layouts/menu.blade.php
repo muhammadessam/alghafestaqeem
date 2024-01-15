@@ -30,10 +30,97 @@
         </li>
         @if (can('contracts.index'))
         <li class="nav-item {{ Request::routeIs('admin.contracts.*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.contracts.index') }}">
+            <a class="nav-link" data-bs-toggle="collapse" href="#contracts" aria-expanded="false"
+                aria-controls="contracts">
                 <i class="icon-docs menu-icon"></i>
-                <span class="menu-title">@lang('admin.contracts.nav') </span>
+                <span class="menu-title">@lang('admin.contracts.nav')</span>
+                <i class="menu-arrow"></i>
             </a>
+            <div class="collapse {{ Request::routeIs('admin.contracts.*') ? 'show' : '' }}" id="contracts">
+                <ul class="nav flex-column sub-menu">
+                    @if (can('contracts.index'))
+                    <li class="nav-item {{ Request::routeIs('admin.contracts.index') ? 'activeItem' : '' }}">
+                        <a class="nav-link" href="{{ route('admin.contracts.index') }}">
+                            @lang('admin.contracts.index')
+                        </a>
+                    </li>
+                    @endif
+                    @if (can('contracts.create'))
+                    <li class="nav-item {{ Request::routeIs('admin.contracts.create') ? 'activeItem' : '' }}">
+                        <a class="nav-link" href="{{ route('admin.contracts.create') }}">
+                            @lang('admin.contracts.create')
+                        </a>
+                    </li>
+                    @endif
+                    {{--
+                    <!-- sh -->
+                    @if (can('evaluation-transactions.index'))
+                    <li class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
+                        <a class="nav-link" href="{{ url('admin/daily-transactions') }}">
+                            @lang('admin.dailyTransactions')
+                        </a>
+                    </li>
+                    @endif
+
+                    @if (can('evaluation-transactions.index'))
+                    <li class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
+                        <a class="nav-link" href="{{ url('admin/Company-All-Transactions') }}">
+                            @lang('admin.TransactionsAllCompany')
+                        </a>
+                    </li>
+                    @endif
+                    @if (can('evaluation-transactions.index'))
+                    <li class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
+                        <a class="nav-link" href="{{ url('admin/Review-transactions') }}">
+                            @lang('admin.reviewTransactions')
+                        </a>
+                    </li>
+                    @endif
+                    @if (can('evaluation-transactions.index'))
+                    <li class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
+                        <a class="nav-link" href="{{ url('admin/company_transactions') }}">
+                            @lang('admin.company_transactions')
+                        </a>
+                    </li>
+                    @endif
+                    @if (can('evaluation-transactions.index'))
+                    <li class="nav-item {{ Request::routeIs('admin.evaluation-transactions.*') ? 'activeItem' : '' }}">
+                        <a class="nav-link" href="{{ url('admin/user_transactions') }}">
+                            @lang('admin.user_transactions')
+                        </a>
+                    </li>
+                    @endif
+                    <!---->
+                    @if (can('evaluation-companies.index'))
+                    <li class="nav-item {{ Request::routeIs('admin.evaluation-companies.*') ? 'activeItem' : '' }}">
+                        <a class="nav-link" href="{{ route('admin.evaluation-companies.index') }}">
+                            @lang('admin.EvaluationCompanies')
+                        </a>
+                    </li>
+                    @endif
+                    @if (can('evaluation-employees.index'))
+
+                    <li class="nav-item {{ Request::routeIs('admin.evaluation-employees.*') ? 'activeItem' : '' }}">
+                        <a class="nav-link" href="{{ route('admin.evaluation-employees.index') }}">
+                            @lang('admin.EvaluationEmployees')
+                        </a>
+                    </li>
+                    @endif
+
+                    @if (can('cities.index'))
+
+                    <li class="nav-item {{ Request::routeIs('admin.cities.*') ? 'activeItem' : '' }}">
+                        <a class="nav-link" href="{{ route('admin.cities.index') }}">
+                            @lang('admin.cities')
+                        </a>
+                    </li>
+                    @endif
+
+                    --}}
+
+
+                </ul>
+            </div>
         </li>
         @endif
         @if (can('evaluation-transactions.index') || can('evaluation-companies.index') ||
