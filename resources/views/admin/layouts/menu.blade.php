@@ -32,7 +32,7 @@
         <li class="nav-item {{ Request::routeIs('admin.contracts.*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.contracts.index') }}">
                 <i class="icon-docs menu-icon"></i>
-                <span class="menu-title">@lang('admin.contracts') </span>
+                <span class="menu-title">@lang('admin.contracts.nav') </span>
             </a>
         </li>
         @endif

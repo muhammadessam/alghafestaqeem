@@ -209,6 +209,10 @@ return [
 
     'price_offer' => 'عرض سعر',
     'statistics' => 'احصائيات',
-    'contracts' => 'العقود'
+    'contracts' => [
+        'nav' => 'العقود',
+        'index' => 'العقود',
+        'create' => 'عقد جديد',
+    ]
 
 ];
