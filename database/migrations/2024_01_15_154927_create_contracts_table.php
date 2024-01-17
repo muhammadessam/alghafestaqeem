@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->string('token');
+            $table->string('signature')->nullable()->default(null);
             $table->timestamps();
         });
     }
