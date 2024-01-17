@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Contract;
 use Illuminate\Http\Request;
+use \App\Helpers\ArabicDate;
 
 class ContractController extends Controller
 {
@@ -31,17 +32,26 @@ class ContractController extends Controller
             $templateId = $pdf->importPage($pageNo);
             $pdf->AddPage();
             $pdf->useTemplate($templateId, ['adjustPageSize' => true]);
+
             if ($pageNo == 1) {
-                // $pdf->setX(45);
-                $pdf->setY(10);
-                $pdf->Cell(0, 0, 'م' . 'lorem ipsum dolor set amet', 0, 1, 'R', 0, '', 1);
-                $pdf->setFontSize(12);
-                // $pdf->MultiCell($page_width / 2, 0, 'عقد موحد من الهيئة السعودية للمقيمين المعتمدين', 0, 'C', 0, 10, 18, 35);
+                $pdf->setY(45);
+                $pdf->setX(20);
+                $pdf->setFontSize(13);
+                $date_line = 'حرر هذا العقد بالرياض في '
+                    . ArabicDate::dayName()
+                    . ': '
+                    . ArabicDate::gregorianDate()
+                    . 'م'
+                    . ' الموافق: '
+                    . ArabicDate::hijriDate()
+                    . 'هـ'
+                    . ' بين كل من:';
+                $pdf->Cell(0, 0, $date_line, 0, 1, 'R', 0, '', 1);
             }
         }
         $pdf->Output(public_path('test' . now()->toDateString() . '.pdf'), 'F');
         return response()->download(public_path('test' . now()->toDateString() . '.pdf'))->deleteFileAfterSend(true);
-        // return view('admin.contracts.create');
+        return view('admin.contracts.create');
     }
 
     public function signaturePad(string $token)
