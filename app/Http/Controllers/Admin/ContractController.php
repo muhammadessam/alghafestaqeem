@@ -50,7 +50,7 @@ class ContractController extends Controller
         if ($contract == null)
             abort(404);
 
-        return view('admin.contracts.sign');
+        return view('admin.contracts.sign', compact('contract'));
     }
 
     public function sign(string $token)

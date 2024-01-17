@@ -19,9 +19,13 @@
     <input type="hidden" name="signature" id="signature">
   </form>
 
-  <div id="signature-pad" class="signature-pad">
+  <div id="signature-pad" class="signature-pad"
+    style="{{ $contract->signature ? 'display: flex; justify-content: center; align-items: center; font-size: 1rem;' : ''}}">
+    @if($contract->signature)
+    <h1>@lang('admin.contracts.contract_signed')</h1>
+    @else
     <div class="signature-pad--body">
-      <canvas></canvas>
+      <canvas style="border: 1px solid black"></canvas>
     </div>
     <div class="signature-pad--footer">
       <div class="description">@lang('admin.contracts.sign_above')</div>
@@ -36,6 +40,7 @@
         </div>
       </div>
     </div>
+    @endif
   </div>
 
   @vite(['resources/js/signature_pad.umd.js', 'resources/js/sign.js'])

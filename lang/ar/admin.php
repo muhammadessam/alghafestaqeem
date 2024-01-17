@@ -216,7 +216,8 @@ return [
         'sign_contract' => 'توقيع عقد',
         'sign_above' => 'وقع بالأعلى',
         'clear_btn' => 'مسح',
-        'submit_btn' => 'تأكيد التوقيع وتحميل العقد'
+        'submit_btn' => 'تأكيد التوقيع وتحميل العقد',
+        'contract_signed' => 'تم توقيع العقد',
     ]
 
 ];

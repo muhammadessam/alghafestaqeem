@@ -241,5 +241,6 @@ return [
         'sign_above' => 'Sign above',
         'clear_btn' => 'Clear',
         'submit_btn' => 'Confirm and Download Contract',
+        'contract_signed' => 'Contract Has Been Signed',
     ]
 ];
