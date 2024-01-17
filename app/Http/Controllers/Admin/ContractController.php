@@ -47,6 +47,36 @@ class ContractController extends Controller
                     . 'هـ'
                     . ' بين كل من:';
                 $pdf->Cell(0, 0, $date_line, 0, 1, 'R', 0, '', 1);
+
+                $pdf->setY(153);
+                $pdf->setX(67);
+                $client_name = 'فلان الفلاني بن فلان العلاني';
+                $pdf->Cell(0, 0, $client_name, 0, 1, 'R', 0, '', 1);
+
+                $pdf->setY(161);
+                $pdf->setX(67);
+                $registration_number = '1234567890';
+                $pdf->Cell(0, 0, $registration_number, 0, 1, 'R', 0, '', 1);
+
+                $pdf->setY(169);
+                $pdf->setX(67);
+                $address = 'السودان';
+                $pdf->Cell(0, 0, $address, 0, 1, 'R', 0, '', 1);
+
+                $pdf->setY(177);
+                $pdf->setX(67);
+                $phone_numbers = '1234567890';
+                $pdf->Cell(0, 0, $phone_numbers, 0, 1, 'R', 0, '', 1);
+
+                $pdf->setY(185);
+                $pdf->setX(67);
+                $email = 'mosaab.emam123@gmail.com';
+                $pdf->Cell(0, 0, $email, 0, 1, 'R', 0, '', 1);
+
+                $pdf->setY(193);
+                $pdf->setX(67);
+                $representative = 'Mosaab Emam';
+                $pdf->Cell(0, 0, $representative, 0, 1, 'R', 0, '', 1);
             }
         }
         $pdf->Output(public_path('test' . now()->toDateString() . '.pdf'), 'F');
