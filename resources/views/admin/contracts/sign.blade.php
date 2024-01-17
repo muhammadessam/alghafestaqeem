@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>توقيع عقد</title>
+  <title>@lang('admin.contracts.sign_contract')</title>
   <meta name="viewport"
     content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -20,15 +20,15 @@
       <canvas></canvas>
     </div>
     <div class="signature-pad--footer">
-      <div class="description">Sign above</div>
+      <div class="description">@lang('admin.contracts.sign_above')</div>
 
       <div class="signature-pad--actions">
         <div class="column">
-          <button type="button" class="button clear" data-action="clear">Clear</button>
+          <button type="button" class="button clear" data-action="clear">@lang('admin.contracts.clear_btn')</button>
         </div>
         <div class="column">
-          <button type="button" class="button save" data-action="sign-and-download-contract">Sign And Download
-            Contract</button>
+          <button type="button" class="button save"
+            data-action="sign-and-download-contract">@lang('admin.contracts.submit_btn')</button>
         </div>
       </div>
     </div>
