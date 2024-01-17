@@ -15,6 +15,10 @@
 
 <body onselectstart="return false">
 
+  <form id="signature-form" method="POST"> @csrf
+    <input type="hidden" name="signature" id="signature">
+  </form>
+
   <div id="signature-pad" class="signature-pad">
     <div class="signature-pad--body">
       <canvas></canvas>

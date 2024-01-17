@@ -1,7 +1,9 @@
 const wrapper = document.getElementById("signature-pad");
 const clearButton = wrapper.querySelector("[data-action=clear]");
-const signAndDownloadContractButton = wrapper.querySelector("[data-action=sign-and-download-contract]");
+const confirmAndDownloadContractButton = wrapper.querySelector("[data-action=sign-and-download-contract]");
 const canvas = wrapper.querySelector("canvas");
+const signatureForm = document.getElementById('signature-form');
+const signatureInput = document.getElementById('signature');
 const signaturePad = new SignaturePad(canvas, {
   // It's Necessary to use an opaque color when saving image as JPEG;
   // this option can be omitted if only saving as PNG or SVG
@@ -72,4 +74,10 @@ function dataURLToBlob(dataURL) {
 
 clearButton.addEventListener("click", () => {
   signaturePad.clear();
+});
+
+confirmAndDownloadContractButton.addEventListener("click", async () => {
+  const dataURL = signaturePad.toDataURL();
+  signatureInput.value = dataURL;
+  signatureForm.submit();
 });
