@@ -1,25 +1,40 @@
 <!doctype html>
-<html>
+<html lang="ar">
 
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+  <meta charset="utf-8">
+  <title>توقيع عقد</title>
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  @vite(['resources/css/signature-pad.css'])
 </head>
 
-<body>
-  <h1>Sign here please</h1>
-  <canvas></canvas>
-  <form method="POST"> @csrf
-    <input type="hidden" name="signature" id="signature">
-    <button type="submit">Submit</button>
-  </form>
-  <script>
-    const canvas = document.querySelector("canvas");
+<body onselectstart="return false">
 
-    const signaturePad = new SignaturePad(canvas);
-    document.querySelector('form').addEventListener('submit', function (e) {
-      document.getElementById('signature').value = signaturePad.toDataURL();
-    });
-  </script>
+  <div id="signature-pad" class="signature-pad">
+    <div class="signature-pad--body">
+      <canvas></canvas>
+    </div>
+    <div class="signature-pad--footer">
+      <div class="description">Sign above</div>
+
+      <div class="signature-pad--actions">
+        <div class="column">
+          <button type="button" class="button clear" data-action="clear">Clear</button>
+        </div>
+        <div class="column">
+          <button type="button" class="button save" data-action="sign-and-download-contract">Sign And Download
+            Contract</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @vite(['resources/js/signature_pad.umd.js', 'resources/js/sign.js'])
 </body>
 
 </html>

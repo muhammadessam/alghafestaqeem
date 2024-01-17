@@ -7,7 +7,12 @@ export default defineConfig({
     },
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: [
+                'resources/css/signature-pad.css',
+                'resources/css/app.css',
+                'resources/js/signature_pad.umd.js',
+                'resources/js/app.js'
+            ],
             refresh: [
                 ...refreshPaths,
                 'app/Filament/**',
