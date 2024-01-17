@@ -48,7 +48,7 @@ class ContractController extends Controller
     {
         $contract = Contract::where('token', $token)->first();
         if ($contract == null)
-            dd('not found');
+            abort(404);
 
         return view('admin.contracts.sign');
     }
@@ -58,6 +58,6 @@ class ContractController extends Controller
         $contract = Contract::where('token', $token)->first();
         $contract->signature = request()->signature;
         $contract->save();
-        dd($contract);
+        return back();
     }
 }
