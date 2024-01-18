@@ -113,6 +113,38 @@ class ContractController extends Controller
                 $registration_number_ln = 'رقم (' . $registration_number . ') بتاريخ: ' . date('Y/m/d');
                 $pdf->Cell(0, 0, $registration_number_ln, 0, 1, 'R', 0, '', 1);
             }
+            if ($pageNo == 3) {
+
+                $pdf->setY(35);
+                $pdf->setX(100);
+                $no_of_assets = '1';
+                $pdf->Cell(0, 0, $no_of_assets, 0, 1, 'R', 0, '', 1);
+
+                $pdf->setY(35);
+                $pdf->setX(125);
+                $taqeem_cost = '10,000';
+                $pdf->Cell(0, 0, $taqeem_cost, 0, 1, 'R', 0, '', 1);
+
+                $pdf->setY(35);
+                $pdf->setX(165);
+                $total_cost = '10,000';
+                $pdf->Cell(0, 0, $total_cost, 0, 1, 'R', 0, '', 1);
+
+                $pdf->setY(43);
+                $pdf->setX(165);
+                $tax = '1,500';
+                $pdf->Cell(0, 0, $tax, 0, 1, 'R', 0, '', 1);
+
+                $pdf->setY(51);
+                $pdf->setX(165);
+                $total_in_numbers = '11,500';
+                $pdf->Cell(0, 0, $total_in_numbers, 0, 1, 'R', 0, '', 1);
+
+                $pdf->setY(59);
+                $pdf->setX(125);
+                $total_in_words = 'إحدى عشر الف وخمسمائة ريال فقط';
+                $pdf->Cell(0, 0, $total_in_words, 0, 1, 'R', 0, '', 1);
+            }
         }
         $pdf->Output(public_path('test' . now()->toDateString() . '.pdf'), 'F');
         return response()->download(public_path('test' . now()->toDateString() . '.pdf'))->deleteFileAfterSend(true);
