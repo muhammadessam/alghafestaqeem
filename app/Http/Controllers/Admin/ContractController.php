@@ -48,35 +48,70 @@ class ContractController extends Controller
                     . ' بين كل من:';
                 $pdf->Cell(0, 0, $date_line, 0, 1, 'R', 0, '', 1);
 
-                $pdf->setY(153);
+                $pdf->setFontSize(12);
+                $pdf->setY(154);
                 $pdf->setX(67);
                 $client_name = 'فلان الفلاني بن فلان العلاني';
                 $pdf->Cell(0, 0, $client_name, 0, 1, 'R', 0, '', 1);
 
-                $pdf->setY(161);
+                $pdf->setY(162);
                 $pdf->setX(67);
                 $registration_number = '1234567890';
                 $pdf->Cell(0, 0, $registration_number, 0, 1, 'R', 0, '', 1);
 
-                $pdf->setY(169);
+                $pdf->setY(170);
                 $pdf->setX(67);
                 $address = 'السودان';
                 $pdf->Cell(0, 0, $address, 0, 1, 'R', 0, '', 1);
 
-                $pdf->setY(177);
+                $pdf->setY(178);
                 $pdf->setX(67);
                 $phone_numbers = '1234567890';
                 $pdf->Cell(0, 0, $phone_numbers, 0, 1, 'R', 0, '', 1);
 
-                $pdf->setY(185);
+                $pdf->setY(186);
                 $pdf->setX(67);
                 $email = 'mosaab.emam123@gmail.com';
                 $pdf->Cell(0, 0, $email, 0, 1, 'R', 0, '', 1);
 
-                $pdf->setY(193);
+                $pdf->setY(194);
                 $pdf->setX(67);
                 $representative = 'Mosaab Emam';
                 $pdf->Cell(0, 0, $representative, 0, 1, 'R', 0, '', 1);
+
+                $purpose = 'الــبــيــع';
+                $pdf->setY(230);
+                $pdf->setX(58);
+                $pdf->setFontSize(14);
+                $pdf->Cell(0, 0, $purpose, 0, 1, 'R', 0, '', 1);
+            }
+            if ($pageNo == 2) {
+                $purpose = 'البيع';
+                $purpose_ln = 'بناءً على طلب الطرف الثاني فان الغرض من معرفة القيمة السوقية للعقار محل التقييم هو (' . $purpose . ').';
+                $pdf->setY(186);
+                $pdf->setX(20);
+                $pdf->setFontSize(14);
+                $pdf->Cell(0, 0, $purpose_ln, 0, 1, 'R', 0, '', 1);
+
+                $pdf->setY(212);
+                $pdf->setX(67);
+                $pdf->setFontSize(12);
+                $type = 'مجمع سكني';
+                $area = '1000';
+                $type_area_ln = 'العقار عبارة عن ' . $type . ' بمساحة: (' . $area . 'متر مربع)';
+                $pdf->Cell(0, 0, $type_area_ln, 0, 1, 'R', 0, '', 1);
+
+                $pdf->setY(220);
+                $pdf->setX(67);
+                $address = 'الحي الفلاني، شارع فلان بن فلان، جدة، السعودية';
+                $address_ln = 'يقع العقار بـ: ' . $address;
+                $pdf->Cell(0, 0, $address_ln, 0, 1, 'R', 0, '', 1);
+
+                $pdf->setY(228);
+                $pdf->setX(67);
+                $registration_number = '1234567890';
+                $registration_number_ln = 'رقم (' . $registration_number . ') بتاريخ: ' . date('Y/m/d');
+                $pdf->Cell(0, 0, $registration_number_ln, 0, 1, 'R', 0, '', 1);
             }
         }
         $pdf->Output(public_path('test' . now()->toDateString() . '.pdf'), 'F');
