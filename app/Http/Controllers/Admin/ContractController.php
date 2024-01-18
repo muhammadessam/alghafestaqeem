@@ -16,8 +16,6 @@ class ContractController extends Controller
 
     public function create()
     {
-        $line_starts = 10;
-        $page_width = 190;
         $pdf = new \App\Helpers\MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
         $pageCount = $pdf->setSourceFile(storage_path('pdf-templates/contract-template.pdf'));
@@ -34,6 +32,11 @@ class ContractController extends Controller
             $pdf->useTemplate($templateId, ['adjustPageSize' => true]);
 
             if ($pageNo == 1) {
+                $pdf->setY(25);
+                $pdf->setFontSize(14);
+                $number_ln = 'عقد رقم: ' . '123456';
+                $pdf->Cell(0, 0, $number_ln, 0, 1, 'C', 0, '', 1);
+
                 $pdf->setY(45);
                 $pdf->setX(20);
                 $pdf->setFontSize(13);
@@ -114,7 +117,6 @@ class ContractController extends Controller
                 $pdf->Cell(0, 0, $registration_number_ln, 0, 1, 'R', 0, '', 1);
             }
             if ($pageNo == 3) {
-
                 $pdf->setY(35);
                 $pdf->setX(100);
                 $no_of_assets = '1';
@@ -144,6 +146,27 @@ class ContractController extends Controller
                 $pdf->setX(125);
                 $total_in_words = 'إحدى عشر الف وخمسمائة ريال فقط';
                 $pdf->Cell(0, 0, $total_in_words, 0, 1, 'R', 0, '', 1);
+            }
+            if ($pageNo == 4) {
+                $pdf->setY(241);
+                $pdf->setX(124);
+                $client_name = 'فلان الفلاني بن فلان العلاني';
+                $pdf->Cell(0, 0, $client_name, 0, 1, 'R', 0, '', 1);
+
+                $dataPieces = explode(',', Contract::first()->signature);
+                $encodedImg = $dataPieces[1];
+                $decodedImg = base64_decode($encodedImg);
+                //  Check if image was properly decoded
+                if ($decodedImg !== false) {
+                    if (file_put_contents('new-test.png', $decodedImg) !== false) {
+                        $pdf->Image('new-test.png', 80, 248, 16, 16, 'png');
+                        unlink('new-test.png');
+                    }
+                }
+
+                $pdf->setY(266);
+                $pdf->setX(124);
+                $pdf->Cell(0, 0, date('Y/m/d'), 0, 1, 'R', 0, '', 1);
             }
         }
         $pdf->Output(public_path('test' . now()->toDateString() . '.pdf'), 'F');
