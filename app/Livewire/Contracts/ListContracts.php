@@ -103,7 +103,9 @@ class ListContracts extends Component implements HasForms, HasTable
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\Action::make('create')
+                ->label(__('tables/contracts.create'))
+                ->url(config('app.url') . '/admin/contracts/create'),
             ])
             ->actions([
                 //
