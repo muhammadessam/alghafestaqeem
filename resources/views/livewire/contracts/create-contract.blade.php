@@ -2,9 +2,7 @@
     <form wire:submit="create">
         {{ $this->form }}
 
-        <button type="submit">
-            Submit
-        </button>
+        <x-button label="{{ __('forms/contracts.submit') }}" type="submit"></x-button>
     </form>
 
     <x-filament-actions::modals />
