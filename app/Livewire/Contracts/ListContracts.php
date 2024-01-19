@@ -23,11 +23,20 @@ class ListContracts extends Component implements HasForms, HasTable
         return $table
             ->query(Contract::query())
             ->columns([
+                Tables\Columns\IconColumn::make('has_been_signed')
+                    ->label(__('tables/contracts.has_been_signed'))
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('token')
                     ->label(__('tables/contracts.token'))
                     ->numeric()
                     ->formatStateUsing(fn ($state) => $state)
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable()
+                    ->copyable()
+                    ->copyMessage(__('tables/contracts.copy_token'))
+                    ->copyMessageDuration(1500)
+                    ->copyableState(fn ($state) => config('app.url') . '/sign/' . $state)
+                    ->description('اضغط لنسخ رابط التوقيع'),
                 Tables\Columns\TextColumn::make('client_name')
                     ->label(__('tables/contracts.client_name'))
                     ->searchable(),
@@ -92,6 +101,9 @@ class ListContracts extends Component implements HasForms, HasTable
             ])
             ->filters([
                 //
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
             ])
             ->actions([
                 //

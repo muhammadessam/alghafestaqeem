@@ -10,4 +10,11 @@ class Contract extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    protected $appends = ['has_been_signed'];
+
+    public function getHasBeenSignedAttribute()
+    {
+        return !!$this->signature;
+    }
 }
