@@ -231,6 +231,16 @@ return [
     'privacy' => 'Privacy Terms ',
     'privacy_en' => 'Privacy by English',
     'privacy_ar' => 'Privacy by Arabic',
-    'statistics' => 'Statistics'
+    'statistics' => 'Statistics',
 
+    'contracts' => [
+        'nav' => 'Contracts',
+        'index' => 'Contracts',
+        'create' => 'New Contract',
+        'sign_contract' => 'Sign a Contract',
+        'sign_above' => 'Sign above',
+        'clear_btn' => 'Clear',
+        'submit_btn' => 'Confirm and Download Contract',
+        'contract_signed' => 'Contract Has Been Signed',
+    ]
 ];

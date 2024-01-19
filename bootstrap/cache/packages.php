@@ -48,6 +48,13 @@
       0 => 'Filament\\Support\\SupportServiceProvider',
     ),
   ),
+  'filament/tables' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Filament\\Tables\\TablesServiceProvider',
+    ),
+  ),
   'filament/widgets' => 
   array (
     'providers' => 
@@ -86,6 +93,13 @@
     'aliases' => 
     array (
       'Clockwork' => 'Clockwork\\Support\\Laravel\\Facade',
+    ),
+  ),
+  'kirschbaum-development/eloquent-power-joins' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Kirschbaum\\PowerJoins\\PowerJoinsServiceProvider',
     ),
   ),
   'laracasts/flash' => 

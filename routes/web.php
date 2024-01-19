@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\Artisan;
 use setasign\Fpdi\Tcpdf\Fpdi;
+use \App\Http\Controllers;
 
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
@@ -31,8 +32,9 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\Website', 'as' => 'website
     Route::get('/Prviacy-ploice', 'HomeController@Prviacyploice')->name('Prviacy-ploice');
     Route::get('/tracking', 'RateRequestsController@tracking')->name('tracking');
     Route::get('/tracking_number', 'RateRequestsController@tracking_request_no')->name('tracking_number');
-
-
+    Route::get('sign/{token}', [Controllers\Admin\ContractController::class, 'signaturePad']);
+    Route::post('sign/{token}', [Controllers\Admin\ContractController::class, 'sign']);
+    Route::get('download-contract/{token}', [Controllers\Admin\ContractController::class, 'downloadContract']);
 });
 
 Route::get('/commands', function () {
