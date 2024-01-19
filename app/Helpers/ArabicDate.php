@@ -4,6 +4,39 @@ namespace App\Helpers;
 
 class ArabicDate
 {
+    private static string $timezone = 'Asia/Riyadh';
+
+    private static array $day_name_dict = [
+        'Sat' => 'السبت',
+        'Sun' => 'الأحد',
+        'Mon' => 'الإثنين',
+        'Tue' => 'الثلاثاء',
+        'Wed' => 'الأربعاء',
+        'Thu' => 'الخميس',
+        'Fri' => 'الحمعة'
+    ];
+
+    public static function dayName()
+    {
+        $timestamp = time();
+        $dt = new \DateTime("now", new \DateTimeZone(static::$timezone));
+        $dt->setTimestamp($timestamp);
+        return static::$day_name_dict[$dt->format('D')];
+    }
+
+    public static function gregorianDate()
+    {
+        $timestamp = time();
+        $dt = new \DateTime("now", new \DateTimeZone(static::$timezone));
+        $dt->setTimestamp($timestamp);
+        return $dt->format('Y/m/d');
+    }
+
+    public static function hijriDate()
+    {
+        return \GeniusTS\HijriDate\Date::today()->format('Y/m/d');
+    }
+
     public static function format($date, $format)
     {
         $months = array(
@@ -31,19 +64,19 @@ class ArabicDate
             }
         }
 
-        $find = array (
+        $find = array(
 
             "Sat",
             "Sun",
             "Mon",
             "Tue",
-            "Wed" ,
+            "Wed",
             "Thu",
             "Fri"
 
         );
 
-        $replace = array (
+        $replace = array(
             "السبت",
             "الأحد",
             "الإثنين",
@@ -60,9 +93,9 @@ class ArabicDate
 
 
         header('Content-Type: text/html; charset=utf-8');
-        $standard = array("0","1","2","3","4","5","6","7","8","9");
-        $eastern_arabic_symbols = array("٠","١","٢","٣","٤","٥","٦","٧","٨","٩");
-        $current_date = $ar_day.' '.date('d').' '.$ar_month.' '.date('Y');
+        $standard = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+        $eastern_arabic_symbols = array("٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩");
+        $current_date = $ar_day . ' ' . date('d') . ' ' . $ar_month . ' ' . date('Y');
 
         $arabic_date = str_replace($standard, $eastern_arabic_symbols, $current_date);
 

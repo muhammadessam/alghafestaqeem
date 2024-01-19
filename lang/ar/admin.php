@@ -213,6 +213,11 @@ return [
         'nav' => 'العقود',
         'index' => 'العقود',
         'create' => 'عقد جديد',
+        'sign_contract' => 'توقيع عقد',
+        'sign_above' => 'وقع بالأعلى',
+        'clear_btn' => 'مسح',
+        'submit_btn' => 'تأكيد التوقيع وتحميل العقد',
+        'contract_signed' => 'تم توقيع العقد',
     ]
 
 ];

@@ -12,8 +12,25 @@ return new class extends Migration {
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
-            $table->string('token');
-            $table->string('signature')->nullable()->default(null);
+            $table->unsignedInteger('token')->unique();
+            $table->string('client_name');
+            $table->string('id_number');
+            $table->text('client_address');
+            $table->text('phone_numbers');
+            $table->string('email');
+            $table->string('representative_name');
+            $table->string('purpose');
+            $table->string('type');
+            $table->unsignedFloat('area');
+            $table->text('property_address');
+            $table->string('deed_number');
+            $table->date('deed_issue_date');
+            $table->unsignedInteger('number_of_assets');
+            $table->unsignedFloat('cost_per_asset');
+            $table->unsignedFloat('total_cost');
+            $table->unsignedFloat('tax');
+            $table->text('total_cost_in_words');
+            $table->text('signature')->nullable()->default(null);
             $table->timestamps();
         });
     }

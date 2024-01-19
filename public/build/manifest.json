@@ -1,12 +1,27 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-36eed9a9.css",
+    "file": "assets/app-cb01dc85.css",
     "isEntry": true,
     "src": "resources/css/app.css"
+  },
+  "resources/css/signature-pad.css": {
+    "file": "assets/signature-pad-dbacd9b6.css",
+    "isEntry": true,
+    "src": "resources/css/signature-pad.css"
   },
   "resources/js/app.js": {
     "file": "assets/app-4ed993c7.js",
     "isEntry": true,
     "src": "resources/js/app.js"
+  },
+  "resources/js/sign.js": {
+    "file": "assets/sign-dbbd30c0.js",
+    "isEntry": true,
+    "src": "resources/js/sign.js"
+  },
+  "resources/js/signature_pad.umd.js": {
+    "file": "assets/signature_pad.umd-8db9d02f.js",
+    "isEntry": true,
+    "src": "resources/js/signature_pad.umd.js"
   }
 }
