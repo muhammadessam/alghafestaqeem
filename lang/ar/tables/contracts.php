@@ -1,7 +1,10 @@
 <?php
 
 return [
+  'create' => 'عقد جديد',
   'token' => 'رقم العقد',
+  'copy_token' => 'تم نسخ رابط التوقيع',
+  'has_been_signed' => 'تم التوقيع',
   'client_name' => 'اسم العميل',
   'id_number' => 'رقم الهوية/السجل',
   'client_address' => 'عنوان العميل',

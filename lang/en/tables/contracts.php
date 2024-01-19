@@ -1,7 +1,10 @@
 <?php
 
 return [
+  'create' => 'Create Contract',
   'token' => 'Contract Number',
+  'copy_token' => 'Sign url has been copied to clipboard',
+  'has_been_signed' => 'Signed?',
   'client_name' => 'Client Name',
   'id_number' => 'ID Number',
   'client_address' => 'Client Address',
