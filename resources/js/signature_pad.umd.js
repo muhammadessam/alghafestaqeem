@@ -569,7 +569,7 @@
     }
   }
 
+  window.SignaturePad = SignaturePad;
   return SignaturePad;
 
 }));
-//# sourceMappingURL=signature_pad.umd.js.map
