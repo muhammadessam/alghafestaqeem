@@ -30,7 +30,7 @@ class DashboardPanelProvider extends PanelProvider
             ->path('dashboard')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => "#09839a",
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -63,7 +63,6 @@ class DashboardPanelProvider extends PanelProvider
                         app()->getLocale() == 'ar' ? 'إدارة المحتوى' : 'Content Management'
                     )
             ])
-            ->unsavedChangesAlerts()
             ->spa();
     }
 }
