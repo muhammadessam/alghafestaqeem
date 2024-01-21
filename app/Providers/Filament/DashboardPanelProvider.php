@@ -62,11 +62,6 @@ class DashboardPanelProvider extends PanelProvider
                     ->navigationGroupLabel(
                         app()->getLocale() == 'ar' ? 'إدارة المحتوى' : 'Content Management'
                     )
-                    ->pageResource(false)
-                    ->faqResource(false)
-                    ->libraryResource(false)
-                    ->tagResource(false)
-                    ->navigationResource(false)
             ]);
     }
 }
