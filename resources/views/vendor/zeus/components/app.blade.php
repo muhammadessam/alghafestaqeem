@@ -7,7 +7,7 @@
     <meta name="application-name" content="{{ config('app.name', 'Laravel') }}">
 
     <!-- Seo Tags -->
-    <x-seo::meta/>
+    <x-seo::meta />
     <!-- Seo Tags -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,50 +21,55 @@
     <link rel="stylesheet" href="{{ asset('vendor/zeus/frontend.css') }}">
 
     <style>
-        * {font-family: 'KoHo', 'Almarai', sans-serif;}
-        [x-cloak] {display: none !important;}
+        * {
+            font-family: 'KoHo', 'Almarai', sans-serif;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
+
     </style>
 </head>
 <body class="font-sans antialiased bg-gray-50 text-gray-900 dark:text-gray-100 dark:bg-gray-900 @if(app()->isLocal()) debug-screens @endif">
 
-<header x-data="{ open: false }" class="bg-white dark:bg-black px-4">
-    <div class="container mx-auto">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <div class="flex-shrink-0 flex items-center">
-                    <a class="italic flex gap-2 group" href="{{ url('/') }}">
-                        <img class="w-7" src="https://larazeus.com/images/zeus-logo.png" alt="{{ config('zeus.wind.name', config('app.name', 'Laravel')) }}">
-                        @zeus
-                    </a>
-                </div>
+    <header x-data="{ open: false }" class="bg-white dark:bg-black px-4">
+        <div class="container mx-auto">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a class="italic flex gap-2 group" href="{{ url('/') }}">
+                            <img class="w-32" src="{{ asset($setting->logo_white) }}" alt="{{ config('zeus.wind.name', config('app.name', 'Laravel')) }}">
+                        </a>
+                    </div>
 
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex sm:items-center">
-                    {{--Navigation Links--}}
-                </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex sm:items-center">
+                        <!-- Navigation Links -->
+                    </div>
 
-            </div>
-            <div class="hidden sm:flex sm:items-center sm:ml-6">
-                {{--Account menu and other icons--}}
+                </div>
+                <div class="hidden sm:flex sm:items-center sm:ml-6">
+                    <!-- Account menu and other icons -->
+                </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
 
-<header class="bg-gray-100 dark:bg-gray-800">
+    <header class="bg-gray-100 dark:bg-gray-800">
         <div class="container mx-auto py-2 px-3">
             <div class="flex justify-between items-center">
                 <div class="w-full">
                     @if(isset($breadcrumbs))
-                        <nav class="text-gray-400 font-bold my-1" aria-label="Breadcrumb">
-                            <ol class="list-none p-0 inline-flex">
-                                {{ $breadcrumbs }}
-                            </ol>
-                        </nav>
+                    <nav class="text-gray-400 font-bold my-1" aria-label="Breadcrumb">
+                        <ol class="list-none p-0 inline-flex">
+                            {{ $breadcrumbs }}
+                        </ol>
+                    </nav>
                     @endif
                     @if(isset($header))
-                        <div class="italic font-semibold text-xl text-gray-600 dark:text-gray-100">
-                            {{ $header }}
-                        </div>
+                    <div class="italic font-semibold text-xl text-gray-600 dark:text-gray-100">
+                        {{ $header }}
+                    </div>
                     @endif
                 </div>
                 <span class="bolt-loading animate-pulse"></span>
@@ -72,28 +77,31 @@
         </div>
     </header>
 
-<div class="container mx-auto my-6">
-    {{ $slot }}
-</div>
+    <div class="container mx-auto my-6">
+        {{ $slot }}
+    </div>
 
-<footer class="bg-gray-100 dark:bg-gray-800 p-6 text-center font-light">
-    <a href="https://larazeus.com" target="_blank">
-        a gift with ❤️ &nbsp;from @zeus
-    </a>
-</footer>
+    <footer class="bg-gray-100 dark:bg-gray-800 p-6 text-center font-light">
+        <div class="xis-footer-copyright d align-items-center">
+            <div class="xis-footer-social-text ul-li pera-content text-center">
+                <p>© 2023 شركة صالح بن علي الغفيص للتقييم العقاري. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
 
-@stack('scripts')
-@livewireScripts
-@filamentScripts
-@livewire('notifications')
+    @stack('scripts')
+    @livewireScripts
+    @filamentScripts
+    @livewire('notifications')
 
-<script>
-    const theme = localStorage.getItem('theme')
+    <script>
+        const theme = localStorage.getItem('theme')
 
-    if ((theme === 'dark') || (! theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark')
-    }
-</script>
+        if ((theme === 'dark') || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        }
+
+    </script>
 
 </body>
 </html>
