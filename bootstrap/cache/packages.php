@@ -20,6 +20,13 @@
       0 => 'Filament\\Actions\\ActionsServiceProvider',
     ),
   ),
+  'filament/filament' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Filament\\FilamentServiceProvider',
+    ),
+  ),
   'filament/forms' => 
   array (
     'providers' => 
