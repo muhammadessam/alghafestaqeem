@@ -58,7 +58,12 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->plugins([
                 SpatieLaravelTranslatablePlugin::make()->defaultLocales([config('app.locale')]),
-                SkyPlugin::make(),
+                SkyPlugin::make()
+                    ->pageResource(false)
+                    ->faqResource(false)
+                    ->libraryResource(false)
+                    ->tagResource(false)
+                    ->navigationResource(false)
             ]);
     }
 }
