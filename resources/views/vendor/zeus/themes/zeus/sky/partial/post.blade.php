@@ -4,7 +4,7 @@
             <span class="font-light text-sm text-gray-600 dark:text-gray-200 mt-2">{{ optional($post->published_at)->diffForHumans() ?? '' }}</span>
             <div>
                 @unless ($post->tags->isEmpty())
-                    @each($skyTheme.'.partial.category', $post->tags->where('type','category'), 'category')
+                @each($skyTheme.'.partial.category', $post->tags->where('type','category'), 'category')
                 @endunless
             </div>
         </div>
@@ -13,13 +13,13 @@
                 {!! $post->title !!}
             </a>
             @if($post->description !== null)
-                <p class="mt-2 text-gray-600 dark:text-gray-200">
-                    {!! $post->description !!}
-                </p>
+            <p class="mt-2 text-gray-600 dark:text-gray-200">
+                {!! $post->description !!}
+            </p>
             @endif
         </aside>
         <div class="flex items-center justify-between mt-4">
-            <a href="{{ route('post',$post->slug) }}" class="text-blue-500 dark:text-blue-200 hover:underline">Read more</a>
+            <a href="{{ route('post',$post->slug) }}" class="text-blue-500 dark:text-blue-200 hover:underline">{{__('Read more')}}</a>
             <div>
                 <a class="flex items-center gap-2">
                     <img src="{{ \Filament\Facades\Filament::getUserAvatarUrl($post->author) }}" alt="avatar" class="hidden object-cover w-8 h-8 rounded-full sm:block">
