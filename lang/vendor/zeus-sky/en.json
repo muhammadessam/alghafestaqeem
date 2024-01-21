@@ -51,6 +51,7 @@
     "Question": "Question",
     "Answer": "Answer",
     "Clear": "Clear",
+    "Search": "Search",
     "Showing Search result of": "Showing Search result of",
     "Related Posts": "Related Posts",
     "upload": "upload",
@@ -76,5 +77,8 @@
     "Library Categories": "Library Categories",
     "Library Type": "Library Type",
     "Library File": "Library File",
-    "file url": "file url"
+    "file url": "file url",
+    "Read more": "Read more",
+    "Open": "Open",
+    "Edit": "Edit"
 }
