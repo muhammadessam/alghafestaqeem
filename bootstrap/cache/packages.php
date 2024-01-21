@@ -1,18 +1,4 @@
 <?php return array (
-  'anourvalar/eloquent-serialize' => 
-  array (
-    'aliases' => 
-    array (
-      'EloquentSerialize' => 'AnourValar\\EloquentSerialize\\Facades\\EloquentSerializeFacade',
-    ),
-  ),
-  'archtechx/laravel-seo' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'ArchTech\\SEO\\SEOServiceProvider',
-    ),
-  ),
   'blade-ui-kit/blade-heroicons' => 
   array (
     'providers' => 
@@ -27,25 +13,11 @@
       0 => 'BladeUI\\Icons\\BladeIconsServiceProvider',
     ),
   ),
-  'codeat3/blade-iconpark' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Codeat3\\BladeIconpark\\BladeIconparkServiceProvider',
-    ),
-  ),
   'filament/actions' => 
   array (
     'providers' => 
     array (
       0 => 'Filament\\Actions\\ActionsServiceProvider',
-    ),
-  ),
-  'filament/filament' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Filament\\FilamentServiceProvider',
     ),
   ),
   'filament/forms' => 
@@ -67,13 +39,6 @@
     'providers' => 
     array (
       0 => 'Filament\\Notifications\\NotificationsServiceProvider',
-    ),
-  ),
-  'filament/spatie-laravel-translatable-plugin' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Filament\\SpatieLaravelTranslatablePluginServiceProvider',
     ),
   ),
   'filament/support' => 
@@ -135,24 +100,6 @@
     'providers' => 
     array (
       0 => 'Kirschbaum\\PowerJoins\\PowerJoinsServiceProvider',
-    ),
-  ),
-  'lara-zeus/core' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'LaraZeus\\Core\\CoreServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Core' => 'LaraZeus\\Core\\CoreFacade',
-    ),
-  ),
-  'lara-zeus/sky' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'LaraZeus\\Sky\\SkyServiceProvider',
     ),
   ),
   'laracasts/flash' => 
@@ -248,13 +195,6 @@
       'BladeCaptureDirective' => 'RyanChandler\\BladeCaptureDirective\\Facades\\BladeCaptureDirective',
     ),
   ),
-  'spatie/eloquent-sortable' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Spatie\\EloquentSortable\\EloquentSortableServiceProvider',
-    ),
-  ),
   'spatie/laravel-backup' => 
   array (
     'providers' => 
@@ -296,20 +236,6 @@
     'aliases' => 
     array (
       'Signal' => 'Spatie\\SignalAwareCommand\\Facades\\Signal',
-    ),
-  ),
-  'spatie/laravel-tags' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Spatie\\Tags\\TagsServiceProvider',
-    ),
-  ),
-  'spatie/laravel-translatable' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Spatie\\Translatable\\TranslatableServiceProvider',
     ),
   ),
   'wireui/wireui' => 
