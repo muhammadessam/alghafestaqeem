@@ -59,6 +59,9 @@ class DashboardPanelProvider extends PanelProvider
             ->plugins([
                 SpatieLaravelTranslatablePlugin::make()->defaultLocales([config('app.locale')]),
                 SkyPlugin::make()
+                    ->navigationGroupLabel(
+                        app()->getLocale() == 'ar' ? 'إدارة المحتوى' : 'Content Management'
+                    )
                     ->pageResource(false)
                     ->faqResource(false)
                     ->libraryResource(false)
