@@ -62,6 +62,8 @@ class DashboardPanelProvider extends PanelProvider
                     ->navigationGroupLabel(
                         app()->getLocale() == 'ar' ? 'إدارة المحتوى' : 'Content Management'
                     )
-            ]);
+            ])
+            ->unsavedChangesAlerts()
+            ->spa();
     }
 }
