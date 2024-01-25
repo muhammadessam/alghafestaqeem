@@ -12,7 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('evaluation_transactions', function (Blueprint $table) {
-            //status
+            /**
+             * Status:
+             * 0 - جديد
+             * 1 - جاري العمل عليها
+             * 2 - تم التواصل
+             * 3 - المعاينة
+             * 4 - مكتملة
+             * 5 - معلقة
+             * 6 - ملغي
+             */
             $table->integer('status')->default(0)->nullable();
         });
     }
@@ -25,7 +34,6 @@ return new class extends Migration
         Schema::table('evaluation_transactions', function (Blueprint $table) {
             //
             $table->dropColumn('status');
-
         });
     }
 };
