@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Samar Hamza
@@ -218,6 +219,7 @@ return [
         'clear_btn' => 'مسح',
         'submit_btn' => 'تأكيد التوقيع وتحميل العقد',
         'contract_signed' => 'تم توقيع العقد',
-    ]
-
+    ],
+    'plan_no' => 'رقم المخطط',
+    'plot_no' => 'رقم القطعة',
 ];

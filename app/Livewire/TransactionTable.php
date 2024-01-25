@@ -251,7 +251,7 @@ final class TransactionTable extends PowerGridComponent implements HasForms
             Column::make(trans('admin.transaction_number'), 'transaction_number')->sortable()->searchable()->headerAttribute('text-right'),
             Column::make(trans('admin.phone'), 'phone')->searchable()->headerAttribute('text-right'),
             Column::make(trans('admin.company'), 'evaluation_company_id_formatted', 'evaluation_company_id')->sortable()->headerAttribute('text-right'),
-            Column::make(trans('admin.region'), 'region', 'region')->sortable()->searchable()->headerAttribute('text-right'),
+            Column::make(trans('admin.region'), 'region_attribute', 'region')->sortable()->searchable()->headerAttribute('text-right'),
             Column::make(trans('admin.company_fundoms'), 'company_fundoms')->headerAttribute('text-right'),
             Column::make(trans('admin.review_fundoms'), 'review_fundoms')->headerAttribute('text-right'),
             Column::make(trans('admin.previewer'), 'previewer_id_formatted')->searchable()->headerAttribute('text-right'),
