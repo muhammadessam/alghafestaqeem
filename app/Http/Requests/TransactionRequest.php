@@ -21,6 +21,12 @@ class TransactionRequest extends Request
                         'new_city_id' => 'required|integer',
                         'plan_no' => 'required|integer',
                         'plot_no' => 'required|integer',
+                        'preview_date' => 'date|nullable',
+                        'preview_time' => 'string|nullable',
+                        'review_date' => 'date|nullable',
+                        'review_time' => 'string|nullable',
+                        'income_date' => 'date|nullable',
+                        'income_time' => 'string|nullable',
                     ];
                 }
                 // UPDATE
@@ -38,6 +44,12 @@ class TransactionRequest extends Request
                         'new_city_id' => 'integer',
                         'plan_no' => 'integer',
                         'plot_no' => 'integer',
+                        'preview_date' => 'date|nullable',
+                        'preview_time' => 'string|nullable',
+                        'review_date' => 'date|nullable',
+                        'review_time' => 'string|nullable',
+                        'income_date' => 'date|nullable',
+                        'income_time' => 'string|nullable',
                     ];
                 }
             case 'GET':

@@ -204,6 +204,19 @@ class TransactionsController extends Controller
 
         $data['status'] = $status;
 
+        if ($data['preview_date'] != null && $data['preview_time'] != null)
+            $data['preview_date_time'] = $data['preview_date'] . ' ' . $data['preview_time'];
+        if ($data['review_date'] != null && $data['review_time'] != null)
+            $data['review_date_time'] = $data['review_date'] . ' ' . $data['review_time'];
+        if ($data['income_date'] != null && $data['income_time'] != null)
+            $data['income_date_time'] = $data['income_date'] . ' ' . $data['income_time'];
+
+        unset($data['preview_date']);
+        unset($data['preview_time']);
+        unset($data['review_date']);
+        unset($data['review_time']);
+        unset($data['income_date']);
+        unset($data['income_time']);
 
         $transaction = $this->transactionRepository->createTransaction($data);
         if ($request->has('files')) {
