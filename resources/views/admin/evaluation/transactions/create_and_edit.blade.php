@@ -282,73 +282,177 @@
                                 </div>
                             </div>
 
+                            <fieldset class="form-group p-4" style="border: 1px solid #CCC">
+                                <legend class="col-form-label col-sm-2 py-0 text-center" style="float: unset">معلومات المعاينة</legend>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row ">
+                                            <label for="previewer-field" class="col-sm-3 col-form-label">
+                                                @lang('admin.evaluation-transactions.forms.previewer')
+                                            </label>
+                                            <div class="col-sm-9 @if ($errors->has('previewer_id')) is-invalid @endif">
+                                                <select class="form-control js-select2" name="previewer_id">
+                                                    <option value="">@lang('admin.No_employee')</option>
 
-
-                            <div class="col-md-6">
-                                <div class="form-group row ">
-                                    <label for="previewer-field" class="col-sm-3 col-form-label"> @lang('admin.previewer')
-                                    </label>
-                                    <div class="col-sm-9 @if ($errors->has('previewer_id')) is-invalid @endif">
-                                        <select class="form-control js-select2" name="previewer_id">
-                                            <option value="">@lang('admin.No_employee')</option>
-
-                                            @foreach ($result['employees'] as $employee)
-                                            <option {{ old('previewer_id', $item->previewer_id) == $employee->id ? 'selected' : '' }} value="{{ $employee->id }}">
-                                                {{ $employee->title }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('previewer_id'))
-                                        <span class="invalid-feedback">{{ $errors->first('previewer_id') }}</span>
-                                        @endif
+                                                    @foreach ($result['employees'] as $employee)
+                                                    <option {{ old('previewer_id', $item->previewer_id) == $employee->id ? 'selected' : '' }} value="{{ $employee->id }}">
+                                                        {{ $employee->title }}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
+                                                @if ($errors->has('previewer_id'))
+                                                <span class="invalid-feedback">{{ $errors->first('previewer_id') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
-
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group row ">
-                                    <label for="review-field" class="col-sm-3 col-form-label"> @lang('admin.review')
-                                    </label>
-
-                                    <div class="col-sm-9 @if ($errors->has('review_id')) is-invalid @endif">
-                                        <select class="form-control js-select2" name="review_id">
-                                            <option value="">@lang('admin.No_employee')</option>
-
-                                            @foreach ($result['employees'] as $employee)
-                                            <option {{ old('review_id', $item->review_id) == $employee->id ? 'selected' : '' }} value="{{ $employee->id }}">
-                                                {{ $employee->title }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('review_id'))
-                                        <span class="invalid-feedback">{{ $errors->first('review_id') }}</span>
-                                        @endif
+                                    <div class="col-md-6">
+                                        <div class="form-group row ">
+                                            <label for="preview_date" class="col-sm-3 col-form-label">
+                                                @lang('admin.evaluation-transactions.forms.preview_date')
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input id="preview_date" type="date" class="form-control @if ($errors->has('preview_date')) is-invalid @endif" name="preview_date" value="{{ $item->preview_date ?? old('preview_date') }}" />
+                                                @if ($errors->has('preview_date'))
+                                                <span class="invalid-feedback">{{ $errors->first('preview_date') }}</span>
+                                                @else
+                                                <div class="invalid-feedback">إجبارى الأختيار</div>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
-
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group row ">
-                                    <label for="income-field" class="col-sm-3 col-form-label"> @lang('admin.income')
-                                    </label>
-                                    <div class="col-sm-9 @if ($errors->has('income_id')) is-invalid @endif">
-                                        <select class="form-control js-select2" name="income_id">
-                                            <option value="">@lang('admin.No_employee')</option>
-
-                                            @foreach ($result['employees'] as $employee)
-                                            <option {{ old('income_id', $item->income_id) == $employee->id ? 'selected' : '' }} value="{{ $employee->id }}">
-                                                {{ $employee->title }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('income_id'))
-                                        <span class="invalid-feedback">{{ $errors->first('income_id') }}</span>
-                                        @endif
+                                    <div class="col-md-6">
+                                        <div class="form-group row ">
+                                            <label for="preview_time" class="col-sm-3 col-form-label">
+                                                @lang('admin.evaluation-transactions.forms.preview_time')
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input id="preview_time" type="time" class="form-control @if ($errors->has('preview_time')) is-invalid @endif" name="preview_time" value="{{ $item->preview_time ?? old('preview_time') }}" style="direction: ltr" />
+                                                @if ($errors->has('preview_time'))
+                                                <span class="invalid-feedback">{{ $errors->first('preview_time') }}</span>
+                                                @else
+                                                <div class="invalid-feedback">إجبارى الأختيار</div>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </fieldset>
+
+                            <fieldset class="form-group p-4" style="border: 1px solid #CCC">
+                                <legend class="col-form-label col-sm-2 py-0 text-center" style="float: unset">معلومات المراجعة</legend>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row ">
+                                            <label for="review-field" class="col-sm-3 col-form-label">
+                                                @lang('admin.evaluation-transactions.forms.reviewer')
+                                            </label>
+
+                                            <div class="col-sm-9 @if ($errors->has('review_id')) is-invalid @endif">
+                                                <select class="form-control js-select2" name="review_id">
+                                                    <option value="">@lang('admin.No_employee')</option>
+
+                                                    @foreach ($result['employees'] as $employee)
+                                                    <option {{ old('review_id', $item->review_id) == $employee->id ? 'selected' : '' }} value="{{ $employee->id }}">
+                                                        {{ $employee->title }}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
+                                                @if ($errors->has('review_id'))
+                                                <span class="invalid-feedback">{{ $errors->first('review_id') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row ">
+                                            <label for="review_date" class="col-sm-3 col-form-label">
+                                                @lang('admin.evaluation-transactions.forms.review_date')
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input id="review_date" type="date" class="form-control @if ($errors->has('review_date')) is-invalid @endif" name="review_date" value="{{ $item->review_date ?? old('review_date') }}" />
+                                                @if ($errors->has('review_date'))
+                                                <span class="invalid-feedback">{{ $errors->first('review_date') }}</span>
+                                                @else
+                                                <div class="invalid-feedback">إجبارى الأختيار</div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row ">
+                                            <label for="review_time" class="col-sm-3 col-form-label">
+                                                @lang('admin.evaluation-transactions.forms.review_time')
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input id="review_time" type="time" class="form-control @if ($errors->has('review_time')) is-invalid @endif" name="review_time" value="{{ $item->review_time ?? old('review_time') }}" style="direction: ltr" />
+                                                @if ($errors->has('review_time'))
+                                                <span class="invalid-feedback">{{ $errors->first('review_time') }}</span>
+                                                @else
+                                                <div class="invalid-feedback">إجبارى الأختيار</div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="form-group p-4" style="border: 1px solid #CCC">
+                                <legend class="col-form-label col-sm-2 py-0 text-center" style="float: unset">معلومات الإدخال</legend>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row ">
+                                            <label for="income-field" class="col-sm-3 col-form-label">
+                                                @lang('admin.evaluation-transactions.forms.income')
+                                            </label>
+                                            <div class="col-sm-9 @if ($errors->has('income_id')) is-invalid @endif">
+                                                <select class="form-control js-select2" name="income_id">
+                                                    <option value="">@lang('admin.No_employee')</option>
+
+                                                    @foreach ($result['employees'] as $employee)
+                                                    <option {{ old('income_id', $item->income_id) == $employee->id ? 'selected' : '' }} value="{{ $employee->id }}">
+                                                        {{ $employee->title }}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
+                                                @if ($errors->has('income_id'))
+                                                <span class="invalid-feedback">{{ $errors->first('income_id') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row ">
+                                            <label for="income_date" class="col-sm-3 col-form-label">
+                                                @lang('admin.evaluation-transactions.forms.income_date')
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input id="income_date" type="date" class="form-control @if ($errors->has('income_date')) is-invalid @endif" name="income_date" value="{{ $item->income_date ?? old('income_date') }}" />
+                                                @if ($errors->has('income_date'))
+                                                <span class="invalid-feedback">{{ $errors->first('income_date') }}</span>
+                                                @else
+                                                <div class="invalid-feedback">إجبارى الأختيار</div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row ">
+                                            <label for="income_time" class="col-sm-3 col-form-label">
+                                                @lang('admin.evaluation-transactions.forms.income_time')
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input id="income_time" type="time" class="form-control @if ($errors->has('income_time')) is-invalid @endif" name="income_time" value="{{ $item->income_time ?? old('income_time') }}" style="direction: ltr" />
+                                                @if ($errors->has('income_time'))
+                                                <span class="invalid-feedback">{{ $errors->first('income_time') }}</span>
+                                                @else
+                                                <div class="invalid-feedback">إجبارى الأختيار</div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
 
 
                             <div class="col-md-12"></div>
