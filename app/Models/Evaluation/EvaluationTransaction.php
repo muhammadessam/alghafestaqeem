@@ -34,7 +34,10 @@ class EvaluationTransaction extends Model
         'phone',
         'new_city_id',
         'plan_no',
-        'plot_no'
+        'plot_no',
+        'preview_date_time',
+        'income_date_time',
+        'review_date_time',
     ];
     public $timestamps = true;
 
