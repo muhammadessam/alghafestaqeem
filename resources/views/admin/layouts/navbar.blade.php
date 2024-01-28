@@ -21,7 +21,7 @@
                     <i class="fa fa-bell  Read"></i>
                     <span class="label label-warning">{{count(auth()->user()->unreadNotifications)}}</span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="markAsread">
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="markAsread" style="max-width: 67vw;">
 
                     <ul class="dropdown-item" style="display: unset !important">
 
