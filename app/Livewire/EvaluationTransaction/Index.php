@@ -62,21 +62,42 @@ class Index extends Component implements HasForms
                 ->live()
                 ->options(EvaluationEmployee::all()->pluck('title', 'id'))
                 ->preload()
-                ->searchable(),
+                ->searchable(static fn (Select $component) => !$component->isDisabled())
+                ->disabled(fn (callable $get) => $get('previewer_id') == null || $get('income_id') == null)
+                ->helperText(function (callable $get) {
+                    if ($get('previewer_id') == null || $get('income_id') == null)
+                        return 'عليك أولاً ملء حقول "المعاين" و "الادخال"';
+                }),
 
             Select::make('income_id')
                 ->label(trans('admin.income'))
                 ->live()
                 ->options(EvaluationEmployee::all()->pluck('title', 'id'))
                 ->preload()
-                ->searchable(),
+                ->searchable(static fn (Select $component) => !$component->isDisabled())
+                ->disabled(fn (callable $get) => $get('previewer_id') == null)
+                ->helperText(function (callable $get) {
+                    if ($get('previewer_id') == null)
+                        return 'عليك أولاً ملء حقل "المعاين"';
+                })
+                ->afterStateUpdated(function (callable $get, callable $set) {
+                    if ($get('income') == null) {
+                        $set('review_id', null);
+                    }
+                }),
 
             Select::make('previewer_id')
                 ->label(trans('admin.previewer'))
                 ->live()
                 ->options(EvaluationEmployee::all()->pluck('title', 'id'))
                 ->preload()
-                ->searchable(),
+                ->searchable()
+                ->afterStateUpdated(function (callable $get, callable $set) {
+                    if ($get('previewer_id') == null) {
+                        $set('review_id', null);
+                        $set('income_id', null);
+                    }
+                }),
 
             TextInput::make('notes')->live()->label(trans('admin.notes')),
 
@@ -93,7 +114,6 @@ class Index extends Component implements HasForms
         } else {
             Notification::make()->title('لا يمكنك التعديل')->danger()->body('التعديل غير مسموح بعد اكتمال الحال')->send();
         }
-
     }
 
     public function edit(EvaluationTransaction $model): void
@@ -110,6 +130,20 @@ class Index extends Component implements HasForms
     public
     function save(): void
     {
+        if (
+            $this->previewer_id != null &&
+            $this->income_id != null &&
+            $this->review_id != null
+        ) {
+            $this->status = 4;
+        } else if (
+            ($this->previewer_id != null && $this->income_id != null) || $this->previewer_id != null
+        ) {
+            $this->status = 3;
+        } else {
+            $this->status = 0;
+        }
+
         $this->selected->update([
             'city_id' => $this->city_id,
             'evaluation_company_id' => $this->evaluation_company_id,

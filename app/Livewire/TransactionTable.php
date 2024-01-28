@@ -76,7 +76,7 @@ final class TransactionTable extends PowerGridComponent implements HasForms
                 ->label(trans('admin.company'))
                 ->options(EvaluationCompany::all()->pluck('title', 'id'))
                 ->live()
-                ->hidden(fn() => isset($this->company)),
+                ->hidden(fn () => isset($this->company)),
             Select::make('status')
                 ->label(trans('admin.Status'))
                 ->live()
@@ -99,11 +99,11 @@ final class TransactionTable extends PowerGridComponent implements HasForms
             DatePicker::make('from_date')
                 ->label(trans('admin.LastUpdate') . ' من')
                 ->live()
-                ->hidden(fn() => $this->is_daily),
+                ->hidden(fn () => $this->is_daily),
             DatePicker::make('to_date')
                 ->label(trans('admin.LastUpdate') . ' الي')
                 ->live()
-                ->hidden(fn() => $this->is_daily)
+                ->hidden(fn () => $this->is_daily)
         ])->statePath('my_filters')->columns(5);
     }
 
@@ -123,7 +123,7 @@ final class TransactionTable extends PowerGridComponent implements HasForms
     public function updated($property): void
     {
         $this->new_data = $this->datasource()->where(
-            fn(EloquentBuilder|QueryBuilder $query) => \PowerComponents\LivewirePowerGrid\DataSource\Builder::make($query, $this)
+            fn (EloquentBuilder|QueryBuilder $query) => \PowerComponents\LivewirePowerGrid\DataSource\Builder::make($query, $this)
                 ->filterContains()
         )->get();
     }
@@ -172,12 +172,12 @@ final class TransactionTable extends PowerGridComponent implements HasForms
             ->addColumn('transaction_number')
             ->addColumn('phone')
             ->addColumn('evaluation_company_id')
-            ->addColumn('evaluation_company_id_formatted', fn(EvaluationTransaction $model) => $model->company->title ?? '')
+            ->addColumn('evaluation_company_id_formatted', fn (EvaluationTransaction $model) => $model->company->title ?? '')
             ->addColumn('region')
             ->addColumn('company_fundoms')
             ->addColumn('review_fundoms')
             ->addColumn('previewer_id')
-            ->addColumn('previewer_id_formatted', fn(EvaluationTransaction $model) => $model->previewer->title ?? '')
+            ->addColumn('previewer_id_formatted', fn (EvaluationTransaction $model) => $model->previewer->title ?? '')
             ->addColumn('is_iterated', function (EvaluationTransaction $model) {
                 return EvaluationTransaction::where('instrument_number', $model->instrument_number)->where('id', '!=', $model->id)->count();
             })
@@ -231,14 +231,14 @@ final class TransactionTable extends PowerGridComponent implements HasForms
                 return view('components.transaction_details', ['model' => $model]);
             })
             ->addColumn('updated_at')
-            ->addColumn('updated_at_formatted', fn(EvaluationTransaction $model) => Carbon::parse($model->updated_at)->format('Y-m-d'))
+            ->addColumn('updated_at_formatted', fn (EvaluationTransaction $model) => Carbon::parse($model->updated_at)->format('Y-m-d'))
             ->addColumn('owner_name')
             ->addColumn('review_id')
-            ->addColumn('review_id_formatted', fn(EvaluationTransaction $model) => $model->review->title ?? '')
+            ->addColumn('review_id_formatted', fn (EvaluationTransaction $model) => $model->review->title ?? '')
             ->addColumn('income_id')
-            ->addColumn('income_id_formatted', fn(EvaluationTransaction $model) => $model->income->title ?? '')
+            ->addColumn('income_id_formatted', fn (EvaluationTransaction $model) => $model->income->title ?? '')
             ->addColumn('city_id')
-            ->addColumn('city_id_formatted', fn(EvaluationTransaction $model) => $model->city->title ?? '')
+            ->addColumn('city_id_formatted', fn (EvaluationTransaction $model) => $model->city->title ?? '')
             ->addColumn('notes');
     }
 
@@ -251,7 +251,7 @@ final class TransactionTable extends PowerGridComponent implements HasForms
             Column::make(trans('admin.transaction_number'), 'transaction_number')->sortable()->searchable()->headerAttribute('text-right'),
             Column::make(trans('admin.phone'), 'phone')->searchable()->headerAttribute('text-right'),
             Column::make(trans('admin.company'), 'evaluation_company_id_formatted', 'evaluation_company_id')->sortable()->headerAttribute('text-right'),
-            Column::make(trans('admin.region'), 'region', 'region')->sortable()->searchable()->headerAttribute('text-right'),
+            Column::make(trans('admin.region'), 'region_attribute', 'region')->sortable()->searchable()->headerAttribute('text-right'),
             Column::make(trans('admin.company_fundoms'), 'company_fundoms')->headerAttribute('text-right'),
             Column::make(trans('admin.review_fundoms'), 'review_fundoms')->headerAttribute('text-right'),
             Column::make(trans('admin.previewer'), 'previewer_id_formatted')->searchable()->headerAttribute('text-right'),
@@ -300,8 +300,7 @@ final class TransactionTable extends PowerGridComponent implements HasForms
                 })->hide(),
 
             // Hide button edit for ID 1
-            Rule::rows()->when(fn($model) => $model->is_iterated == true)->setAttribute('class', 'bg-danger'),
+            Rule::rows()->when(fn ($model) => $model->is_iterated == true)->setAttribute('class', 'bg-danger'),
         ];
     }
-
 }

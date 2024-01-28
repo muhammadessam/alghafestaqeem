@@ -13,6 +13,7 @@ use App\Models\Evaluation\EvaluationCompany;
 use App\Models\Evaluation\EvaluationEmployee;
 use App\Models\Evaluation\EvaluationTransaction;
 use App\Interfaces\Evaluation\TransactionRepositoryInterface;
+use App\Models\City;
 use App\Models\User;
 use App\Models\Transaction_files;
 use Illuminate\Validation\Rules\File;
@@ -35,7 +36,6 @@ class TransactionsController extends Controller
         $this->middleware('checkPermission:evaluation-transactions.delete')->only(['destroy']);
         $this->middleware('checkPermission:evaluation-transactions.create')->only(['create']);
         $this->middleware('checkPermission:evaluation-transactions.show')->only(['daily']);
-
     }
 
     public function DeleteFile($id)
@@ -60,14 +60,11 @@ class TransactionsController extends Controller
                 'type' => $extension,
             ]);
         }
-
-
     }
 
 
     public function chick_instrument_number($value)
     {
-        //dd($value);
         if (is_numeric($value)) {
             $test = EvaluationTransaction::where('instrument_number', $value)->get();
             if (count($test) > 0) {
@@ -75,7 +72,20 @@ class TransactionsController extends Controller
             } else {
                 $massage = "<span  style='color: #3d8d3d;'> يمكنك استخدام رقم الصك</span>";
             }
+        }
+        return response()->json($massage);
+    }
 
+    public function checkNewRegion()
+    {
+        $exists = EvaluationTransaction::where('new_city_id', request()->new_city_id)
+            ->where('plan_no', request()->plan_no)
+            ->where('plot_no', request()->plot_no)
+            ->first();
+        if ($exists) {
+            $massage = "<span  style='color: #dc3545;'>توجد معاملة بنفس العنوان (المدينة، رقم المخطط، رقم القطعة)</span>";
+        } else {
+            $massage = "<span  style='color: #3d8d3d;'>يمكنك استخدام هذا العنوان (المدينة، رقم المخطط، رقم القطعة)</span>";
         }
         return response()->json($massage);
     }
@@ -160,13 +170,13 @@ class TransactionsController extends Controller
 
         if ($request->company != null) {
             $result['company'] = EvaluationCompany::find($request->company);
-
         }
         $result['employees'] = EvaluationEmployee::get();
         $result['companies'] = EvaluationCompany::get();
         $result['types'] = Category::ApartmentType()->get();
         $result['cities'] = Category::City()->get();
-        return view('admin.evaluation.transactions.create_and_edit', compact('item', 'result'));
+        $cities = City::all();
+        return view('admin.evaluation.transactions.create_and_edit', compact('item', 'result', 'cities'));
     }
 
     public function store(TransactionRequest $request)
@@ -177,10 +187,16 @@ class TransactionsController extends Controller
             return redirect()->route('admin.evaluation-transactions.index');
         }
         $data = $request->all();
-        //
-        if ($data['review_id'] != null) {
+
+        if (
+            $data['previewer_id'] != null &&
+            $data['income_id'] != null &&
+            $data['review_id'] != null
+        ) {
             $status = 4;
-        } elseif ($data['previewer_id'] != null) {
+        } else if (
+            ($data['previewer_id'] != null && $data['income_id'] != null) || $data['previewer_id'] != null
+        ) {
             $status = 3;
         } else {
             $status = 0;
@@ -188,6 +204,19 @@ class TransactionsController extends Controller
 
         $data['status'] = $status;
 
+        if ($data['preview_date'] != null && $data['preview_time'] != null)
+            $data['preview_date_time'] = $data['preview_date'] . ' ' . $data['preview_time'];
+        if ($data['review_date'] != null && $data['review_time'] != null)
+            $data['review_date_time'] = $data['review_date'] . ' ' . $data['review_time'];
+        if ($data['income_date'] != null && $data['income_time'] != null)
+            $data['income_date_time'] = $data['income_date'] . ' ' . $data['income_time'];
+
+        unset($data['preview_date']);
+        unset($data['preview_time']);
+        unset($data['review_date']);
+        unset($data['review_time']);
+        unset($data['income_date']);
+        unset($data['income_time']);
 
         $transaction = $this->transactionRepository->createTransaction($data);
         if ($request->has('files')) {
@@ -225,7 +254,6 @@ class TransactionsController extends Controller
 
         if ($request->company != null) {
             $result['company'] = EvaluationCompany::find($request->company);
-
         }
         $item = $this->transactionRepository->getTransactionById($id);
         $result['employees'] = EvaluationEmployee::get();

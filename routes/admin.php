@@ -44,6 +44,7 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\Admin', 'as' => 'admin.'],
         Route::put('rates/update/{id}', 'RateRequestsController@changeStatus')
             ->name('rates.update-status');
 
+        Route::get('/evaluation-transactions/check-new-region', 'Evaluation\\TransactionsController@checkNewRegion');
         Route::resource('evaluation-companies', 'Evaluation\\CompaniesController');
         Route::resource('evaluation-employees', 'Evaluation\\EmployeesController');
         Route::resource('evaluation-transactions', 'Evaluation\\TransactionsController');

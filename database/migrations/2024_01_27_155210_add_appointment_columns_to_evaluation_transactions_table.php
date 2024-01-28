@@ -12,17 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('evaluation_transactions', function (Blueprint $table) {
-            /**
-             * Status:
-             * 0 - جديد
-             * 1 - جاري العمل عليها
-             * 2 - تم التواصل
-             * 3 - المعاينة
-             * 4 - مكتملة
-             * 5 - معلقة
-             * 6 - ملغي
-             */
-            $table->integer('status')->default(0)->nullable();
+            $table->dateTime('preview_date_time')->nullable()->default(null);
+            $table->dateTime('income_date_time')->nullable()->default(null);
+            $table->dateTime('review_date_time')->nullable()->default(null);
         });
     }
 
@@ -32,8 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('evaluation_transactions', function (Blueprint $table) {
-            //
-            $table->dropColumn('status');
+            $table->dropColumn('preview_date_time');
+            $table->dropColumn('income_date_time');
+            $table->dropColumn('review_date_time');
         });
     }
 };

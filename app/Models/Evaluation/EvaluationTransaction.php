@@ -4,6 +4,7 @@ namespace App\Models\Evaluation;
 
 use App\Models\Model;
 use App\Models\Category;
+use App\Models\City;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,6 +32,12 @@ class EvaluationTransaction extends Model
         'review_fundoms',
         'company_fundoms',
         'phone',
+        'new_city_id',
+        'plan_no',
+        'plot_no',
+        'preview_date_time',
+        'income_date_time',
+        'review_date_time',
     ];
     public $timestamps = true;
 
@@ -137,6 +144,11 @@ class EvaluationTransaction extends Model
         return $this->belongsTo(Category::class, 'city_id');
     }
 
+    public function newCity()
+    {
+        return $this->belongsTo(City::class);
+    }
+
     public function company()
     {
         return $this->belongsTo(EvaluationCompany::class, 'evaluation_company_id');
@@ -155,7 +167,6 @@ class EvaluationTransaction extends Model
     public function files()
     {
         return $this->hasMany(Transaction_files::class, 'Transaction_id', 'id');
-
     }
 
     public function review()
@@ -177,7 +188,6 @@ class EvaluationTransaction extends Model
             } else {
                 $value = "<span class='badge badge-pill badge-success'>لا</span>";
             }
-
         } else {
             $value = "<span class='badge badge-pill badge-success'>لا</span>";
         }
@@ -204,6 +214,18 @@ class EvaluationTransaction extends Model
             return __('admin.Cancelled');
         } else {
             return '';
+        }
+    }
+
+    public function getRegionAttributeAttribute(): string
+    {
+        if ($this->region)
+            return $this->region;
+        else {
+            $value = '<div><strong>المدينة:</strong> ' . $this->newCity->name_ar . '</div>';
+            $value = $value . '<div><strong>رقم المخطط:</strong> ' . $this->plan_no . '</div>';
+            $value = $value . '<div><strong>رقم القطعة:</strong> ' . $this->plot_no . '</div>';
+            return $value;
         }
     }
 }

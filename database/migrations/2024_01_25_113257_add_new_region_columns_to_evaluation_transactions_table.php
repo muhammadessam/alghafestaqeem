@@ -12,17 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('evaluation_transactions', function (Blueprint $table) {
-            /**
-             * Status:
-             * 0 - جديد
-             * 1 - جاري العمل عليها
-             * 2 - تم التواصل
-             * 3 - المعاينة
-             * 4 - مكتملة
-             * 5 - معلقة
-             * 6 - ملغي
-             */
-            $table->integer('status')->default(0)->nullable();
+            $table->foreignId('new_city_id')->nullable()->references('id')
+                ->on('cities')->onDelete('cascade');
+            $table->string('plan_no')->nullable();
+            $table->string('plot_no')->nullable();
         });
     }
 
@@ -32,8 +25,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('evaluation_transactions', function (Blueprint $table) {
-            //
-            $table->dropColumn('status');
+            $table->dropColumn('new_city_id');
+            $table->dropColumn('plan_no');
+            $table->dropColumn('plot_no');
         });
     }
 };
