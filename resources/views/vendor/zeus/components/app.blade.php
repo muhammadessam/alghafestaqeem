@@ -18,7 +18,7 @@
     @filamentStyles
     @stack('styles')
 
-    <link rel="stylesheet" href="vendor/zeus/frontend.css">
+    <link rel="stylesheet" href="/vendor/zeus/frontend.css">
 
     <style>
         * {
