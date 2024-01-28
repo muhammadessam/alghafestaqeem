@@ -3,27 +3,50 @@
 
 <head>
     <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-NTRKQ8WD');</script>
+    <script>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime()
+                , event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0]
+                , j = d.createElement(s)
+                , dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-NTRKQ8WD');
+
+    </script>
     <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
-    <!-- Google tag (gtag.js) --> <script async src="https://www.googletagmanager.com/gtag/js?id=G-QGM14K82GD"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-QGM14K82GD'); </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QGM14K82GD"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-QGM14K82GD');
+
+    </script>
     <title> شركة صالح بن علي الغفيص للتقييم العقاري</title>
 
-    <link rel="shortcut icon" href="{{ asset('/img/logo/ficon.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="/img/logo/ficon.png" type="image/x-icon">
     <!-- Mobile Specific Meta -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="{{ asset('/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/fontawesome-all.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/animate.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/odometer-theme-default.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/slick.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/slick-theme.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/fontawesome-all.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/odometer-theme-default.css">
+    <link rel="stylesheet" href="/css/slick.css">
+    <link rel="stylesheet" href="/css/slick-theme.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
@@ -50,12 +73,12 @@
                 <div class="footer-menu ul-li">
                     <ul>
                         <li><a href="{{ route('website.home') }}">الرئيسيه</a></li>
-                                <li><a href="{{ route('website.home') }}#aboutus">من نحن</a></li>
-                                <li><a href="{{ route('website.home') }}#featured">أهدافنا</a></li>
-                                <li><a href="{{ route('website.home') }}#services">خدماتنا</a></li>
-                                <li><a href="{{ route('website.home') }}#sponsor">عملائنا</a></li>
-                                                                <li><a href="{{ route('website.contactUs') }}"> تواصل معنا </a></li>
-                                                                                              <li><a href="{{ route('website.Prviacy-ploice') }}"> سياسية الخصوصية</a></li>
+                        <li><a href="{{ route('website.home') }}#aboutus">من نحن</a></li>
+                        <li><a href="{{ route('website.home') }}#featured">أهدافنا</a></li>
+                        <li><a href="{{ route('website.home') }}#services">خدماتنا</a></li>
+                        <li><a href="{{ route('website.home') }}#sponsor">عملائنا</a></li>
+                        <li><a href="{{ route('website.contactUs') }}"> تواصل معنا </a></li>
+                        <li><a href="{{ route('website.Prviacy-ploice') }}"> سياسية الخصوصية</a></li>
 
 
                     </ul>
@@ -74,19 +97,19 @@
  ============================================= -->
 
     <!-- For Js Library -->
-    <script src="{{ asset('/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('/js/popper.min.js') }}"></script>
-    <script src="{{ asset('/js/appear.js') }}"></script>
-    <script src="{{ asset('/js/slick.js') }}"></script>
-    <script src="{{ asset('/js/jquery.counterup.min.js') }}"></script>
-    <script src="{{ asset('/js/waypoints.min.js') }}"></script>
-    <script src="{{ asset('/js/odometer.js') }}"></script>
-    <script src="{{ asset('/js/wow.min.js') }}"></script>
-    {{-- <script src="{{ asset('/js/pagenav.js') }}"></script> --}}
-    <script src="{{ asset('/js/parallax.min.js') }}"></script>
-    <script src="{{ asset('/js/parallax-scroll.js') }}"></script>
-    <script src="{{ asset('/js/script.js') }}"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/appear.js"></script>
+    <script src="/js/slick.js"></script>
+    <script src="/js/jquery.counterup.min.js"></script>
+    <script src="/js/waypoints.min.js"></script>
+    <script src="/js/odometer.js"></script>
+    <script src="/js/wow.min.js"></script>
+    {{-- <script src="/js/pagenav.js"></script> --}}
+    <script src="/js/parallax.min.js"></script>
+    <script src="/js/parallax-scroll.js"></script>
+    <script src="/js/script.js"></script>
     @yield('js')
 </body>
 
