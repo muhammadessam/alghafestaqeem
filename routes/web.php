@@ -24,6 +24,10 @@ Route::get('/clear-cache', function () {
 
     return "Cache cleared successfully";
 });
+Route::get('/public/{extra}', function ($extra) {
+    return redirect('/' . $extra);
+})
+    ->where('extra', '.*');
 Route::group(['namespace' => 'App\\Http\\Controllers\\Website', 'as' => 'website.'], function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/rate-request', 'RateRequestsController@show')->name('rate-request.show');

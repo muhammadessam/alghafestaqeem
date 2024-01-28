@@ -12,6 +12,11 @@ Route::get('lang/{locale}', function ($locale) {
     return redirect()->back();
 });
 
+Route::get('/public/{extra}', function ($extra) {
+    return redirect('/' . $extra);
+})
+    ->where('extra', '.*');
+
 
 Route::group(['namespace' => 'App\\Http\\Controllers\\Admin', 'as' => 'admin.'], function () {
     Route::post('/login', 'LoginController@postLogin')->name('login');
