@@ -555,8 +555,8 @@
 
 @endsection
 @section('scripts')
-<script src="{{ asset('/panel/js/upload.js') }}"></script>
-<script src="{{ asset('/panel/js/validate.js') }}"></script>
+<script src="/panel/js/upload.js"></script>
+<script src="/panel/js/validate.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {

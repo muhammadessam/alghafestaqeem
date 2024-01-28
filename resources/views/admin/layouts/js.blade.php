@@ -1,11 +1,11 @@
 <!-- plugins:js -->
-<script src="{{ asset('/panel/vendors/js/vendor.bundle.base.js') }}"></script>
+<script src="/panel/vendors/js/vendor.bundle.base.js"></script>
 
-<script src="{{ asset('/panel/js/off-canvas.js') }}"></script>
-<script src="{{ asset('/panel/js/hoverable-collapse.js') }}"></script>
+<script src="/panel/js/off-canvas.js"></script>
+<script src="/panel/js/hoverable-collapse.js"></script>
 
-<script src="{{ asset('/panel/js/jquery.cookie.js') }}" type="text/javascript"></script>
-<script src="{{ asset('/panel/js/dashboard.js') }}"></script>
+<script src="/panel/js/jquery.cookie.js" type="text/javascript"></script>
+<script src="/panel/js/dashboard.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 <script src=" https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src=" https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
@@ -29,32 +29,34 @@
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $('#tableone').DataTable({
             //   "ordering": false,
             //   "paging": false,
-            order: [[0, 'desc']],
-            columnDefs:[
-                {
-                    target: 0,
-                    visible: false,
-                    searchable: false
-                }
-            ],
-            dom: 'Bfrtip',
-            buttons: [
+            order: [
+                [0, 'desc']
+            ]
+            , columnDefs: [{
+                target: 0
+                , visible: false
+                , searchable: false
+            }]
+            , dom: 'Bfrtip'
+            , buttons: [
                 'copy', 'csv', 'excel', 'print'
             ]
         });
     });
+
 </script>
 
 <script>
-    $('#Read').click(function () {
+    $('#Read').click(function() {
 
         $.get('/admin/makeAsread');
 
     });
+
 </script>
 
 

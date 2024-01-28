@@ -7,13 +7,14 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">
 <style>
-table.dataTable.table-sm>thead>tr>th {
-    text-align: right;
-}
+    table.dataTable.table-sm>thead>tr>th {
+        text-align: right;
+    }
 
-table.dataTable.table-sm>thead>tr>th:not(.sorting_disabled) {
-    text-align: right !important;
-}
+    table.dataTable.table-sm>thead>tr>th:not(.sorting_disabled) {
+        text-align: right !important;
+    }
+
 </style>
 @endsection
 @section('content')
@@ -39,7 +40,7 @@ table.dataTable.table-sm>thead>tr>th:not(.sorting_disabled) {
                                 <th>#</th>
 
                                 <th> @lang('admin.Title')</th>
-                                <th>  الذهاب إلى المعاملات</th>
+                                <th> الذهاب إلى المعاملات</th>
                             </tr>
                         </thead>
 
@@ -58,10 +59,10 @@ table.dataTable.table-sm>thead>tr>th:not(.sorting_disabled) {
 
 
                                 <td>
-                                <a class="nav-link" href="{{ url('admin/single-transactions/'.$item->id.'') }}">
-                                    @lang('admin.goTo')
-                                </a>                               
-                             </td>
+                                    <a class="nav-link" href="{{ url('admin/single-transactions/'.$item->id.'') }}">
+                                        @lang('admin.goTo')
+                                    </a>
+                                </td>
 
 
 
@@ -86,7 +87,7 @@ table.dataTable.table-sm>thead>tr>th:not(.sorting_disabled) {
                 </div>
                 @else
                 <div class="text-center">
-                    <img src="{{ asset('/panel/images/empty-box.png') }}" class="empty-box" />
+                    <img src="/panel/images/empty-box.png" class="empty-box" />
                     <hr>
                     <h3 class="text-xs-center text-info">No data addes !</h3>
                 </div>
@@ -114,21 +115,22 @@ table.dataTable.table-sm>thead>tr>th:not(.sorting_disabled) {
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script>
-$(document).ready(function() {
-    $.fn.dataTable.ext.errMode = 'none';
+    $(document).ready(function() {
+        $.fn.dataTable.ext.errMode = 'none';
 
-    $('#example1').DataTable({
-        dom: 'Bfrtip',
+        $('#example1').DataTable({
+            dom: 'Bfrtip',
 
 
-        buttons: [
-            'copy', 'excel', 'print'
-        ]
+            buttons: [
+                'copy', 'excel', 'print'
+            ]
+        });
+        //
+
+        //
+
     });
-    //
 
-    //
-
-});
 </script>
 @endsection
