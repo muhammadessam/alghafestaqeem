@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('evaluation_transactions', function (Blueprint $table) {
             $table->dateTime('preview_date_time')->nullable()->default(null);
-            $table->dateTime('incom_date_time')->nullable()->default(null);
+            $table->dateTime('income_date_time')->nullable()->default(null);
             $table->dateTime('review_date_time')->nullable()->default(null);
         });
     }
@@ -25,7 +25,7 @@ return new class extends Migration
     {
         Schema::table('evaluation_transactions', function (Blueprint $table) {
             $table->dropColumn('preview_date_time');
-            $table->dropColumn('incom_date_time');
+            $table->dropColumn('income_date_time');
             $table->dropColumn('review_date_time');
         });
     }
