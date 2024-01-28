@@ -31,7 +31,6 @@
                         @if($notification->read_at ==null)
                         <li style="display: block !important;padding: 10px 7px;text-align: right !important; border-bottom: 1px solid #f3f3f3;" class=" dropdown-item">
                             @if($notification->type=='App\Notifications\Transaction')
-                            {{dd('not here')}}
                             <a style="color: #000;font-size: 14px;font-weight: bold;text-decoration: inherit; padding: 12px 0px;" href="{{ route('admin.evaluation-transactions.show', $notification->data['Transaction']['id']) }}">
 
                                 {{$notification->data['type']}} بواسطة {{$notification->data['user']['name']}} بتاريخ {{$notification->created_at}}
