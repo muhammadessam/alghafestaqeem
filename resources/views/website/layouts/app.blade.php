@@ -68,7 +68,7 @@
         <div class="container">
             <div class="xis-footer-menu-content d-flex align-items-center justify-content-between">
                 <div class="footer-logo">
-                    <a href="{{ route('website.home') }}"><img src="{{ asset($setting->logo_white) }}" alt=""></a>
+                    <a href="{{ route('website.home') }}"><img src="/{{ $setting->logo_white }}" alt=""></a>
                 </div>
                 <div class="footer-menu ul-li">
                     <ul>

@@ -13,7 +13,7 @@
         <div class="xisma-header-content">
             <div class="xisma-header-main-menu d-flex align-items-center justify-content-between">
                 <div class="site-logo">
-                    <a href="{{ route('website.home') }}"><img src="{{ asset($setting->logo_white) }}" alt=""></a>
+                    <a href="{{ route('website.home') }}"><img src="/{{ $setting->logo_white }}" alt=""></a>
                 </div>
                 <div class="xis-main-navigation-area">
                     <nav class="xis-main-navigation scroll-nav clearfix ul-li">
@@ -47,7 +47,7 @@
                             <i class="fal fa-times"></i>
                         </div>
                         <div class="m-brand-logo">
-                            <a href="{{ route('website.home') }}"><img src="{{ asset($setting->logo_white) }}" alt=""></a>
+                            <a href="{{ route('website.home') }}"><img src="/{{ $setting->logo_white }}" alt=""></a>
                         </div>
                         <nav class="mobile-main-navigation scroll-nav clearfix ul-li">
                             <ul id="xis-main-nav" class="nav navbar-nav clearfix">

@@ -47,9 +47,9 @@ class Model extends EloquentModel
     public function getImageAttribute($value)
     {
         if ($value != '') {
-            $value = asset($value);
+            $value = '/' . $value;
         } else {
-            $value = asset('/images/default.png');
+            $value = '/images/default.png';
         }
 
         return $value;

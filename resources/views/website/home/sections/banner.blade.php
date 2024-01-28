@@ -1,4 +1,4 @@
-<section id="xis-banner" class="xis-banner-section" data-background="{{ $setting->imagePath('slider_image') != '' ? $setting->imagePath('slider_image') : asset('/img/banner/banner.png') }}">
+<section id="xis-banner" class="xis-banner-section" data-background="{{ $setting->imagePath('slider_image') != '' ? $setting->imagePath('slider_image') : '/img/banner/banner.png' }}">
     <div class="container">
         <div class="xis-banner-content position-relative">
             <div class="xis-banner-img scene">

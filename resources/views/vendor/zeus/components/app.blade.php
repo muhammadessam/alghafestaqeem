@@ -39,7 +39,7 @@
                 <div class="flex">
                     <div class="flex-shrink-0 flex items-center">
                         <a class="italic flex gap-2 group" href="{{ url('/') }}">
-                            <img class="w-32" src="{{ asset($setting->logo_white) }}" alt="{{ config('zeus.wind.name', config('app.name', 'Laravel')) }}">
+                            <img class="w-32" src="/{{ $setting->logo_white }}" alt="{{ config('zeus.wind.name', config('app.name', 'Laravel')) }}">
                         </a>
                     </div>
 

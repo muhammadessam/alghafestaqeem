@@ -45,10 +45,9 @@ class Setting extends Model
     {
         $value = '';
         if ($this->{$column} != '') {
-            $value = asset($this->{$column});
+            $value = '/' . $this->{$column};
         }
 
         return $value;
     }
-
 }
