@@ -13,6 +13,13 @@
       0 => 'ArchTech\\SEO\\SEOServiceProvider',
     ),
   ),
+  'awcodes/filament-tiptap-editor' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'FilamentTiptapEditor\\FilamentTiptapEditorServiceProvider',
+    ),
+  ),
   'blade-ui-kit/blade-heroicons' => 
   array (
     'providers' => 
@@ -207,6 +214,13 @@
     'aliases' => 
     array (
       'Excel' => 'Maatwebsite\\Excel\\Facades\\Excel',
+    ),
+  ),
+  'mohamedsabil83/filament-forms-tinyeditor' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Mohamedsabil83\\FilamentFormsTinyeditor\\FilamentFormsTinyeditorServiceProvider',
     ),
   ),
   'nesbot/carbon' => 
