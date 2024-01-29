@@ -104,7 +104,7 @@
     </script>
     <script>
         document.querySelectorAll('div.prose p').forEach(function(element) {
-            if (element.childNodes[0] && element.childNodes[0].tagName != 'IMG') {
+            if (!element.childNodes[0] || element.childNodes[0].tagName != 'IMG') {
                 return;
             }
 
