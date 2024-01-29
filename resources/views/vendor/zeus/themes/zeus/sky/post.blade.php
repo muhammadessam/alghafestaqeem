@@ -1,8 +1,4 @@
 <div class="mt-6 container mx-auto px-2 md:px-4">
-    <x-slot name="header">
-        <span class="capitalize">{{ $post->title }}</span>
-    </x-slot>
-
     <x-slot name="breadcrumbs">
         <li class="flex items-center">
             <a href="{{ route('blogs') }}">{{ __('Posts') }}</a>
@@ -14,15 +10,24 @@
     </x-slot>
 
     @if($post->image() !== null)
-        <img alt="{{ $post->title }}" src="{{ $post->image() }}" class="my-10 w-full h-full shadow-md rounded-[2rem] rounded-bl-none z-0 object-cover"/>
+    <div class="flex sm:space-x-2 rtl:space-x-reverse px-2 lg:p-4 sm:col-span-2 w-full">
+        <span class="mb-4 md:mb-0 w-full relative h-[16em] sm:h-[20em] md:h-[22em] lg:h-[24em]">
+            <div class="absolute inset-0 w-full h-full z-10 shadow-md rounded-[2rem] md:ltr:rounded-br-none md:rtl:rounded-bl-none bg-gradient-to-b from-transparent to-gray-700"></div>
+
+            @if($post->image() !== null)
+            <img alt="{{ $post->title }}" src="{{ $post->image() }}" class="absolute ltr:left-0 rtl:right-0 top-0 w-full h-full shadow-md rounded-[2rem] md:ltr:rounded-br-none md:rtl:rounded-bl-none z-0 object-fill" />
+            @endif
+        </span>
+    </div>
+
     @endif
 
-    <div class="bg-white dark:bg-gray-800 rounded-[2rem] rounded-tl-none shadow-md px-10 pb-6">
+    <div class="bg-white dark:bg-gray-800 rounded-[2rem] rounded-tl-none shadow-md px-10 py-6">
         <div class="flex items-center justify-between">
             <span class="font-light text-gray-600 dark:text-gray-200">{{ optional($post->published_at)->diffForHumans() ?? '' }}</span>
             <div>
                 @unless ($post->tags->isEmpty())
-                    @each($skyTheme.'.partial.category', $post->tags->where('type','category'), 'category')
+                @each($skyTheme.'.partial.category', $post->tags->where('type','category'), 'category')
                 @endunless
             </div>
         </div>
@@ -37,9 +42,9 @@
                 </p>
                 <div>
                     @unless ($post->tags->isEmpty())
-                        @foreach($post->tags->where('type','tag') as $tag)
-                            @include($skyTheme.'.partial.tag')
-                        @endforeach
+                    @foreach($post->tags->where('type','tag') as $tag)
+                    @include($skyTheme.'.partial.tag')
+                    @endforeach
                     @endunless
                 </div>
             </div>
@@ -49,20 +54,20 @@
             </a>
         </div>
 
-        <div class="mt-6 lg:mt-12 prose dark:prose-invert max-w-none">
+        <div class="prose dark:prose-invert max-w-none">
             {!! $post->getContent() !!}
         </div>
     </div>
 
     @if($related->isNotEmpty())
-        <div class="py-6 flex flex-col mt-4 gap-4">
-            <h1 class="text-xl font-bold text-gray-700 dark:text-gray-100 md:text-2xl">{{ __('Related Posts') }}</h1>
+    <div class="py-6 flex flex-col mt-4 gap-4">
+        <h1 class="text-xl font-bold text-gray-700 dark:text-gray-100 md:text-2xl">{{ __('Related Posts') }}</h1>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                @foreach($related as $post)
-                    @include($skyTheme.'.partial.related')
-                @endforeach
-            </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            @foreach($related as $post)
+            @include($skyTheme.'.partial.related')
+            @endforeach
         </div>
+    </div>
     @endif
 </div>
