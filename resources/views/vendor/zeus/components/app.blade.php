@@ -113,6 +113,12 @@
             element.childNodes[0].style.marginRight = 'auto';
         });
 
+        document.querySelectorAll('div.prose figure').forEach(function(element) {
+            element.style.textAlign = 'center';
+            element.childNodes[0].style.marginLeft = 'auto';
+            element.childNodes[0].style.marginRight = 'auto';
+        })
+
     </script>
 
 </body>
