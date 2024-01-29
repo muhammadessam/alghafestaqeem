@@ -103,7 +103,11 @@ class ListContracts extends Component implements HasForms, HasTable
                 //
             ])
             ->actions([
-                //
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('download')
+                    ->label(__('admin.contracts.download'))
+                    ->url(fn ($record) => route('website.download-contract', ['token' => $record->token]))
+                    ->icon('heroicon-o-arrow-down-tray'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

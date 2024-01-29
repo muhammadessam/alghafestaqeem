@@ -13,7 +13,11 @@
 </head>
 
 <body onselectstart="return false">
-
+    <div id="info">
+        <h2>يرجى التوقيع على العقد</h2>
+        <h4>رقم العقد: {{ $contract->token }}</h4>
+        <h4>بإسم: {{ $contract->representative_name }}</h4>
+    </div>
     <form id="signature-form" method="POST"> @csrf
         <input type="hidden" name="signature" id="signature">
     </form>

@@ -36,7 +36,8 @@ class ContractController extends Controller
         return redirect('download-contract/' . $contract->token);
     }
 
-    public function downloadContract(string $token) {
+    public function downloadContract(string $token)
+    {
         $contract = Contract::where('token', $token)->first();
 
         if ($contract == null)
@@ -110,28 +111,60 @@ class ContractController extends Controller
                 $pdf->setY(186);
                 $pdf->setX(20);
                 $pdf->setFontSize(14);
-                $pdf->Cell(0, 0,
-'بناءً على طلب الطرف الثاني فان الغرض من معرفة القيمة السوقية للعقار محل التقييم هو (' . $contract->purpose . ').',
-                0, 1, 'R', 0, '', 1);
+                $pdf->Cell(
+                    0,
+                    0,
+                    'بناءً على طلب الطرف الثاني فان الغرض من معرفة القيمة السوقية للعقار محل التقييم هو (' . $contract->purpose . ').',
+                    0,
+                    1,
+                    'R',
+                    0,
+                    '',
+                    1
+                );
 
                 $pdf->setY(212);
                 $pdf->setX(67);
                 $pdf->setFontSize(12);
-                $pdf->Cell(0, 0,
-'العقار عبارة عن ' . __('categories.' . $contract->type) . ' بمساحة: (' . $contract->area . 'متر مربع)',
-                0, 1, 'R', 0, '', 1);
+                $pdf->Cell(
+                    0,
+                    0,
+                    'العقار عبارة عن ' . __('categories.' . $contract->type) . ' بمساحة: (' . $contract->area . 'متر مربع)',
+                    0,
+                    1,
+                    'R',
+                    0,
+                    '',
+                    1
+                );
 
                 $pdf->setY(220);
                 $pdf->setX(67);
-                $pdf->Cell(0, 0,
-'يقع العقار بـ: ' . $contract->property_address,
-                0, 1, 'R', 0, '', 1);
+                $pdf->Cell(
+                    0,
+                    0,
+                    'يقع العقار بـ: ' . $contract->property_address,
+                    0,
+                    1,
+                    'R',
+                    0,
+                    '',
+                    1
+                );
 
                 $pdf->setY(228);
                 $pdf->setX(67);
-                $pdf->Cell(0, 0,
-                'رقم (' . $contract->deed_number . ') بتاريخ: ' . $contract->deed_issue_date,
-                0, 1, 'R', 0, '', 1);
+                $pdf->Cell(
+                    0,
+                    0,
+                    'رقم (' . $contract->deed_number . ') بتاريخ: ' . $contract->deed_issue_date,
+                    0,
+                    1,
+                    'R',
+                    0,
+                    '',
+                    1
+                );
             }
             if ($pageNo == 3) {
                 $pdf->setY(35);
@@ -163,15 +196,17 @@ class ContractController extends Controller
                 $pdf->setX(124);
                 $pdf->Cell(0, 0, $contract->client_name, 0, 1, 'R', 0, '', 1);
 
-                $dataPieces = explode(',', $contract->signature);
-                $encodedImg = $dataPieces[1];
-                $decodedImg = base64_decode($encodedImg);
-                //  Check if image was properly decoded
-                if ($decodedImg !== false) {
-                    $name = 'signature-' . now()->toDateString() . '.png';
-                    if (file_put_contents($name, $decodedImg) !== false) {
-                        $pdf->Image($name, 80, 248, 16, 16, 'png');
-                        unlink($name);
+                if ($contract->signature != null) {
+                    $dataPieces = explode(',', $contract->signature);
+                    $encodedImg = $dataPieces[1];
+                    $decodedImg = base64_decode($encodedImg);
+                    //  Check if image was properly decoded
+                    if ($decodedImg !== false) {
+                        $name = 'signature-' . now()->toDateString() . '.png';
+                        if (file_put_contents($name, $decodedImg) !== false) {
+                            $pdf->Image($name, 80, 248, 16, 16, 'png');
+                            unlink($name);
+                        }
                     }
                 }
 

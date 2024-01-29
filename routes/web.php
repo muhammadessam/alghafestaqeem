@@ -38,7 +38,7 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\Website', 'as' => 'website
     Route::get('/tracking_number', 'RateRequestsController@tracking_request_no')->name('tracking_number');
     Route::get('sign/{token}', [Controllers\Admin\ContractController::class, 'signaturePad']);
     Route::post('sign/{token}', [Controllers\Admin\ContractController::class, 'sign']);
-    Route::get('download-contract/{token}', [Controllers\Admin\ContractController::class, 'downloadContract']);
+    Route::get('download-contract/{token}', [Controllers\Admin\ContractController::class, 'downloadContract'])->name('download-contract');
 });
 
 Route::get('/commands', function () {
