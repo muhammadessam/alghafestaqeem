@@ -102,6 +102,18 @@
         }
 
     </script>
+    <script>
+        document.querySelectorAll('div.prose p').forEach(function(element) {
+            if (element.childNodes[0].tagName != 'IMG') {
+                return;
+            }
+
+            element.style.textAlign = 'center';
+            element.childNodes[0].style.marginLeft = 'auto';
+            element.childNodes[0].style.marginRight = 'auto';
+        });
+
+    </script>
 
 </body>
 </html>
