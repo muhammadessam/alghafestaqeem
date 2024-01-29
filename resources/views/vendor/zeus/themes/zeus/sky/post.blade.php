@@ -11,7 +11,7 @@
 
     @if($post->image() !== null)
     <div class="flex sm:space-x-2 rtl:space-x-reverse px-2 lg:p-4 sm:col-span-2 w-full">
-        <span class="mb-4 md:mb-0 w-full relative h-[16em] sm:h-[20em] md:h-[22em] lg:h-[24em]">
+        <span class="mb-4 md:mb-0 w-full relative aspect-video">
             <div class="absolute inset-0 w-full h-full z-10 shadow-md rounded-[2rem] md:ltr:rounded-br-none md:rtl:rounded-bl-none bg-gradient-to-b from-transparent to-gray-700"></div>
 
             @if($post->image() !== null)
