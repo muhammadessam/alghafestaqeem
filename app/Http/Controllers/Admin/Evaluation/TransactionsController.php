@@ -260,8 +260,9 @@ class TransactionsController extends Controller
         $result['companies'] = EvaluationCompany::get();
         $result['types'] = Category::ApartmentType()->get();
         $result['cities'] = Category::City()->get();
+        $cities = City::all();
 
-        return view('admin.evaluation.transactions.create_and_edit', compact('item', 'result'));
+        return view('admin.evaluation.transactions.create_and_edit', compact('item', 'result', 'cities'));
     }
 
     public function update(TransactionRequest $request, $id)
