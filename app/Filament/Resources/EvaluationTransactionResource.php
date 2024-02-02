@@ -43,6 +43,7 @@ class EvaluationTransactionResource extends Resource
                 Forms\Components\Select::make('new_city_id')
                     ->label(__('forms\evaluation_transaction.new_city_id'))
                     ->relationship('newCity', fn () => app()->getLocale() == 'ar' ? 'name_ar' : 'name_en')
+                    ->preload()
                     ->searchable()
                     ->required(),
                 Forms\Components\TextInput::make('plan_no')
@@ -50,6 +51,7 @@ class EvaluationTransactionResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('plot_no')
                     ->label(__('forms\evaluation_transaction.plot_no'))
+                    ->reactive()
                     ->helperText(function (callable $get) {
                         $exists = EvaluationTransaction::where('new_city_id', '!=', null)
                             ->where('new_city_id', $get('new_city_id'))
@@ -87,6 +89,7 @@ class EvaluationTransactionResource extends Resource
                     ->searchable(),
                 Forms\Components\DatePicker::make('date')
                     ->label(__('forms\evaluation_transaction.date'))
+                    ->native(false)
                     ->required(),
                 Forms\Components\Fieldset::make('preview_fieldset')
                     ->label(__('forms\evaluation_transaction.preview_fieldset'))
@@ -131,12 +134,25 @@ class EvaluationTransactionResource extends Resource
                     ->label(__('forms\evaluation_transaction.income_date_time'))
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('company_fundoms')
-                    ->label(__('forms\evaluation_transaction.company_compensation')),
+                    ->label(__('forms\evaluation_transaction.company_compensation'))
+                    ->numeric()
+                    ->minValue(0)
+                    ->default(0),
                 Forms\Components\TextInput::make('review_fundoms')
-                    ->label(__('forms\evaluation_transaction.company_compensation')),
+                    ->label(__('forms\evaluation_transaction.company_compensation'))
+                    ->numeric()
+                    ->minValue(0)
+                    ->default(0),
                 Forms\Components\TextInput::make('phone')
                     ->label(__('forms\evaluation_transaction.phone'))
                     ->required(),
+                Forms\Components\FileUpload::make('files')
+                    ->label(__('forms\evaluation_transaction.files'))
+                    ->directory('transaction')
+                    ->multiple()
+                    ->openable()
+                    ->downloadable()
+                    ->previewable()
             ]);
     }
 
