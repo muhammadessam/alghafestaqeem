@@ -131,7 +131,7 @@ class EvaluationTransactionResource extends Resource
                             ->seconds(false),
                     ]),
                 Forms\Components\Textarea::make('notes')
-                    ->label(__('forms\evaluation_transaction.income_date_time'))
+                    ->label(__('forms\evaluation_transaction.notes'))
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('company_fundoms')
                     ->label(__('forms\evaluation_transaction.company_compensation'))
@@ -153,6 +153,10 @@ class EvaluationTransactionResource extends Resource
                     ->openable()
                     ->downloadable()
                     ->previewable()
+                    ->visible(function (string $context) {
+                        // TODO: Show files in edit with ability to delete
+                        return $context == 'create';
+                    })
             ]);
     }
 
