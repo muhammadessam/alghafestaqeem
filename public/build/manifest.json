@@ -1,11 +1,11 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-cb01dc85.css",
+    "file": "assets/app-6b1c052c.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
   "resources/css/signature-pad.css": {
-    "file": "assets/signature-pad-dbacd9b6.css",
+    "file": "assets/signature-pad-a65c6db4.css",
     "isEntry": true,
     "src": "resources/css/signature-pad.css"
   },
