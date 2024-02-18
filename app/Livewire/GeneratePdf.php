@@ -170,8 +170,8 @@ class GeneratePdf extends Component
                 $pdf->setTextColor(0, 0, 0);
                 $path = public_path('bank.jpg');
                 $pdf->MultiCell(0.4 * $page_width, 17, 'شركة صالح علي الغفيص للتقييم العقاري مهنية شركة شخص واحد', 1, 'C', 0, 0, valign: 'M');
-                $pdf->writeHTMLCell(0.2 * $page_width, 17, null, null, '<img src="' . $path . '" />', 1, 0, false, false, 'C', true);
-                $pdf->MultiCell(0.4 * $page_width, 17, 'SA2360100002694445569001', 1, 'C', 0, 0, valign: 'M');
+                $pdf->MultiCell(0.2 * $page_width, 17, 'مصرف الانماء', 1, 'C', 0, 0, valign: 'M');
+                $pdf->MultiCell(0.4 * $page_width, 17, 'SA1005000068203125260000', 1, 'C', 0, 0, valign: 'M');
 
 
             }
